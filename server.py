@@ -7,6 +7,8 @@ from model import connect_to_db, db #REMEMBER TO IMPORT DB CLASSES
 
 from sqlalchemy import asc, update
 
+import os
+
 
 
 app = Flask(__name__)
@@ -19,12 +21,29 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
+@app.route("/")
+def display_homepage():
+    """Render homepage."""
+
+    return render_template("homepage.html")
 
 @app.route("/find_meds")
 def display_medication_search_bar():
     """Display the medication search form."""
 
-    return render_template("find_medications.html")
+
+    APP_TOKEN = os.environ['APP_TOKEN'] 
+
+    return render_template("find_medications.html", 
+                            APP_TOKEN=APP_TOKEN)
+   
+
+@app.route("/results")
+def display_medication_search_results():
+    """Display the options for medication search results."""
+
+    return render_template("results.html")
+
 
 
 if __name__ == "__main__":

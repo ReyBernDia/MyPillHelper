@@ -4,14 +4,14 @@
 
 {% block content %}
 
-<h1>Indentify a Medication</h1>
+<h1>Identify a Medication</h1>
 
 <div>
     <form action="/find_meds" id="find_meds" method="POST">
     <label for="imprint"> Imprint </label>
-    <input type="text" name="imprint">
+    <input type="text" id="pill_imprint" name="pill_imprint">
     <label for="score"> Score </label>
-    <select name="score">
+    <select id="pill_score" name="pill_score">
         <option value="unknown">Unknown</option>
         <option value="one">One</option>
         <option value="two">Two</option>
@@ -19,14 +19,14 @@
         <option value="four">Four</option>
     </select>
     <label for="shape"> Shape </label>
-    <select>
+    <select id="pill_shape" name="pill_shape">
         <option value="unknown">Unknown</option>
         <option value="bullet">Bullet</option>
         <option value="capsule">Capsule</option>
         <option value="clover">Clover</option>
         <option value="diamond">Diamond</option>
         <option value="double_circle">Double Circle</option>
-        <option value="freeform">Freeform</option>
+        <option value="freeform">Free-form</option>
         <option value="gear">Gear</option>
         <option value="heptagon">Heptagon (7 sides)</option>
         <option value="hexagon">Hexagon (6 sides)</option>
@@ -42,7 +42,7 @@
         <option value="triangle">Triangle</option>
     </select>
     <label for="color"> Color </label>
-    <select>
+    <select id="pill_color" name="pill_color">
         <option value="Unknown">unknown</option>
         <option value="red">Red</option>
         <option value="orange">Orange</option>
@@ -57,10 +57,53 @@
         <option value="white">White</option>
         <option value="brown">Brown</option>
     </select>
+    <label for="name_of_med"> Medication Name </label>
+    <input type="text" id="name_of_med" name="name_of_med">
     <input type="submit" value="Find">
         
     </form>
 </div>
 
+ <script>
+    "use strict";
+
+      // $('#get-human').on('submit', (evt) => {
+      //   evt.preventDefault();
+
+      //   const selectedId = $('#human-id').val();
+
+      //   let url = '/api/human/' + selectedId
+
+      //   $.get(url, (res) => {
+
+      //     $('#fname').html(res.fname);
+      //     $('#lname').html(res.lname);
+      //     $('#email').html(res.email);
+    $('#find_meds').on('submit', (evt) => {
+        evt.preventDefault();
+
+        const pillImprint = $('#pill_imprint').val();
+
+        let url = 'https://datadiscovery.nlm.nih.gov/resource/crzr-uvwg.json?splimprint=' + pillImprint;
+        
+        $.ajax({
+            url,
+            type: "GET",
+            data: {
+                "$limit" : 3,
+                "$$app_token" : '{{APP_TOKEN}}'
+            }
+               }).done(function(data) {
+      
+                    alert("Retrieved " + data.length + " records from the dataset!");
+                    
+                    console.log(data);
+                });
+
+    });
+
+    
+
+  </script>
 
 {% endblock %}
