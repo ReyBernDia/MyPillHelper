@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, #REMEMBER TO IMPORT DB CLASSES
+from model import connect_to_db, db #REMEMBER TO IMPORT DB CLASSES
 
 from sqlalchemy import asc, update
 
@@ -19,13 +19,12 @@ app.secret_key = "ABC"
 # error.
 app.jinja_env.undefined = StrictUndefined
 
-#EXAMPLE OF WHAT TO START WITH 
-# @app.route('/')
-# def index():
-#     """Homepage."""
 
-#     return render_template("homepage.html")
+@app.route("/find_meds")
+def display_medication_search_bar():
+    """Display the medication search form."""
 
+    return render_template("find_medications.html")
 
 
 if __name__ == "__main__":

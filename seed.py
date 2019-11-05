@@ -1,9 +1,9 @@
 """Utility file to seed image database from MovieLens data in seed_data/"""
 
 from sqlalchemy import func
-from model import User
-from model import Rating
-from model import Movie
+# from model import User
+# from model import Rating
+# from model import Movie
 
 from model import connect_to_db, db
 from server import app

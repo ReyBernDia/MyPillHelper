@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Identify Medication{% endblock %}
+
+{% block content %}
+
+<h1>Indentify a Medication</h1>
+
+<div>
+    <form action="/find_meds" id="find_meds" method="POST">
+    <label for="imprint"> Imprint </label>
+    <input type="text" name="imprint">
+    <label for="score"> Score </label>
+    <select name="score">
+        <option value="unknown">Unknown</option>
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+        <option value="four">Four</option>
+    </select>
+    <label for="shape"> Shape </label>
+    <select>
+        <option value="unknown">Unknown</option>
+        <option value="bullet">Bullet</option>
+        <option value="capsule">Capsule</option>
+        <option value="clover">Clover</option>
+        <option value="diamond">Diamond</option>
+        <option value="double_circle">Double Circle</option>
+        <option value="freeform">Freeform</option>
+        <option value="gear">Gear</option>
+        <option value="heptagon">Heptagon (7 sides)</option>
+        <option value="hexagon">Hexagon (6 sides)</option>
+        <option value="octagon">Octagon (8 sides)</option>
+        <option value="oval">Oval</option>
+        <option value="pentagon">Pentagon</option>
+        <option value="rectangle">Rectangle</option>
+        <option value="round">Round</option>
+        <option value="semi-circle">Semi-Circle</option>
+        <option value="square">Square</option>
+        <option value="tear">Tear</option>
+        <option value="trapezoid">Trapezoid</option>
+        <option value="triangle">Triangle</option>
+    </select>
+    <label for="color"> Color </label>
+    <select>
+        <option value="Unknown">unknown</option>
+        <option value="red">Red</option>
+        <option value="orange">Orange</option>
+        <option value="yellow">Yellow</option>
+        <option value="green">Green</option>
+        <option value="turquoise">Turquoise</option>
+        <option value="blue">Blue</option>
+        <option value="purple">Purple</option>
+        <option value="pink">Pink</option>
+        <option value="black">Black</option>
+        <option value="gray">Gray</option>
+        <option value="white">White</option>
+        <option value="brown">Brown</option>
+    </select>
+    <input type="submit" value="Find">
+        
+    </form>
+</div>
+
+
+{% endblock %}
