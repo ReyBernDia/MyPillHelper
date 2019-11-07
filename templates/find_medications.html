@@ -7,18 +7,17 @@
 <h1>Identify a Medication</h1>
 
 <div>
-    <form action="/find_meds" id="find_meds" method="POST">
+    <form action="/results" id="find_meds">
     <label for="imprint"> Imprint </label>
     <input type="text" id="pill_imprint" name="pill_imprint">
     <label for="score"> Score </label>
-<!--     <select type="number" id="pill_score" name="pill_score">
+    <select type="number" id="pill_score" name="pill_score">
         <option value="unknown">Unknown</option>
-        <option value="one">1</option>
-        <option value="two">2</option>
-        <option value="three">3</option>
-        <option value="four">4</option>
-    </select> -->
-    <input type="radio" name="1" value="1">1
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
     <label for="shape"> Shape </label>
     <select id="pill_shape" name="pill_shape">
         <option value="unknown">unknown</option>
@@ -65,21 +64,9 @@
     </form>
 </div>
 
- <script>
+<!-- <script>
     "use strict";
 
-      // $('#get-human').on('submit', (evt) => {
-      //   evt.preventDefault();
-
-      //   const selectedId = $('#human-id').val();
-
-      //   let url = '/api/human/' + selectedId
-
-      //   $.get(url, (res) => {
-
-      //     $('#fname').html(res.fname);
-      //     $('#lname').html(res.lname);
-      //     $('#email').html(res.email);
     $('#find_meds').on('submit', (evt) => {
         evt.preventDefault();
 
@@ -87,59 +74,19 @@
         
         const medName = $('#name_of_med').val();
 
-        let pillScore = $('#pill_score').val()
+        const pillScore = $('#pill_score').val()
 
-        console.log(pillScore)
-        // let new_val = parseInt(pillScore);
+        const pillShape = $('#pill_shape').val();
 
-        // console.log(new_val);
-
-        let pillShape = $('#pill_shape').val();
-        if (pillShape === 'unknown') {
-          (pillShape = '');
-        }
-
-        let pillColor = $('#pill_color').val();
-        if (pillColor === 'Unknown') {
-          (pillColor = '');
-        }
-        console.log(pillColor)
-
-        console.log(typeof pillImprint)
-        console.log(pillShape)
+        const pillColor = $('#pill_color').val();
 
 
-        // let url = 'https://datadiscovery.nlm.nih.gov/resource/crzr-uvwg.json?splshape_text=' + pillShape.toUpperCase();
-
-        // let url = 'https://datadiscovery.nlm.nih.gov/resource/crzr-uvwg.json?splimprint=' + pillImprint
-
-        let url = 'https://datadiscovery.nlm.nih.gov/resource/crzr-uvwg.json?splscore=' + pillScore;
-
-        // let url = 'https://datadiscovery.nlm.nih.gov/resource/crzr-uvwg.json?$where=' + 'splimprint%20=%20' + pillImprint + '%20AND%20' + 'splshape_text%20=%20' + pillShape.toUpperCase();
-
-        // https://soda.demo.socrata.com/resource/4tka-6guv.json?$where=magnitude > 3.0 AND source = 'pr'
-        https://soda.demo.socrata.com/resource/4tka-6guv.json?$where=magnitude%20%3E%203.0%20AND%20source%20=%20%27pr%27
-
-        console.log(url)
         
-        $.ajax({
-            url,
-            type: "GET",
-            data: {
-                "$limit" : 3,
-                "$$app_token" : '{{APP_TOKEN}}'
-            }
-               }).done(function(data) {
-      
-                    alert("Retrieved " + data.length + " records from the dataset!");
-                    
-                    console.log(data);
-                });
-
     });
 
     
 
   </script>
+ -->
 
 {% endblock %}

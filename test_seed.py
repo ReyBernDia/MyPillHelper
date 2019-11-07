@@ -60,7 +60,7 @@ def load_pill_data():
                 shape = row[9]
                 print(f'{shape} = shape',type(shape))
 
-                score = int(row[11])
+                score = row[11]
                 print(f'{score} = score', type(score))
 
                 imprint = row[13]
@@ -71,6 +71,7 @@ def load_pill_data():
 
                 strength = row[18]
                 print(f'{strength} = strength', type(strength))
+                print(len(strength))
 
                 rxcui = row[24]
                 print(f'{rxcui} = rxcui', type(rxcui))
@@ -80,6 +81,7 @@ def load_pill_data():
 
                 medicine_name = row[32]
                 print(f'{medicine_name} = medicine_name',type(medicine_name))
+                print(len(medicine_name))
 
                 image_label = row[45]
                 print(f'{image_label} = image_label', type(image_label))
@@ -105,6 +107,7 @@ def load_pill_data():
                                   medicine_name=medicine_name,
                                   image_label=image_label,
                                   has_image=has_image)
+                print(medication)
                 db.session.add(medication)
 
                 # print(f'\t{row[32]} has been created with an rxcui of {row[24]}.')

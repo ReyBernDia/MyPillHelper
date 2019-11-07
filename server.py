@@ -3,12 +3,11 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db #REMEMBER TO IMPORT DB CLASSES
+from test_model import connect_to_db, db, Meds
 
 from sqlalchemy import asc, update
 
 import os
-
 
 
 app = Flask(__name__)
@@ -31,16 +30,24 @@ def display_homepage():
 def display_medication_search_bar():
     """Display the medication search form."""
 
-
-    APP_TOKEN = os.environ['APP_TOKEN'] 
-
-    return render_template("find_medications.html", 
-                            APP_TOKEN=APP_TOKEN)
+    return render_template("find_medications.html")
    
 
 @app.route("/results")
 def display_medication_search_results():
     """Display the options for medication search results."""
+
+    #get each value from the form in find_medications.html
+    imprint = request.args.get('pill_imprint')
+    score = request.args.get('pill_score')
+    shape = request.args.get('pill_shape')
+    color = request.args.get('pill_color')
+
+    print(imprint, score, shape, color)
+
+    #query for searched medication
+    searched_med = Meds.query.filter((Meds.imprint.like('%APO%'))).first()
+    print(searched_med)
 
     return render_template("results.html")
 
