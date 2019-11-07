@@ -6,8 +6,14 @@
 
 <h1> Is this your medication? </h1>
 
-
-
+<div>
+<ul>
+  {% for key, value in med_options.iteritems() %}
+    <dt> {{ key }}</dt>
+    <dd> {{ value }} </dd>
+  {% endfor %}
+</ul>
+</div>
 
 
 {% endblock %}

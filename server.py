@@ -46,10 +46,29 @@ def display_medication_search_results():
     print(imprint, score, shape, color)
 
     #query for searched medication
-    searched_med = Meds.query.filter((Meds.imprint.like('%APO%'))).first()
-    print(searched_med)
+    search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
+    print(search_results)
 
-    return render_template("results.html")
+    #goal: display med options from search with(med strength & med image) & avoid
+    #making multiple options for same strength 
+        #make a dictionary of med options to pass to jinja. 
+            #in dictionary, key = med strength, value = med image
+            #in jinja: check if key has a value, if so, then render image. 
+    
+    med_options = {}
+    for med in search_results:
+        key = med.strength
+        print(key)
+        value = med.image_label
+        print(value)
+        if key not in med_options:
+            med_options[key] = value 
+        else: 
+            med_options[key].append(value)
+
+    print(med_options)
+
+    return render_template("results.html", med_options=med_options)
 
 
 
