@@ -36,7 +36,7 @@ def display_medication_search_bar():
 @app.route("/results")
 def display_medication_search_results():
     """Display the options for medication search results."""
-
+    print(request.args)
     #get each value from the form in find_medications.html
     imprint = request.args.get('pill_imprint')
     score = request.args.get('pill_score')
@@ -50,6 +50,7 @@ def display_medication_search_results():
 
     
     #query for searched medication based in input 
+    #ImmutableMultiDict([('pill_imprint', 'IP'), ('pill_score', '1'), ('pill_shape', 'capsule'), ('pill_color', 'red'), ('name_of_med', '')])
     if ((imprint.upper() != "")):
         search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
         print(search_results)
@@ -57,7 +58,8 @@ def display_medication_search_results():
         search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))&(Meds.score == score)).all()
     else: 
         search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
-
+  #make a template for the query and substitute the query for the input data. 
+  #if no info then map to a wildcard. 
 
     #goal: display med options from search with(med strength & med image) & avoid
     #making multiple options for same strength 
@@ -69,22 +71,26 @@ def display_medication_search_results():
     for med in search_results:
         name = med.medicine_name
         key = med.strength
-        img_src = med.img_path
+        # img_src = med.img_path
         # print(img_src)
         print(key)
-        value = med.image_label
-        print(value)
+        value = med.img_path
+        # print(value)
         if key not in med_options:
-            med_options[key] = value 
+            med_options[key] = [value] 
         else: 
             med_options[key].append(value)
+        print("##################")
+        print(value)
+        print("##################")
 
     print(med_options)
+   
 
     return render_template("results.html", 
                             name = name,
-                            med_options=med_options, 
-                            img_src=img_src)
+                            med_options=med_options) 
+                            # img_src=img_src)
 
 
 
