@@ -36,6 +36,39 @@ class Meds(db.Model):
     def __repr__(self):
         return f"<Medication: {self.medicine_name} RXCUI: {self.rxcui}>"
 
+    #All possible search queries from find-medications form. 
+
+    # @classmethod
+    # def retreive_with_imprint(self, imprint, *add_args): 
+    #     
+    #         #param must == {'item': item}
+
+    #     if len(add_args) == 0:
+    #         search = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
+
+    #     elif (len(add_args) == 1) and ("score" in add_args):
+    #         search = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) & (Meds.score == score)).all()
+
+    #     elif (len(add_args) == 2) and (("score") and ("shape") in add_args):
+    #         search = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) & (Meds.score == score)).all()
+
+    #     # cursor = db.session.execute(cls.method, param)
+    #     # result = cursor.fetchall()
+        
+
+    #     return search
+
+    # @classmethod
+    # def retreive_medications(self, input_one, input_two ): 
+    #     """Perform search queries based on input from find-meds form."""
+    #         #param must == {'item': item}
+
+    #     # cursor = db.session.execute(cls.method, param)
+    #     # result = cursor.fetchall()
+    #     search = Meds.query.filter((Meds.imprint.like('%'+search_by_+'%'))).all()
+
+    #     return search
+
 ##############################################################################
 # Helper functions
 

@@ -36,61 +36,60 @@ def display_medication_search_bar():
 @app.route("/results")
 def display_medication_search_results():
     """Display the options for medication search results."""
-    print(request.args)
+    
     #get each value from the form in find_medications.html
     imprint = request.args.get('pill_imprint')
     score = request.args.get('pill_score')
     shape = request.args.get('pill_shape')
     color = request.args.get('pill_color')
 
-    print('IMPRINT:' ,imprint, type(imprint))
-    print('SCORE:' ,score, score.upper())
-    print('SHAPE:' ,shape, shape.upper())
-    print('COLOR:' ,color, color.upper())
+    # print('IMPRINT:' ,imprint, type(imprint))
+    # print('SCORE:' ,score, score.upper())
+    # print('SHAPE:' ,shape, shape.upper())
+    # print('COLOR:' ,color, color.upper())
 
-    
-    #query for searched medication based in input 
-    #ImmutableMultiDict([('pill_imprint', 'IP'), ('pill_score', '1'), ('pill_shape', 'capsule'), ('pill_color', 'red'), ('name_of_med', '')])
-    if ((imprint.upper() != "")):
+    only_imprint = ((imprint != "") and 
+                    (score.upper() == "UNKNOWN") and 
+                    (shape.upper() == "UNKNOWN") and 
+                    (color.upper() == "UNKNOWN"))
+
+    if only_imprint:
         search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
-        print(search_results)
-    elif (score.upper() != "UNKNOWN"):
-        search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))&(Meds.score == score)).all()
-    else: 
+
+    if (score == "") and (shape == "") and (color == ""):
         search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
-  #make a template for the query and substitute the query for the input data. 
-  #if no info then map to a wildcard. 
+
+    elif (score != "") and (shape == "") and (color == ""):
+        search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) & (Meds.score == score)).all()
+
+    #############################
 
     #goal: display med options from search with(med strength & med image) & avoid
     #making multiple options for same strength 
         #make a dictionary of med options to pass to jinja. 
             #in dictionary, key = med strength, value = med image
             #in jinja: check if key has a value, if so, then render image. 
-    
     med_options = {}
     for med in search_results:
         name = med.medicine_name
         key = med.strength
-        # img_src = med.img_path
-        # print(img_src)
-        print(key)
+        # print(key)
         value = med.img_path
-        # print(value)
         if key not in med_options:
             med_options[key] = [value] 
         else: 
             med_options[key].append(value)
-        print("##################")
-        print(value)
-        print("##################")
+        # print("##################")
+        # print(value)
+        # print("##################")
 
-    print(med_options)
+    # print(med_options)
    
 
     return render_template("results.html", 
                             name = name,
                             med_options=med_options) 
-                            # img_src=img_src)
+                            
 
 
 
