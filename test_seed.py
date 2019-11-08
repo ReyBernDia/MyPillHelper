@@ -89,10 +89,15 @@ def load_pill_data():
                 has_image = row[46]
                 if has_image == 'TRUE':
                     has_image = True 
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573171910/Test_pill_files/"
+                                + image_label + ".jpg")
+
                 else: 
                     has_image = False
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573174131/Test_pill_files/no_img_avail.png")
 
                 print(f'{has_image} = does this have an image',type(has_image))
+                print(f'{img_path} ##IMAGE PAGE IS THIS##', type(img_path))
 
                 #shape= row['splshape']
 
@@ -106,8 +111,10 @@ def load_pill_data():
                                   ndc9=ndc9,
                                   medicine_name=medicine_name,
                                   image_label=image_label,
-                                  has_image=has_image)
+                                  has_image=has_image, 
+                                  img_path=img_path)
                 print(medication)
+
                 db.session.add(medication)
 
                 # print(f'\t{row[32]} has been created with an rxcui of {row[24]}.')

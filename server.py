@@ -43,11 +43,21 @@ def display_medication_search_results():
     shape = request.args.get('pill_shape')
     color = request.args.get('pill_color')
 
-    print(imprint, score, shape, color)
+    print('IMPRINT:' ,imprint, type(imprint))
+    print('SCORE:' ,score, score.upper())
+    print('SHAPE:' ,shape, shape.upper())
+    print('COLOR:' ,color, color.upper())
 
-    #query for searched medication
-    search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
-    print(search_results)
+    
+    #query for searched medication based in input 
+    if ((imprint.upper() != "")):
+        search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
+        print(search_results)
+    elif (score.upper() != "UNKNOWN"):
+        search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))&(Meds.score == score)).all()
+    else: 
+        search_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
+
 
     #goal: display med options from search with(med strength & med image) & avoid
     #making multiple options for same strength 
@@ -57,7 +67,10 @@ def display_medication_search_results():
     
     med_options = {}
     for med in search_results:
+        name = med.medicine_name
         key = med.strength
+        img_src = med.img_path
+        # print(img_src)
         print(key)
         value = med.image_label
         print(value)
@@ -68,7 +81,10 @@ def display_medication_search_results():
 
     print(med_options)
 
-    return render_template("results.html", med_options=med_options)
+    return render_template("results.html", 
+                            name = name,
+                            med_options=med_options, 
+                            img_src=img_src)
 
 
 

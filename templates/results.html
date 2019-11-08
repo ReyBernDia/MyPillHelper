@@ -8,9 +8,16 @@
 
 <div>
 <ul>
-  {% for key, value in med_options.iteritems() %}
-    <dt> {{ key }}</dt>
-    <dd> {{ value }} </dd>
+  {% for key, value in med_options.items() %}
+    
+    <div> 
+      Medication Name: <br>
+      {{ name }} <br>
+      Strength: <br>  
+      {{ key }}
+      <img src= {{img_src}}>
+    </div>
+    
   {% endfor %}
 </ul>
 </div>

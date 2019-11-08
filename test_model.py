@@ -31,6 +31,7 @@ class Meds(db.Model):
     medicine_name = db.Column(db.String(64), nullable=True)
     image_label = db.Column(db.String(64), nullable=True)
     has_image = db.Column(db.Boolean, nullable=True)
+    img_path = db.Column(db.String(120), nullable=True)
 
     def __repr__(self):
         return f"<Medication: {self.medicine_name} RXCUI: {self.rxcui}>"
