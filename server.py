@@ -40,16 +40,11 @@ def display_medication_search_bar():
 @app.route("/results")
 def display_medication_search_results():
     """Display the options for medication search results.
-<<<<<<< HEAD
-=======
-
->>>>>>> 07ea4fd044e87d4f30d02731c71724fda4b426e7
     This function should take in any amount of input from the form on 
     find_medications.html and return search results from the database. 
     The goal is to avoid displaying multiple options for the same medication 
     strengths and duplicate images to the user. There are multiple duplicates of 
     both in the database. 
-<<<<<<< HEAD
     For example::
         >>> search_results = [<Med: Ramipril, Strength: 1.25mg >,
                            <Med: Ramipril, Strength: 1.25mg >, 
@@ -58,21 +53,6 @@ def display_medication_search_results():
     unique results of medication name, strength, and possible image. 
         >>> med_options = {'Ramipril 1.25mg': ['https...img1.jpg', 'https...img2.jpg'],
                            'Ramipril 2.5mg': ['https...img3.jpg']}
-=======
-
-    For example::
-
-        >>> search_results = [<Med: Ramipril, Strength: 1.25mg >,
-                           <Med: Ramipril, Strength: 1.25mg >, 
-                           <Med: Ramipril, Strenght: 2.5mg >]
-
-    The search results are to be passed to jinja in a dictionary to display 
-    unique results of medication name, strength, and possible image. 
-
-        >>> med_options = {'Ramipril 1.25mg': ['https...img1.jpg', 'https...img2.jpg'],
-                           'Ramipril 2.5mg': ['https...img3.jpg']}
-
->>>>>>> 07ea4fd044e87d4f30d02731c71724fda4b426e7
     Will need to pass on the name of the medication along with the dictionary. 
     """
     
@@ -248,7 +228,6 @@ def display_more_info(value):
 
     # print(value, type(value))
     API_KEY = os.environ['API_KEY']
-<<<<<<< HEAD
 
     url = ("https://api.fda.gov/drug/label.json?api_key="
            + API_KEY 
@@ -262,21 +241,6 @@ def display_more_info(value):
         info_dict = (med_info['results'][0])
         openfda_dict = (med_info['results'][0]['openfda'])
 
-=======
-
-    url = ("https://api.fda.gov/drug/label.json?api_key="
-           + API_KEY 
-           +"&search=openfda.generic_name:" 
-           + value)
-    # print(url)
-    r = requests.get(url)
-    med_info = r.json()
-
-    if 'results' in med_info:
-        info_dict = (med_info['results'][0])
-        openfda_dict = (med_info['results'][0]['openfda'])
-
->>>>>>> 07ea4fd044e87d4f30d02731c71724fda4b426e7
         if 'indications_and_usage' in info_dict:
             indications = (med_info['results'][0]['indications_and_usage'])
         else: 
