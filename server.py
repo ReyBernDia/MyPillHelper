@@ -226,17 +226,21 @@ def display_medication_search_results():
     return render_template("results.html", 
                             name = name,
                             med_options=med_options) 
-                            
+                         
+
 @app.route("/more_info/<value>")
 def display_more_info(value):
+    """Given selected value, query FDA API to display more information on med."""
 
-    print(value, type(value))
-    payload = {'openfda.generic_name': value}
-    url = ("https://api.fda.gov/drug/label.json?api_key=jjq96yHwsqaeKyCe0Vfvue1wijNdmZJlJkcgYwFy&search=openfda.generic_name:" + value)
+    # print(value, type(value))
+    API_KEY = os.environ['API_KEY']
 
+    url = ("https://api.fda.gov/drug/label.json?api_key="
+           + API_KEY 
+           +"&search=openfda.generic_name:" 
+           + value)
     print(url)
     r = requests.get(url)
-
     med_info = r.json()
 
     if 'results' in med_info:
