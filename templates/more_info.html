@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}More Information{% endblock %}
+
+{% block content %}
+
+<div>
+  <h2>More Information on Your Medication</h2> 
+  <h3>Common Medication Name:</h3>
+  <p>  
+    {% for name in brand_name %}
+      {{name}}
+    {% endfor %}
+  </p>
+  <h3>This medication is commonly used for the following purpose:</h3>
+  <p> 
+    {% for info in indications %}
+      {{ info }}
+    {% endfor %}
+  </p>
+  <h3>Dosing Information:</h3>
+  <p>
+    {% for dose in dosing_info %}
+      {{ dose }}
+    {% endfor %}
+  </p>
+  <h3>More Information for Patients:</h3>
+  <p>
+    {% for pt_info in info_for_patients %}
+      {{ pt_info }}
+    {% endfor %}
+  </p>
+  <h3>Consider these Contraindications:</h3>
+  <p>
+    {% for contra in contraindications %}
+      {{ contra }}
+    {% endfor %}
+  </p>
+  <h3>This medication is of the following Pharmacy Class:</h3>
+  <p>  
+    {% for pharm in pharm_class %}
+      {{ pharm }}
+    {% endfor %}
+  </p>
+  
+
+</div>
+<div id=footer_more_info> 
+Occasionally you will find that there is less information 
+than you may have expected. We apologize for the inconvenience. We are currently using 
+a database that is still expanding on a regular basis. Thank you for understanding.
+</div>
+
+{% endblock %}
