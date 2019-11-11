@@ -239,20 +239,50 @@ def display_more_info(value):
 
     med_info = r.json()
 
-    indications = (med_info['results'][0]['indications_and_usage'])
-    dosing_info = (med_info['results'][0]['dosage_and_administration'])
-    # info_for_patients = (med_info['results'][0]['information_for_patients'])
-    # contraindications = (med_info['results'][0]['contraindications'])
-    # brand_name = (med_info['results'][0]['openfda']['brand_name'])
-    # pharm_class = (med_info['results'][0]['openfda']['pharm_class_moa'])
+    if 'results' in med_info:
+        info_dict = (med_info['results'][0])
+        openfda_dict = (med_info['results'][0]['openfda'])
+
+        if 'indications_and_usage' in info_dict:
+            indications = (med_info['results'][0]['indications_and_usage'])
+        else: 
+            indications = ""
+        if 'dosage_and_administration' in info_dict:
+            dosing_info = (med_info['results'][0]['dosage_and_administration'])
+        else: 
+            dosing_info = ""
+        if 'information_for_patients' in info_dict:
+            info_for_patients = (med_info['results'][0]['information_for_patients'])
+        else: 
+            info_for_patients = ""
+        if 'contraindications' in info_dict:
+            contraindications = (med_info['results'][0]['contraindications'])
+        else: 
+            contraindications = ""
+        if 'brand_name' in openfda_dict:
+            brand_name = (med_info['results'][0]['openfda']['brand_name'])
+        else: 
+            brand_name = value
+        if 'pharm_class_moa' in openfda_dict:
+            pharm_class = (med_info['results'][0]['openfda']['pharm_class_moa'])
+        else: 
+            pharm_class = ""
+    
+    else:
+        brand_name = value
+        indications = "" 
+        dosing_info = ""
+        info_for_patients = ""
+        contraindications = ""
+        pharm_class = ""
 
 
     return render_template("more_info.html", indications=indications,
-                           dosing_info=dosing_info)
-                           # info_for_patients=info_for_patients,
-                           # contraindications=contraindications, 
-                           # brand_name=brand_name,
-                           # pharm_class=pharm_class)
+                           dosing_info=dosing_info,
+                           info_for_patients=info_for_patients,
+                           contraindications=contraindications, 
+                           brand_name=brand_name,
+                           pharm_class=pharm_class)
 
 
 if __name__ == "__main__":
