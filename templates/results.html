@@ -4,23 +4,40 @@
 
 {% block content %}
 
-<h1> Is this your medication? </h1>
+<h1> Select your medication </h1>
 
 <div>
 <ul>
   {% for key, value in med_options.items() %}
+
     
-    <div> 
-      Medication Name: <br>
-      {{ name }} <br>
-      Strength: <br>  
-      {{ key }} <br>
-      <img src="{{value[0]}}">
-    </div>
+    <div id="med_results"> 
+      <a href="/more_info/{{value[0]}}">
+      <p id="med_name"> Medication Name: {{ value[0] }} </p> 
+      <p> Strength: {{ key }} </p> 
+      <img src="{{ value[1][0] }}" width=40% height=40%>
+      </a>
+    </div> 
+    
     
   {% endfor %}
 </ul>
 </div>
+
+<!-- <script>
+    "use strict";
+
+    $('#med_results').on('click', (evt) => {
+        evt.preventDefault();
+
+        
+
+        alert('You selected a med!');
+
+    });
+    
+</script> -->
+
 
 
 {% endblock %}
