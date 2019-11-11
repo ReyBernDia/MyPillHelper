@@ -239,7 +239,7 @@ def display_more_info(value):
            + API_KEY 
            +"&search=openfda.generic_name:" 
            + value)
-    print(url)
+    # print(url)
     r = requests.get(url)
     med_info = r.json()
 
