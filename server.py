@@ -234,22 +234,25 @@ def display_more_info(value):
     payload = {'openfda.generic_name': value}
     url = ("https://api.fda.gov/drug/label.json?api_key=jjq96yHwsqaeKyCe0Vfvue1wijNdmZJlJkcgYwFy&search=openfda.generic_name:" + value)
 
+    print(url)
     r = requests.get(url)
 
     med_info = r.json()
 
     indications = (med_info['results'][0]['indications_and_usage'])
     dosing_info = (med_info['results'][0]['dosage_and_administration'])
-    info_for_patients = (med_info['results'][0]['information_for_patients'])
-    contraindications = (med_info['results'][0]['contraindications'])
-    brand_name = (med_info['results'][0]['openfda']['brand_name'])
+    # info_for_patients = (med_info['results'][0]['information_for_patients'])
+    # contraindications = (med_info['results'][0]['contraindications'])
+    # brand_name = (med_info['results'][0]['openfda']['brand_name'])
+    # pharm_class = (med_info['results'][0]['openfda']['pharm_class_moa'])
 
 
     return render_template("more_info.html", indications=indications,
-                           dosing_info=dosing_info,
-                           info_for_patients=info_for_patients,
-                           contraindications=contraindications, 
-                           brand_name=brand_name)
+                           dosing_info=dosing_info)
+                           # info_for_patients=info_for_patients,
+                           # contraindications=contraindications, 
+                           # brand_name=brand_name,
+                           # pharm_class=pharm_class)
 
 
 if __name__ == "__main__":

@@ -5,10 +5,23 @@
 {% block content %}
 
 <div>
-    <p>{{indications}}</p>
-    <p>{{dosing_info}}</p>
-    <p>{{info_for_patients}}</p>
-    <p>{{contraindications}}</p>
-    <p>{{brand_name}}</p>
+  <h2>More information on your medication:</h2> 
+  
+  <p> 
+    {% for info in indications %}
+      {{ info }}
+    {% endfor %}
+  </p>
+
+  <p>
+    {% for dose in dosing_info %}
+      {{ dose }}
+    {% endfor %}
+  </p>
+
+  
+  
+
 </div>
+
 {% endblock %}
