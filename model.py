@@ -16,11 +16,12 @@ db = SQLAlchemy()
 
 
 class Meds(db.Model):
-    """All medications."""
+    """All medications from NIH dataset."""
 
     __tablename__ = "meds"
 
     med_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    medicine_name = db.Column(db.String(64), nullable=True)
     shape = db.Column(db.String(20), nullable=True)
     score = db.Column(db.String(5), nullable=True)
     imprint = db.Column(db.String(25), nullable=True)
@@ -28,7 +29,6 @@ class Meds(db.Model):
     strength = db.Column(db.String(200), nullable=True)
     rxcui = db.Column(db.String(15), nullable=True)
     ndc9 = db.Column(db.String(20), nullable=False)
-    medicine_name = db.Column(db.String(64), nullable=True)
     image_label = db.Column(db.String(64), nullable=True)
     has_image = db.Column(db.Boolean, nullable=True)
     img_path = db.Column(db.String(120), nullable=True)
