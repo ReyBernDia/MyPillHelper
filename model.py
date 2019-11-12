@@ -10,6 +10,39 @@ from sqlalchemy import asc, update
 db = SQLAlchemy()
 
 
+
+##############################################################################
+# Model definitions
+
+
+class Meds(db.Model):
+    """All medications."""
+
+    __tablename__ = "meds"
+
+    med_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
+    shape = db.Column(db.String(20), nullable=True)
+    score = db.Column(db.String(5), nullable=True)
+    imprint = db.Column(db.String(25), nullable=True)
+    color = db.Column(db.String(20), nullable=True)
+    strength = db.Column(db.String(200), nullable=True)
+    rxcui = db.Column(db.String(15), nullable=True)
+    ndc9 = db.Column(db.String(20), nullable=False)
+    medicine_name = db.Column(db.String(64), nullable=True)
+    image_label = db.Column(db.String(64), nullable=True)
+    has_image = db.Column(db.Boolean, nullable=True)
+    img_path = db.Column(db.String(120), nullable=True)
+
+    def __repr__(self):
+        return f"<Medication: {self.medicine_name} RXCUI: {self.rxcui}>"
+
+
+    # @classmethod
+    # def retreive_medications(self, input_one, input_two ): 
+    #     """Perform search queries based on input from find-meds form."""
+    #     search = Meds.query.filter((Meds.imprint.like('%'+search_by_+'%'))).all()
+    #     return search
+
 ##############################################################################
 # Helper functions
 
@@ -17,7 +50,7 @@ def connect_to_db(app):
     """Connect the database to our Flask app."""
 
     # Configure to use our PstgreSQL database
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///ratings'
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql:///meds_prod'
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
     db.app = app
     db.init_app(app)
