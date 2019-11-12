@@ -232,7 +232,7 @@ def display_more_info(value):
     """Given selected value, query FDA API to display more information on med."""
 
     # print(value, type(value))
-    # API_KEY = os.environ['API_KEY']
+    API_KEY = os.environ['API_KEY']
     # print(API_KEY)
 
     url = ("https://api.fda.gov/drug/label.json?api_key="
