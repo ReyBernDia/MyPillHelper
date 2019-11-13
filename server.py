@@ -65,196 +65,34 @@ def display_medication_search_results():
         shape = (request.args.get('pill_shape')).upper() #in DB as all caps.
         color = (request.args.get('pill_color')).upper() #in DB as all caps.
 
-        print('IMPRINT:' ,imprint, type(imprint), len(imprint))
-        print('SCORE:' ,score, score.upper())
-        print('SHAPE:' ,shape, shape.upper())
-        print('COLOR:' ,color, color.upper())
+        # print('IMPRINT:' ,imprint, type(imprint), len(imprint))
+        # print('SCORE:' ,score, score.upper())
+        # print('SHAPE:' ,shape, shape.upper())
+        # print('COLOR:' ,color, color.upper())
 
-        #set variables for various user input possibilities. 
-        # no_input = ((imprint == "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # only_imprint = ((imprint != "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # imprint_and_score = ((imprint != "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # imprint_score_shape = ((imprint != "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # imprint_score_shape_color = ((imprint != "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # imprint_and_shape = ((imprint != "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # only_shape = ((imprint == "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        # shape_and_color = ((imprint == "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # only_score = ((imprint == "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-        
-        # score_and_shape = ((imprint == "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() == "UNKNOWN"))
-
-        # score_shape_color = ((imprint == "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() != "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # only_color = ((imprint == "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # color_and_score = ((imprint == "") and 
-        #                 (score.upper() != "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # color_and_imprint = ((imprint != "") and 
-        #                 (score.upper() == "UNKNOWN") and 
-        #                 (shape.upper() == "UNKNOWN") and 
-        #                 (color.upper() != "UNKNOWN"))
-
-        # Query 
-        # if score.upper() != 'UNKNOWN':
-        #     Query.filter(Meds.score == score)
-        # if shape.upper() != "UNKNWON":
-        #     Query.filter(Meds.shape == shape)
-
-        # Query.all()
-
+        #set conditionals for various search query options based on input. 
+        #imprint and color contain ; separated values in db. 
         query = Meds.query
         if (imprint != ""):
-            query = query.filter((Meds.imprint.like('%'+imprint+'%'))).order_by(Meds.has_image.desc())
+            query = (query.filter((Meds.imprint.like('%'+imprint+'%')))
+            .order_by(Meds.has_image.desc()))
         if (score.upper() != "UNKNOWN"):
-            query = query.filter((Meds.score == score)).order_by(Meds.has_image.desc())
+            query = (query.filter((Meds.score == score))
+            .order_by(Meds.has_image.desc()))
         if (shape.upper() != "UNKNOWN"):
-            query = query.filter((Meds.shape == shape)).order_by(Meds.has_image.desc())
+            query = (query.filter((Meds.shape == shape))
+            .order_by(Meds.has_image.desc()))
         if (color.upper() != "UNKNOWN"):
-            query = query.filter((Meds.color.like('%'+color+'%'))).order_by(Meds.has_image.desc())
-        
+            query = (query.filter((Meds.color.like('%'+color+'%')))
+            .order_by(Meds.has_image.desc()))
         query.all()
 
         return query
-        
-    
-        
-        
-        
-
-
-        #set conditionals for various search query options based on input. 
-            #imprint and color contain ; separated values in db. 
-        # if only_imprint:
-        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')))
-        #                     .order_by(Meds.has_image.desc())
-        #                     .all())
-
-        # elif imprint_and_score:
-        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-        #                      & (Meds.score == score))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif imprint_score_shape: 
-        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-        #                      & (Meds.shape == shape) 
-        #                      & (Meds.score == score))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif imprint_score_shape_color: 
-        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-        #                      & (Meds.shape == shape) 
-        #                      & (Meds.score == score) 
-        #                      & (Meds.color.like('%'+color+'%')))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif imprint_and_shape:
-        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-        #                      & (Meds.shape == shape))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif only_shape:
-        #     query_results = (Meds.query.filter((Meds.shape == shape))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif shape_and_color:
-        #     query_results = (Meds.query.filter((Meds.shape == shape) 
-        #                      & (Meds.color.like('%'+color+'%')))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif only_score:
-        #     query_results = (Meds.query.filter((Meds.score == score))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif score_and_shape:
-        #     query_results = (Meds.query.filter((Meds.shape == shape) 
-        #                      & (Meds.score == score))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif score_shape_color: 
-        #     query_results = (Meds.query.filter((Meds.shape == shape) 
-        #                      & (Meds.score == score) 
-        #                      & (Meds.color.like('%'+color+'%')))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif only_color:
-        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif color_and_score:
-        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
-        #                      & (Meds.score == score))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        # elif color_and_imprint:
-        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
-        #                      & (Meds.imprint.like('%'+imprint+'%')))
-        #                      .order_by(Meds.has_image.desc())
-        #                      .all())
-
-        
 
     def make_dictionary_from_query():
         """Make a dictionary from query search results."""
 
         query_result_list = query_with_form_values() #get 
-
         query_dictionary = {}  #dictionary to pass to jinja
         for med in query_result_list:
             name = med.medicine_name  #pass on common medication name to jinja
@@ -269,7 +107,6 @@ def display_medication_search_results():
         return query_dictionary
 
     search_dictionary = make_dictionary_from_query()
-
     if len(search_dictionary) == 0:  #check if search_dictionary is empty. 
         return render_template("no_search.html")
     else:
@@ -282,10 +119,7 @@ def display_medication_search_results():
 def display_more_info(value):
     """Given selected value, query FDA API to display more information on med."""
 
-    # print(value, type(value))
     API_KEY = os.environ['API_KEY']
-    # print(API_KEY)
-
     url = ("https://api.fda.gov/drug/label.json?api_key="
            + API_KEY
            +"&search=openfda.generic_name:" 
@@ -294,46 +128,17 @@ def display_more_info(value):
     r = requests.get(url)
     med_info = r.json()
 
-    #DO THIS INSTEAD!!!
-        #indications = info_dict.get('indications_and_usage', "['Not Available']")
+    results = med_info.get('results', "")
 
-    if 'results' in med_info:
-        info_dict = (med_info['results'][0])
-        openfda_dict = (med_info['results'][0]['openfda'])
+    info_dict = (med_info['results'][0])
+    openfda_dict = (med_info['results'][0]['openfda'])
 
-        if 'indications_and_usage' in info_dict:
-            indications = (med_info['results'][0]['indications_and_usage'])
-        else: 
-            indications = ""
-        if 'dosage_and_administration' in info_dict:
-            dosing_info = (med_info['results'][0]['dosage_and_administration'])
-        else: 
-            dosing_info = ""
-        if 'information_for_patients' in info_dict:
-            info_for_patients = (med_info['results'][0]['information_for_patients'])
-        else: 
-            info_for_patients = ""
-        if 'contraindications' in info_dict:
-            contraindications = (med_info['results'][0]['contraindications'])
-        else: 
-            contraindications = ""
-        if 'brand_name' in openfda_dict:
-            brand_name = (med_info['results'][0]['openfda']['brand_name'])
-        else: 
-            brand_name = value
-        if 'pharm_class_moa' in openfda_dict:
-            pharm_class = (med_info['results'][0]['openfda']['pharm_class_moa'])
-        else: 
-            pharm_class = ""
-    
-    else:
-        brand_name = value
-        indications = "" 
-        dosing_info = ""
-        info_for_patients = ""
-        contraindications = ""
-        pharm_class = ""
-
+    indications = info_dict.get('indications_and_usage', "")
+    dosing_info = info_dict.get('dosage_and_administration', "")
+    info_for_patients = info_dict.get('information_for_patients', "")
+    contraindications = info_dict.get('contraindications', "")
+    brand_name = openfda_dict.get('brand_name', value)
+    pharm_class = openfda_dict.get('pharm_class_moa', "")
 
     return render_template("more_info.html", indications=indications,
                            dosing_info=dosing_info,
