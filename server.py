@@ -171,13 +171,69 @@ def process_registration():
         user = Users(f_name=f_name, 
                      l_name=l_name, 
                      email=email, 
-                     cell_number=cell_number, 
-                     password_hash=password_hash)
-
+                     cell_number=cell_number)
+        user.set_password(password_hash)
         db.session.add(user)
         db.session.commit()
 
     return redirect('/')
+
+@app.route('/login', methods=['GET'])
+def display_login_page():
+
+    return render_template("login.html")
+
+
+@app.route('/login', methods=['POST'])
+def login_user():
+    """Login user and add them to the session."""
+
+    #query DB using login information. 
+    f_name = request.form.get('first_name')
+    cell_number= request.form.get('cell')
+    password_hash = request.form.get('password')
+    user = Users.query.filter((Users.f_name == f_name),
+                              (Users.cell_number == cell_number)).first()
+
+    #if we have a search query and the password is correct- add to session. 
+    if user and user.check_password(password_hash):
+        session['user_name'] = Users.f_name
+        session['user_id'] = Users.user_id
+        flash("Successfully logged in!")  # flash- logged in.
+        return redirect('/user-page')  #redirect to users page.
+    else: 
+        flash("That is not a valid email & password.")
+        return redirect('/login')   
+
+
+@app.route('/logout')
+def logout_user():
+    """Remove user from session."""
+
+    del session['user_name']
+    del session['user_id']
+    flash("Successfully logged out!")
+
+    return redirect('/')
+
+@app.route('/user-page')
+def display_user_page():
+    """Show specific information about user."""
+
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+
+    # ratings = user.ratings
+    # ratings = Rating.query.filter(Rating.user_id == session['user_id']).all()
+
+    # for rating in ratings:
+    #     movie = Movie.query.filter(rating.movie_id == Movie.movie_id).first()
+    #     rating.movie_name = movie.title
+    #     print(rating.movie.title)
+
+    return render_template('user_page.html', 
+                            user=user) 
+                            
+
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
