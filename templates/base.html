@@ -12,21 +12,19 @@
 </head>
 
 <body>
-<!--   <ul>
+  <ul>
       {% for message in get_flashed_messages() %}
       <li>{{ message }}</li>
       {% endfor %}
   </ul>
-  {% if session.get('user_email',None) %}
-  <p>Hello, {{ session['user_email'] }} </p>
+  {% if session.get('user_name',None) %}
+  <p>Hello, {{ session['user_name'] }} </p>
   <p><a href="/logout">Log Out</a></p>
   {% else %}
   <p><a href="/login">Log In</a></p>
   <p><a href="/register">Register</a></p>
   {% endif %}
 
-  Ratings
-  <hr> -->
 
   {% block content %} put your content here {% endblock %}
 

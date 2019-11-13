@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Meds
+from model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
@@ -35,7 +35,6 @@ def display_medication_search_bar():
     """Display the medication search form."""
 
     return render_template("find_medications.html")
-   
 
 @app.route("/results")
 def display_medication_search_results():
@@ -147,6 +146,38 @@ def display_more_info(value):
                            brand_name=brand_name,
                            pharm_class=pharm_class)
 
+@app.route('/register', methods=['GET'])
+def register_new_user():
+    """Display user registration form."""
+
+    return render_template("registration.html")
+
+
+@app.route('/register', methods=['POST'])
+def process_registration():
+    """Register new user if email not already in db."""
+
+    f_name = request.form.get('first_name')
+    l_name = request.form.get('last_name')
+    email = request.form.get('email')
+    cell_number = request.form.get('cell')
+    password_hash = request.form.get('password')
+
+    # if user cell already exists, ignore
+    if Users.query.filter(Users.cell_number == cell_number).first():
+        pass
+    # if user cell does not exist, add to db
+    else: 
+        user = Users(f_name=f_name, 
+                     l_name=l_name, 
+                     email=email, 
+                     cell_number=cell_number, 
+                     password_hash=password_hash)
+
+        db.session.add(user)
+        db.session.commit()
+
+    return redirect('/')
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
