@@ -197,8 +197,8 @@ def login_user():
 
     #if we have a search query and the password is correct- add to session. 
     if user and user.check_password(password_hash):
-        session['user_name'] = Users.f_name
-        session['user_id'] = Users.user_id
+        session['user_name'] = user.f_name
+        session['user_id'] = user.user_id
         flash("Successfully logged in!")  # flash- logged in.
         return redirect('/user-page')  #redirect to users page.
     else: 
