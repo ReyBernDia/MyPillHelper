@@ -43,7 +43,7 @@ def load_pill_data():
 
     # '/home/vagrant/src/hb_pillproject/pill_testing_book.csv'
 
-    with open('/data/Pillbox_production.csv') as csvfile:
+    with open('Pillbox_production.csv') as csvfile:
         csv_reader = csv.reader(csvfile)
         line_count = 0
     # print(csv_reader)
@@ -89,12 +89,12 @@ def load_pill_data():
                 has_image = row[46]
                 if has_image == 'TRUE':
                     has_image = True 
-                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573171910/Test_pill_files/"
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573537498/production_images/"
                                 + image_label + ".jpg")
 
                 else: 
                     has_image = False
-                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573174131/Test_pill_files/no_img_avail.png")
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573593090/production_images/No_Image_Available.jpg")
 
                 print(f'{has_image} = does this have an image',type(has_image))
                 print(f'{img_path} ##IMAGE PAGE IS THIS##', type(img_path))

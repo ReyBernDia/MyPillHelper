@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from test_model import connect_to_db, db, Meds
+from model import connect_to_db, db, Meds
 
 from sqlalchemy import asc, update
 
@@ -143,56 +143,82 @@ def display_medication_search_results():
         #set conditionals for various search query options based on input. 
             #imprint and color contain ; separated values in db. 
         if only_imprint:
-            query_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%'))).all()
+            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')))
+                            .order_by(Meds.has_image.desc())
+                            .all())
 
         elif imprint_and_score:
-            query_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.score == score)).all()
+            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+                             & (Meds.score == score))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif imprint_score_shape: 
-            query_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
                              & (Meds.shape == shape) 
-                             & (Meds.score == score)).all()
+                             & (Meds.score == score))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif imprint_score_shape_color: 
-            query_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
                              & (Meds.shape == shape) 
                              & (Meds.score == score) 
-                             & (Meds.color.like('%'+color+'%'))).all()
+                             & (Meds.color.like('%'+color+'%')))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif imprint_and_shape:
-            query_results = Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.shape == shape)).all()
+            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+                             & (Meds.shape == shape))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif only_shape:
-            query_results = Meds.query.filter((Meds.shape == shape)).all()
+            query_results = (Meds.query.filter((Meds.shape == shape))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif shape_and_color:
-            query_results = Meds.query.filter((Meds.shape == shape) 
-                             & (Meds.color.like('%'+color+'%'))).all()
+            query_results = (Meds.query.filter((Meds.shape == shape) 
+                             & (Meds.color.like('%'+color+'%')))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif only_score:
-            query_results = Meds.query.filter((Meds.score == score)).all()
+            query_results = (Meds.query.filter((Meds.score == score))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif score_and_shape:
-            query_results = Meds.query.filter((Meds.shape == shape) 
-                             & (Meds.score == score)).all()
+            query_results = (Meds.query.filter((Meds.shape == shape) 
+                             & (Meds.score == score))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif score_shape_color: 
-            query_results = Meds.query.filter((Meds.shape == shape) 
+            query_results = (Meds.query.filter((Meds.shape == shape) 
                              & (Meds.score == score) 
-                             & (Meds.color.like('%'+color+'%'))).all()
+                             & (Meds.color.like('%'+color+'%')))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif only_color:
-            query_results = Meds.query.filter((Meds.color.like('%'+color+'%'))).all()
+            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif color_and_score:
-            query_results = Meds.query.filter((Meds.color.like('%'+color+'%')) 
-                             & (Meds.score == score)).all()
+            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
+                             & (Meds.score == score))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         elif color_and_imprint:
-            query_results = Meds.query.filter((Meds.color.like('%'+color+'%')) 
-                             & (Meds.imprint.like('%'+imprint+'%'))).all()
+            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
+                             & (Meds.imprint.like('%'+imprint+'%')))
+                             .order_by(Meds.has_image.desc())
+                             .all())
 
         else: 
             query_results = []
@@ -210,7 +236,7 @@ def display_medication_search_results():
             key = med.strength  
             img_path = med.img_path  
             if key not in query_dictionary:
-                query_dictionary[key] = (name, [img_path]) 
+                query_dictionary[key] = [name, [img_path]] 
             else: 
                 query_dictionary[key].append(img_path)
         # print("###############")
