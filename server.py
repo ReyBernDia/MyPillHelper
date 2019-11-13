@@ -71,159 +71,184 @@ def display_medication_search_results():
         print('COLOR:' ,color, color.upper())
 
         #set variables for various user input possibilities. 
-        no_input = ((imprint == "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # no_input = ((imprint == "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        only_imprint = ((imprint != "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # only_imprint = ((imprint != "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        imprint_and_score = ((imprint != "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # imprint_and_score = ((imprint != "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        imprint_score_shape = ((imprint != "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # imprint_score_shape = ((imprint != "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        imprint_score_shape_color = ((imprint != "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # imprint_score_shape_color = ((imprint != "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
 
-        imprint_and_shape = ((imprint != "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # imprint_and_shape = ((imprint != "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        only_shape = ((imprint == "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
-        shape_and_color = ((imprint == "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # only_shape = ((imprint == "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
+        # shape_and_color = ((imprint == "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
 
-        only_score = ((imprint == "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # only_score = ((imprint == "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
         
-        score_and_shape = ((imprint == "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() == "UNKNOWN"))
+        # score_and_shape = ((imprint == "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() == "UNKNOWN"))
 
-        score_shape_color = ((imprint == "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() != "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # score_shape_color = ((imprint == "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() != "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
 
-        only_color = ((imprint == "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # only_color = ((imprint == "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
 
-        color_and_score = ((imprint == "") and 
-                        (score.upper() != "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # color_and_score = ((imprint == "") and 
+        #                 (score.upper() != "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
 
-        color_and_imprint = ((imprint != "") and 
-                        (score.upper() == "UNKNOWN") and 
-                        (shape.upper() == "UNKNOWN") and 
-                        (color.upper() != "UNKNOWN"))
+        # color_and_imprint = ((imprint != "") and 
+        #                 (score.upper() == "UNKNOWN") and 
+        #                 (shape.upper() == "UNKNOWN") and 
+        #                 (color.upper() != "UNKNOWN"))
+
+        # Query 
+        # if score.upper() != 'UNKNOWN':
+        #     Query.filter(Meds.score == score)
+        # if shape.upper() != "UNKNWON":
+        #     Query.filter(Meds.shape == shape)
+
+        # Query.all()
+
+        query = Meds.query
+        if (imprint != ""):
+            query = query.filter((Meds.imprint.like('%'+imprint+'%'))).order_by(Meds.has_image.desc())
+        if (score.upper() != "UNKNOWN"):
+            query = query.filter((Meds.score == score)).order_by(Meds.has_image.desc())
+        if (shape.upper() != "UNKNOWN"):
+            query = query.filter((Meds.shape == shape)).order_by(Meds.has_image.desc())
+        if (color.upper() != "UNKNOWN"):
+            query = query.filter((Meds.color.like('%'+color+'%'))).order_by(Meds.has_image.desc())
+        
+        query.all()
+
+        return query
+        
+    
+        
+        
+        
+
 
         #set conditionals for various search query options based on input. 
             #imprint and color contain ; separated values in db. 
-        if only_imprint:
-            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')))
-                            .order_by(Meds.has_image.desc())
-                            .all())
+        # if only_imprint:
+        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')))
+        #                     .order_by(Meds.has_image.desc())
+        #                     .all())
 
-        elif imprint_and_score:
-            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.score == score))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif imprint_and_score:
+        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+        #                      & (Meds.score == score))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif imprint_score_shape: 
-            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.shape == shape) 
-                             & (Meds.score == score))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif imprint_score_shape: 
+        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+        #                      & (Meds.shape == shape) 
+        #                      & (Meds.score == score))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif imprint_score_shape_color: 
-            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.shape == shape) 
-                             & (Meds.score == score) 
-                             & (Meds.color.like('%'+color+'%')))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif imprint_score_shape_color: 
+        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+        #                      & (Meds.shape == shape) 
+        #                      & (Meds.score == score) 
+        #                      & (Meds.color.like('%'+color+'%')))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif imprint_and_shape:
-            query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
-                             & (Meds.shape == shape))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif imprint_and_shape:
+        #     query_results = (Meds.query.filter((Meds.imprint.like('%'+imprint+'%')) 
+        #                      & (Meds.shape == shape))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif only_shape:
-            query_results = (Meds.query.filter((Meds.shape == shape))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif only_shape:
+        #     query_results = (Meds.query.filter((Meds.shape == shape))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif shape_and_color:
-            query_results = (Meds.query.filter((Meds.shape == shape) 
-                             & (Meds.color.like('%'+color+'%')))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif shape_and_color:
+        #     query_results = (Meds.query.filter((Meds.shape == shape) 
+        #                      & (Meds.color.like('%'+color+'%')))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif only_score:
-            query_results = (Meds.query.filter((Meds.score == score))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif only_score:
+        #     query_results = (Meds.query.filter((Meds.score == score))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif score_and_shape:
-            query_results = (Meds.query.filter((Meds.shape == shape) 
-                             & (Meds.score == score))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif score_and_shape:
+        #     query_results = (Meds.query.filter((Meds.shape == shape) 
+        #                      & (Meds.score == score))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif score_shape_color: 
-            query_results = (Meds.query.filter((Meds.shape == shape) 
-                             & (Meds.score == score) 
-                             & (Meds.color.like('%'+color+'%')))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif score_shape_color: 
+        #     query_results = (Meds.query.filter((Meds.shape == shape) 
+        #                      & (Meds.score == score) 
+        #                      & (Meds.color.like('%'+color+'%')))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif only_color:
-            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif only_color:
+        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif color_and_score:
-            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
-                             & (Meds.score == score))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif color_and_score:
+        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
+        #                      & (Meds.score == score))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        elif color_and_imprint:
-            query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
-                             & (Meds.imprint.like('%'+imprint+'%')))
-                             .order_by(Meds.has_image.desc())
-                             .all())
+        # elif color_and_imprint:
+        #     query_results = (Meds.query.filter((Meds.color.like('%'+color+'%')) 
+        #                      & (Meds.imprint.like('%'+imprint+'%')))
+        #                      .order_by(Meds.has_image.desc())
+        #                      .all())
 
-        else: 
-            query_results = []
-
-        return query_results
+        
 
     def make_dictionary_from_query():
         """Make a dictionary from query search results."""
@@ -268,6 +293,9 @@ def display_more_info(value):
     # print(url)
     r = requests.get(url)
     med_info = r.json()
+
+    #DO THIS INSTEAD!!!
+        #indications = info_dict.get('indications_and_usage', "['Not Available']")
 
     if 'results' in med_info:
         info_dict = (med_info['results'][0])
