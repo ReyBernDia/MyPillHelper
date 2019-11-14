@@ -235,10 +235,20 @@ def display_user_page():
 def process_adding_medications():
     """Add user medications to DB from input on user profile page."""
 
+    #get user to keep them in the session. 
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+    session['user_name'] = user.f_name
+
     med_name = request.form.get('med_name')
     qty_per_dose = int(request.form.get('qty_per_dose'))
     dose_schedule = request.form.get('dosing')
-    #convert dosing to int to store in DB times_per_day.
+
+    #convert dosing to time of day to store in DB times_per_day.
+    #QAM - 8:00 AM 
+    #QPM - 8:00 PM 
+    #BID - 8:00 AM/8:00PM 
+    #TID - 8:00/12:00/8:00
+
     rx_duration = int(request.form.get('duration'))
     qty = int(request.form.get('qty'))
     refills = int(request.form.get('refills'))
@@ -254,8 +264,30 @@ def process_adding_medications():
     print(refills, type(refills))
     print(rx_start_date, type(rx_start_date))
 
+    API_KEY = os.environ['API_KEY']
+    url = ("https://api.fda.gov/drug/label.json?api_key="
+           + API_KEY
+           +"&search=openfda.generic_name:" 
+           + med_name)
+    # print(url)
+    r = requests.get(url)
+    med_info = r.json()
 
-    return render_template('user_page.html')
+    results = med_info.get('results', "")
+
+    info_dict = (med_info['results'][0])
+    openfda_dict = (med_info['results'][0]['openfda'])
+
+    indications = info_dict.get('indications_and_usage', "")
+    dosing_info = info_dict.get('dosage_and_administration', "")
+    info_for_patients = info_dict.get('information_for_patients', "")
+    contraindications = info_dict.get('contraindications', "")
+    brand_name = openfda_dict.get('brand_name', value)
+    pharm_class = openfda_dict.get('pharm_class_moa', "")
+
+
+    flash("Medication Added!")
+    return render_template('user_page.html', user=user)
 
 
 if __name__ == "__main__":

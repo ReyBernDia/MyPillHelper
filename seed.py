@@ -10,31 +10,6 @@ from datetime import datetime
 import csv
 
 
-#EXAMPLE DATA PULL FROM SEED DATA.
-# def load_users():
-#     """Load users from u.user into database."""
-
-#     print("Users")
-
-#     # Delete all rows in table, so if we need to run this a second time,
-#     # we won't be trying to add duplicate users
-#     User.query.delete()
-
-#     # Read u.user file and insert data
-#     for row in open("seed_data/u.user"):
-#         row = row.rstrip()
-#         user_id, age, gender, occupation, zipcode = row.split("|")
-
-#         user = User(user_id=user_id,
-#                     age=age,
-#                     zipcode=zipcode)
-
-#         # We need to add to the session or it won't ever be stored
-#         db.session.add(user)
-
-#     # Once we're done, we should commit our work
-#     db.session.commit()
-
 
 def load_pill_data():
     """Seed database with pillbox data. """

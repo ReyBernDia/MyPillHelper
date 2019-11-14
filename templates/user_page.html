@@ -3,7 +3,7 @@
 
   <h2>User Profile</h2>
 
-     
+    {{ user.f_name }}, it is a beautiful day to schedule your medications! 
 
   <h2>My Medications</h2>
 
@@ -15,9 +15,9 @@
     <input type="number" id="qty_per_dose" name="qty_per_dose" required>
     <label for="dosing">Dosing Schedule:</label>
     <select id="dosing" name="dosing" required>
-        <option value="QAM">Every 24 hours AM</option>
-        <option value="QPM">Every 24 hours PM</option>
-        <option value="BID">Every 12 hours</option>
+        <option value="QAM">Every Morning</option>
+        <option value="QPM">Every Evening</option>
+        <option value="BID">Morning and Evening</option>
         <option value="TID">Morning, Noon, and Evening</option>
     </select>
     <label for="duration">Prescription Duration (in days):</label>
