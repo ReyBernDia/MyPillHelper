@@ -7,6 +7,8 @@ from model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
+from datetime import datetime
+
 import os
 from sys import argv
 from pprint import pprint
@@ -216,23 +218,44 @@ def logout_user():
 
     return redirect('/')
 
-@app.route('/user-page')
+@app.route('/user-page', methods=['GET'])
 def display_user_page():
-    """Show specific information about user."""
+    """Display specific information about user."""
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
 
-    # ratings = user.ratings
-    # ratings = Rating.query.filter(Rating.user_id == session['user_id']).all()
-
-    # for rating in ratings:
-    #     movie = Movie.query.filter(rating.movie_id == Movie.movie_id).first()
-    #     rating.movie_name = movie.title
-    #     print(rating.movie.title)
+    medications = user.u_meds #get medications for user in session. 
+    
 
     return render_template('user_page.html', 
-                            user=user) 
+                            user=user, 
+                            medications=medications) 
                             
+@app.route('/user-page', methods=['POST'])
+def process_adding_medications():
+    """Add user medications to DB from input on user profile page."""
+
+    med_name = request.form.get('med_name')
+    qty_per_dose = int(request.form.get('qty_per_dose'))
+    dose_schedule = request.form.get('dosing')
+    #convert dosing to int to store in DB times_per_day.
+    rx_duration = int(request.form.get('duration'))
+    qty = int(request.form.get('qty'))
+    refills = int(request.form.get('refills'))
+    start_date = request.form.get('start_date')
+
+    rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
+
+    print(med_name, type(med_name))
+    print(qty_per_dose, type(qty_per_dose))
+    print(dose_schedule, type(dose_schedule))
+    print(rx_duration, type(rx_duration))
+    print(qty, type(qty))
+    print(refills, type(refills))
+    print(rx_start_date, type(rx_start_date))
+
+
+    return render_template('user_page.html')
 
 
 if __name__ == "__main__":

@@ -14,7 +14,7 @@
 <body>
   <ul>
       {% for message in get_flashed_messages() %}
-      <li>{{ message }}</li>
+      <p>{{ message }}</p>
       {% endfor %}
   </ul>
   {% if session.get('user_name',None) %}

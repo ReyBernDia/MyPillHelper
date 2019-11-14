@@ -8,5 +8,10 @@
 
 <p id="link"><a href="/find_meds">Identify an Unknown pill</a></p>
 
+{% if session.get('user_name',None) %}
+  <p><a href="/user-page">Your Profile</a></p>
+{% endif %}
+
+
 
 {% endblock %}
