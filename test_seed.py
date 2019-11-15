@@ -2,7 +2,7 @@
 
 from sqlalchemy import func
 
-from test_model import Meds
+from test_model import Meds, Users, User_meds
 
 from test_model import connect_to_db, db
 from server import app

@@ -3,6 +3,11 @@
 {% block title %}More Information{% endblock %}
 
 {% block content %}
+<p><a href="/">Homepage</a></p>
+{% if session.get('user_name',None) %}
+  <p><a href="/user-page">Your Profile</a></p>
+{% endif %}
+<p><a href="/find_meds">Find Another Medication</a></p>
 
 <div>
   <h2>More Information on Your Medication</h2> 

@@ -19,7 +19,7 @@ import requests
 app = Flask(__name__)
 
 # Required to use Flask sessions and the debug toolbar
-app.secret_key = "ABC"
+app.secret_key = "QWEASDZXC"
 
 # Normally, if you use an undefined variable in Jinja2, it fails
 # silently. This is horrible. Fix this so that, instead, it raises an
@@ -102,9 +102,12 @@ def display_medication_search_results():
             if key not in query_dictionary:
                 query_dictionary[key] = [name, [img_path]] 
             else: 
+                #get the list from values 
+                #then append
+                #create a value for the inner list. 
                 query_dictionary[key].append(img_path)
-        # print("###############")
-        # print(query_dictionary)
+        print("###############")
+        print(query_dictionary)
         return query_dictionary
 
     search_dictionary = make_dictionary_from_query()
@@ -191,7 +194,7 @@ def login_user():
     """Login user and add them to the session."""
 
     #query DB using login information. 
-    f_name = request.form.get('first_name')
+    f_name = request.form.get('first_name') #either lower case or upcase for user input discrepancy. 
     cell_number= request.form.get('cell')
     password_hash = request.form.get('password')
     user = Users.query.filter((Users.f_name == f_name),
@@ -224,13 +227,40 @@ def display_user_page():
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
 
-    medications = user.u_meds #get medications for user in session. 
+    # medications = user.u_meds #get medications for user in session. 
     
 
     return render_template('user_page.html', 
-                            user=user, 
-                            medications=medications) 
+                            user=user) 
+                            # medications=medications) 
                             
+# @app.route('/user-settings', methods=['POST'])
+# def process_user_settings():
+
+#     user = Users.query.filter(Users.user_id == session['user_id']).first()
+
+#     medications = user.u_meds #get medications for user in session. 
+
+#     def access_users():
+#         am = request.form.get('AM_time')
+#         mid = request.form.get('Mid_time')
+#         pm = request.form.get('PM_time')
+        
+#         am_time = datetime.strptime(am, '%H:%M')
+#         mid = datetime.strptime(mid, '%H:%M')
+#         pm_time = datetime.strptime(pm, '%H:%M')
+        
+#         print(am_time, type(am_time))
+#         print(mid, type(mid))
+#         print(pm_time, type(pm_time))
+#         return 
+
+#     flash("Your reminder time has been updated!")
+#     return render_template('user_page.html', 
+#                             user=user, 
+#                             medications=medications) 
+
+
 @app.route('/user-page', methods=['POST'])
 def process_adding_medications():
     """Add user medications to DB from input on user profile page."""
@@ -238,53 +268,61 @@ def process_adding_medications():
     #get user to keep them in the session. 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
     session['user_name'] = user.f_name
+    user_id = session['user_id']
 
-    med_name = request.form.get('med_name')
+    med_name = (request.form.get('med_name')).upper()
     qty_per_dose = int(request.form.get('qty_per_dose'))
-    dose_schedule = request.form.get('dosing')
-
-    #convert dosing to time of day to store in DB times_per_day.
-    #QAM - 8:00 AM 
-    #QPM - 8:00 PM 
-    #BID - 8:00 AM/8:00PM 
-    #TID - 8:00/12:00/8:00
-
-    rx_duration = int(request.form.get('duration'))
-    qty = int(request.form.get('qty'))
-    refills = int(request.form.get('refills'))
+    times_per_day = int(request.form.get('dosing'))
     start_date = request.form.get('start_date')
 
     rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
 
     print(med_name, type(med_name))
     print(qty_per_dose, type(qty_per_dose))
-    print(dose_schedule, type(dose_schedule))
-    print(rx_duration, type(rx_duration))
-    print(qty, type(qty))
-    print(refills, type(refills))
+    print(times_per_day, type(times_per_day))
     print(rx_start_date, type(rx_start_date))
 
-    API_KEY = os.environ['API_KEY']
-    url = ("https://api.fda.gov/drug/label.json?api_key="
-           + API_KEY
-           +"&search=openfda.generic_name:" 
-           + med_name)
-    # print(url)
-    r = requests.get(url)
-    med_info = r.json()
+    med = (Meds.query.filter(Meds.strength.like('%'+med_name+'%'))
+                    .order_by(Meds.has_image.desc())
+                    .all())
 
-    results = med_info.get('results', "")
+    print(med)
 
-    info_dict = (med_info['results'][0])
-    openfda_dict = (med_info['results'][0]['openfda'])
+    #if DB query returns empty then do an API call with name. 
+        #render the brand name and generic name, also indications and usage. 
+        #user will need to select the medication. 
+        #once user selects medication, then add it to DB under meds. 
+        #once you add to DB meds- fetch the med_id and instantiate a new user_med instance.
 
-    indications = info_dict.get('indications_and_usage', "")
-    dosing_info = info_dict.get('dosage_and_administration', "")
-    info_for_patients = info_dict.get('information_for_patients', "")
-    contraindications = info_dict.get('contraindications', "")
-    brand_name = openfda_dict.get('brand_name', value)
-    pharm_class = openfda_dict.get('pharm_class_moa', "")
 
+    # API_KEY = os.environ['API_KEY']
+    # url = ("https://api.fda.gov/drug/label.json?api_key="
+    #        + API_KEY
+    #        +"&search=openfda.generic_name:" 
+    #        + med_name
+    #        +"+openfda.brand_name:"
+    #        +med_name)
+    # # print(url)
+    # r = requests.get(url)
+    # med_info = r.json()
+    # print(med_info)
+
+    # results = med_info.get('results', "")
+
+    # info_dict = (med_info['results'][0])
+    # openfda_dict = (med_info['results'][0]['openfda'])
+
+    # indications = info_dict.get('indications_and_usage', "")
+    # dosing_info = info_dict.get('dosage_and_administration', "")
+    # info_for_patients = info_dict.get('information_for_patients', "")
+    # contraindications = info_dict.get('contraindications', "")
+    # brand_name = openfda_dict.get('brand_name', value)
+    # pharm_class = openfda_dict.get('pharm_class_moa', "")
+
+    # new_med = User_meds(user_id=user_id,
+    #                     qty_per_dose=qty_per_dose, 
+    #                     times_per_day=times_per_day,
+    #                     start_date=start_date)
 
     flash("Medication Added!")
     return render_template('user_page.html', user=user)
