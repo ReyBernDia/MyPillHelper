@@ -7,7 +7,7 @@ from model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import db_query_functions as db_query
 import api
@@ -20,7 +20,7 @@ import requests
 
 
 app = Flask(__name__)
-
+app.permanent_session_lifetime = timedelta(days=31)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "QWEASDZXC"
 
@@ -200,49 +200,26 @@ def process_adding_medications():
 
     rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
 
-    print(med_name, type(med_name))
-    print(qty_per_dose, type(qty_per_dose))
-    print(times_per_day, type(times_per_day))
-    print(rx_start_date, type(rx_start_date))
+    # print(med_name, type(med_name))
+    # print(qty_per_dose, type(qty_per_dose))
+    # print(times_per_day, type(times_per_day))
+    # print(rx_start_date, type(rx_start_date))
 
     database_med = (Meds.query.filter(Meds.strength.like('%'+med_name+'%'))
                     .order_by(Meds.has_image.desc())
                     .all())
 
-    print(database_med, len(database_med))
-    # if len(database_med) == 0: 
-    #     API_KEY = os.environ['API_KEY']
-    #     url = ("https://api.fda.gov/drug/label.json?api_key="
-    #            + API_KEY
-    #            +"&search=openfda.generic_name:" 
-    #            + med_name
-    #            +"+openfda.brand_name:"
-    #            +med_name)
-    #     # print(url)
-    #     r = requests.get(url)
-    #     med_info = r.json()
-    #     print(med_info)
-
-    #     results = med_info.get('results', "")
-
-    #     info_dict = (med_info['results'][0])
-    #     openfda_dict = (med_info['results'][0]['openfda'])
-
-    #     indications = info_dict.get('indications_and_usage', "")
-    #     dosing_info = info_dict.get('dosage_and_administration', "")
-    #     info_for_patients = info_dict.get('information_for_patients', "")
-    #     contraindications = info_dict.get('contraindications', "")
-    #     brand_name = openfda_dict.get('brand_name', value)
-    #     pharm_class = openfda_dict.get('pharm_class_moa', "")
-    # else: 
-
-
-
-    #if DB query returns empty then do an API call with name. 
+     #if DB query returns empty then do an API call with name. 
         #render the brand name and generic name, also indications and usage. 
         #user will need to select the medication. 
         #once user selects medication, then add it to DB under meds. 
         #once you add to DB meds- fetch the med_id and instantiate a new user_med instance.
+
+    # print(database_med, len(database_med))
+    # if len(database_med) == 0: 
+    #     api_results = api.query_fda_api(med_name)
+    # else: 
+
 
 
     
