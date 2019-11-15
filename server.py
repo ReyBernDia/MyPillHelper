@@ -9,6 +9,9 @@ from sqlalchemy import asc, update
 
 from datetime import datetime
 
+import db_query_functions as db_query
+import api
+
 import os
 from sys import argv
 from pprint import pprint
@@ -40,116 +43,36 @@ def display_medication_search_bar():
 
 @app.route("/results")
 def display_medication_search_results():
-    """Display the options for medication search results.
-    This function should take in any amount of input from the form on 
-    find_medications.html and return search results from the database. 
-    The goal is to avoid displaying multiple options for the same medication 
-    strengths and duplicate images to the user. There are multiple duplicates of 
-    both in the database. 
-    For example::
-        >>> query_results = [<Med: Ramipril, Strength: 1.25mg >,
-                           <Med: Ramipril, Strength: 1.25mg >, 
-                           <Med: Ramipril, Strenght: 2.5mg >]
-    The search results are to be passed to jinja in a dictionary to display 
-    unique results of medication name, strength, and possible image. 
-        >>> med_options = {'Ramipril 1.25mg': ['https...img1.jpg', 'https...img2.jpg'],
-                           'Ramipril 2.5mg': ['https...img3.jpg']}
-    Will need to pass on the name of the medication along with the dictionary. 
-    """
-    
-    def query_with_form_values():
-        """Get each value from the form in find_medications.html and query the DB."""
+    """Display the options for medication search results."""
 
-        form_imprint = (request.args.get('pill_imprint')).upper()
-        imprint = (form_imprint.split(" "))[0] #incase user populates scentence. 
-        score = request.args.get('pill_score')
-        shape = (request.args.get('pill_shape')).upper() #in DB as all caps.
-        color = (request.args.get('pill_color')).upper() #in DB as all caps.
+    form_imprint = (request.args.get('pill_imprint')).upper()
+    score = request.args.get('pill_score')
+    shape = (request.args.get('pill_shape')).upper() #in DB as all caps.
+    color = (request.args.get('pill_color')).upper() #in DB as all caps.
 
-        # print('IMPRINT:' ,imprint, type(imprint), len(imprint))
-        # print('SCORE:' ,score, score.upper())
-        # print('SHAPE:' ,shape, shape.upper())
-        # print('COLOR:' ,color, color.upper())
+    query_results = db_query.query_with_find_meds_values(form_imprint, score, shape, color)
 
-        #set conditionals for various search query options based on input. 
-        #imprint and color contain ; separated values in db. 
-        query = Meds.query
-        if (imprint != ""):
-            query = (query.filter((Meds.imprint.like('%'+imprint+'%')))
-            .order_by(Meds.has_image.desc()))
-        if (score.upper() != "UNKNOWN"):
-            query = (query.filter((Meds.score == score))
-            .order_by(Meds.has_image.desc()))
-        if (shape.upper() != "UNKNOWN"):
-            query = (query.filter((Meds.shape == shape))
-            .order_by(Meds.has_image.desc()))
-        if (color.upper() != "UNKNOWN"):
-            query = (query.filter((Meds.color.like('%'+color+'%')))
-            .order_by(Meds.has_image.desc()))
-        query.all()
+    med_dictionary = db_query.make_dictionary_from_query(query_results)
 
-        return query
-
-    def make_dictionary_from_query():
-        """Make a dictionary from query search results."""
-
-        query_result_list = query_with_form_values() #get 
-        query_dictionary = {}  #dictionary to pass to jinja
-        for med in query_result_list:
-            name = med.medicine_name  #pass on common medication name to jinja
-            key = med.strength  
-            img_path = med.img_path  
-            if key not in query_dictionary:
-                query_dictionary[key] = [name, [img_path]] 
-            else: 
-                #get the list from values 
-                #then append
-                #create a value for the inner list. 
-                query_dictionary[key].append(img_path)
-        print("###############")
-        print(query_dictionary)
-        return query_dictionary
-
-    search_dictionary = make_dictionary_from_query()
-    if len(search_dictionary) == 0:  #check if search_dictionary is empty. 
+    if len(med_dictionary) == 0:  #check if med_dictionary is empty. 
         return render_template("no_search.html")
     else:
-        med_options = search_dictionary
         return render_template("results.html", 
-                            med_options=med_options) 
+                            med_options=med_dictionary) 
                          
-
 @app.route("/more_info/<value>")
 def display_more_info(value):
     """Given selected value, query FDA API to display more information on med."""
 
-    API_KEY = os.environ['API_KEY']
-    url = ("https://api.fda.gov/drug/label.json?api_key="
-           + API_KEY
-           +"&search=openfda.generic_name:" 
-           + value)
-    # print(url)
-    r = requests.get(url)
-    med_info = r.json()
+    api_results = api.query_fda_api(value)
 
-    results = med_info.get('results', "")
-
-    info_dict = (med_info['results'][0])
-    openfda_dict = (med_info['results'][0]['openfda'])
-
-    indications = info_dict.get('indications_and_usage', "")
-    dosing_info = info_dict.get('dosage_and_administration', "")
-    info_for_patients = info_dict.get('information_for_patients', "")
-    contraindications = info_dict.get('contraindications', "")
-    brand_name = openfda_dict.get('brand_name', value)
-    pharm_class = openfda_dict.get('pharm_class_moa', "")
-
-    return render_template("more_info.html", indications=indications,
-                           dosing_info=dosing_info,
-                           info_for_patients=info_for_patients,
-                           contraindications=contraindications, 
-                           brand_name=brand_name,
-                           pharm_class=pharm_class)
+    return render_template("more_info.html", 
+                           indications=api_results[0],
+                           dosing_info=api_results[1],
+                           info_for_patients=api_results[2],
+                           contraindications=api_results[3], 
+                           brand_name=api_results[4],
+                           pharm_class=api_results[5])
 
 @app.route('/register', methods=['GET'])
 def register_new_user():
@@ -227,12 +150,12 @@ def display_user_page():
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
 
-    # medications = user.u_meds #get medications for user in session. 
+    medications = user.u_meds #get medications for user in session. 
     
 
     return render_template('user_page.html', 
-                            user=user) 
-                            # medications=medications) 
+                            user=user,
+                            medications=medications) 
                             
 # @app.route('/user-settings', methods=['POST'])
 # def process_user_settings():
@@ -282,11 +205,38 @@ def process_adding_medications():
     print(times_per_day, type(times_per_day))
     print(rx_start_date, type(rx_start_date))
 
-    med = (Meds.query.filter(Meds.strength.like('%'+med_name+'%'))
+    database_med = (Meds.query.filter(Meds.strength.like('%'+med_name+'%'))
                     .order_by(Meds.has_image.desc())
                     .all())
 
-    print(med)
+    print(database_med, len(database_med))
+    # if len(database_med) == 0: 
+    #     API_KEY = os.environ['API_KEY']
+    #     url = ("https://api.fda.gov/drug/label.json?api_key="
+    #            + API_KEY
+    #            +"&search=openfda.generic_name:" 
+    #            + med_name
+    #            +"+openfda.brand_name:"
+    #            +med_name)
+    #     # print(url)
+    #     r = requests.get(url)
+    #     med_info = r.json()
+    #     print(med_info)
+
+    #     results = med_info.get('results', "")
+
+    #     info_dict = (med_info['results'][0])
+    #     openfda_dict = (med_info['results'][0]['openfda'])
+
+    #     indications = info_dict.get('indications_and_usage', "")
+    #     dosing_info = info_dict.get('dosage_and_administration', "")
+    #     info_for_patients = info_dict.get('information_for_patients', "")
+    #     contraindications = info_dict.get('contraindications', "")
+    #     brand_name = openfda_dict.get('brand_name', value)
+    #     pharm_class = openfda_dict.get('pharm_class_moa', "")
+    # else: 
+
+
 
     #if DB query returns empty then do an API call with name. 
         #render the brand name and generic name, also indications and usage. 
@@ -295,29 +245,7 @@ def process_adding_medications():
         #once you add to DB meds- fetch the med_id and instantiate a new user_med instance.
 
 
-    # API_KEY = os.environ['API_KEY']
-    # url = ("https://api.fda.gov/drug/label.json?api_key="
-    #        + API_KEY
-    #        +"&search=openfda.generic_name:" 
-    #        + med_name
-    #        +"+openfda.brand_name:"
-    #        +med_name)
-    # # print(url)
-    # r = requests.get(url)
-    # med_info = r.json()
-    # print(med_info)
-
-    # results = med_info.get('results', "")
-
-    # info_dict = (med_info['results'][0])
-    # openfda_dict = (med_info['results'][0]['openfda'])
-
-    # indications = info_dict.get('indications_and_usage', "")
-    # dosing_info = info_dict.get('dosage_and_administration', "")
-    # info_for_patients = info_dict.get('information_for_patients', "")
-    # contraindications = info_dict.get('contraindications', "")
-    # brand_name = openfda_dict.get('brand_name', value)
-    # pharm_class = openfda_dict.get('pharm_class_moa', "")
+    
 
     # new_med = User_meds(user_id=user_id,
     #                     qty_per_dose=qty_per_dose, 
