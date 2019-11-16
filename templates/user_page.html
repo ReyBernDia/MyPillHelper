@@ -9,26 +9,15 @@
 
     {{ user.f_name }}, it is a beautiful day to schedule your medications! 
 
-  <h2>Settings</h2>
-  <p>When do you want to be notified for morning medication?</p>
-  <div>
-      <form action="/user-settings" id="settings" method="POST">
-          <label for="AM_time">Morning Notification:</label>
-          <input type="time" id="AM_time" name="AM_time" min="05:00" max="10:00" required>
-          <label for="Mid_time">Mid-day Notification:</label>
-          <input type="time" id="Mid_time" name="Mid_time" min="9:00" max="14:00" required>
-          <label for="PM_time">Evening Notification:</label>
-          <input type="time" id="PM_time" name="PM_time" min="17:00" max="22:00" required>
-
-          <input type="submit" value="Set Time">
-      </form>
-  </div>
+  
   <h2>Keep track of your med list</h2>
     <div>
       <form action="/user-page" id="add_med" method="POST">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
-        <label for="qty_per_dose">Quantity Per Dose:</label>
+        <label for="med_name">Strength of Medication:</label>
+        <input type="text" id="med_strength" name="med_strength" required>
+        <label for="qty_per_dose">Quantity Per Dose:</label>  
         <input type="number" id="qty_per_dose" name="qty_per_dose" required>
         <label for="dosing">Dosing Schedule:</label>
         <select id="dosing" name="dosing" required>
@@ -43,33 +32,7 @@
       </form>
     </div>
 
-  <h2>Schedule your medication</h2>
-
-<div>
-  <form action="/user-page" id="add_med" method="POST">
-    <label for="med_name">Medication Name:</label>
-    <input type="text" id="med_name" name="med_name" required>
-    <label for="qty_per_dose">Quantity Per Dose:</label>
-    <input type="number" id="qty_per_dose" name="qty_per_dose" required>
-    <label for="dosing">Dosing Schedule:</label>
-    <select id="dosing" name="dosing" required>
-        <option value="1">Once Daily</option>
-        <option value="2">Twice Daily</option>
-        <option value="3">Three Times Daily</option>
-    </select>
-    <label for="duration">Prescription Duration (in days):</label>
-    <input type="number" id="duration" name="duration" required>
-    <label for="qty">Quantity Prescribed:</label>
-    <input type="number" id="qty" name="qty" value=30>
-    <label for="refills">Refills:</label>
-    <input type="number" id="refills" name="refills" value=1>
-    <label for="start_date">Start Date:</label>
-    <input type="date" id="start_date" name="start_date" required>
-
-    <input type="submit" value="Add Medication">
-  </form>
-</div>
-
+  
     <h2>My Medications</h2>
 
     <ul>

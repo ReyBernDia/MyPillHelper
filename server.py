@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Meds, Users, User_meds
+from test_model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
@@ -104,6 +104,9 @@ def process_registration():
         db.session.add(user)
         db.session.commit()
 
+    session['user_name'] = user.f_name
+    session['user_id'] = user.user_id
+    flash("Successfully logged in!")
     return redirect('/')
 
 @app.route('/login', methods=['GET'])
@@ -189,23 +192,32 @@ def process_adding_medications():
     """Add user medications to DB from input on user profile page."""
 
     #get user to keep them in the session. 
-    user = Users.query.filter(Users.user_id == session['user_id']).first()
-    session['user_name'] = user.f_name
-    user_id = session['user_id']
+    # user = Users.query.filter(Users.user_id == session['user_id']).first()
+    # session['user_name'] = user.f_name
+    # user_id = session['user_id']
 
-    med_name = (request.form.get('med_name')).upper()
+    med_for_name = (request.form.get('med_name')).capitalize() #changed seed.py to have medicine name as caplitalize for display
+    med_for_strength = (request.form.get('med_name')).upper() #strength in DB is upcase. 
+    strength = (request.form.get('med_strength')).upper() #we want this in upcase if we store in db. 
     qty_per_dose = int(request.form.get('qty_per_dose'))
-    times_per_day = int(request.form.get('dosing'))
+    dosing_schedule = int(request.form.get('dosing'))
     start_date = request.form.get('start_date')
-
     rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
 
+    session['med_for_name'] = med_for_name
+    session['strength'] = strength
+    session['qty_per_dose'] = qty_per_dose
+    session['dosing_schedule'] = dosing_schedule
+    session['rx_start_date'] = rx_start_date
+
     # print(med_name, type(med_name))
+    # print(strength, type(strength))
     # print(qty_per_dose, type(qty_per_dose))
-    # print(times_per_day, type(times_per_day))
+    # print(dosing_schedule, type(dosing_schedule))
     # print(rx_start_date, type(rx_start_date))
 
-    db = (Meds.query.filter(Meds.strength.like('%'+med_name+'%'))
+    db = (Meds.query.filter((Meds.strength.like('%'+med_for_strength+'%'))| 
+                            (Meds.medicine_name.like('%'+med_for_name+'%')))
                     .order_by(Meds.has_image.desc())
                     .all())
 
@@ -228,19 +240,45 @@ def add_med_to_databse():
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
     session['user_name'] = user.f_name
+    user_id = session['user_id']
+
+
 
     api_info = request.form.get('api_results')
-    print('###########THIS IS BACK IN /ADD_MED##################')
+    print('###########THIS IS API INFO BACK IN /ADD_MED##################')
     print(api_info)
 
     db_med_image = request.form.get('med_image')
     db_med_strength = request.form.get('med_strength')
-    print('###########THIS IS BACK IN /ADD_MED##################')
+    s = db_med_strength.split()
+    strength = s[0]
+    print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     print(db_med_image)
-    print(db_med_strength)
+    print(strength)
     #THIS IS THE IMAGE LINK FOR THE MEDICATION
 
-    ##CONSTRUCT ADD MEDICATION TO DATABASE##
+    #When API call then DB info img and strength is None 
+    #When DB called APi is None. 
+    if api_info == None:
+        med = Meds.query.filter((Meds.strength.like('%'+strength+'%')) &
+                                (Meds.img_path == db_med_image)).first()
+        print('####THIS IS MED#####')
+        print(med)
+        med_id = med.med_id
+        qty_per_dose = session['qty_per_dose']
+        times_per_day = session['dosing_schedule']
+        rx_start_date = session['rx_start_date']
+
+        new_med = User_meds(user_id=user_id,
+                            med_id=med_id,
+                            qty_per_dose=qty_per_dose,
+                            times_per_day=times_per_day,
+                            rx_start_date=rx_start_date)
+        db.session.add(new_med)
+        db.session.commit()
+
+
+
 
     flash("Medication Added!")
     return render_template('user_page.html', user=user)

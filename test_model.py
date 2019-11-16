@@ -28,7 +28,7 @@ class Meds(db.Model):
     color = db.Column(db.String(20), nullable=True)
     strength = db.Column(db.String(200), nullable=True)
     rxcui = db.Column(db.String(15), nullable=True)
-    ndc9 = db.Column(db.String(20), nullable=False)
+    ndc9 = db.Column(db.String(20), nullable=True)
     medicine_name = db.Column(db.String(64), nullable=True)
     image_label = db.Column(db.String(64), nullable=True)
     has_image = db.Column(db.Boolean, nullable=True)

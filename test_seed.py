@@ -57,19 +57,19 @@ def load_pill_data():
             else: 
                 print('THIS IS NOT THE FIRST ROW')
                 print('#############')
-                shape = row[9]
+                shape = (row[9]).upper()
                 print(f'{shape} = shape',type(shape))
 
-                score = row[11]
+                score = (row[11]).upper()
                 print(f'{score} = score', type(score))
 
-                imprint = row[13]
+                imprint = (row[13]).upper()
                 print(f'{imprint} = imprint', type(imprint))
 
-                color = row[16]
+                color = (row[16]).upper()
                 print(f'{color} = color', type(color))
 
-                strength = row[18]
+                strength = (row[18]).upper()
                 print(f'{strength} = strength', type(strength))
                 print(len(strength))
 
@@ -79,7 +79,7 @@ def load_pill_data():
                 ndc9 = row[29]
                 print(f'{ndc9} = ndc9', type(ndc9))
 
-                medicine_name = row[32]
+                medicine_name = (row[32]).capitalize()
                 print(f'{medicine_name} = medicine_name',type(medicine_name))
                 print(len(medicine_name))
 
@@ -94,7 +94,7 @@ def load_pill_data():
 
                 else: 
                     has_image = False
-                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573174131/Test_pill_files/no_img_avail.png")
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573708367/production_images/No_Image_Available.jpg")
 
                 print(f'{has_image} = does this have an image',type(has_image))
                 print(f'{img_path} ##IMAGE PAGE IS THIS##', type(img_path))
