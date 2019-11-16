@@ -215,21 +215,66 @@ def process_adding_medications():
         #once user selects medication, then add it to DB under meds. 
         #once you add to DB meds- fetch the med_id and instantiate a new user_med instance.
 
-    # print(database_med, len(database_med))
-    # if len(database_med) == 0: 
-    #     api_results = api.query_fda_api(med_name)
-    # else: 
+    print("THIS IS THE DB", database_med, len(database_med))
 
+    if len(database_med) == 0: 
+        api_results = api.query_fda_api(med_name)
+        print("THIS IS THE API", api_results, len(api_results))
+        #display this result to the user. 
+            #Ask is this your medication? Event listener on click
+                #if this is then need to pass this info to DB
+            #or No, this is not my medication -> enter in more info. 
+                #user fills out form and then store in DB. 
+        return render_template('confirm_med_api.html', api_results=api_results)
+    else: 
+        #display this result to the user. 
+            #Ask is this your medication? Event listener on click
+                #if this is then need to pass this info to DB
+            #or No, this is not my medication -> enter in more info. 
+                #user fills out form and then store in DB. 
+        return render_template('confirm_med_db.html', database_med=database_med)
 
+    #Ways to pass information to the user and then retrieve all back in a diff route:
+        #put all form info into the session, carry it through to the next route
+        #delete the info from the session once the medication has been added. 
+        #all need to be post requests so the user can't go back
 
-    
 
     # new_med = User_meds(user_id=user_id,
     #                     qty_per_dose=qty_per_dose, 
     #                     times_per_day=times_per_day,
     #                     start_date=start_date)
 
+    # flash("Medication Added!")
+    # return render_template('user_page.html', user=user)
+@app.route("/add_api_med", methods=['POST'])
+def add_med_to_databse():
+
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+    session['user_name'] = user.f_name
+
+    api_info = request.form.get('api_results')
+    print('###########THIS IS BACK IN /ADD_MED##################')
+    print(api_info)
+
+    database_med = request.form.get('database_med')
+    print('###########THIS IS BACK IN /ADD_MED##################')
+    print(database_med)
+
+    ##CONSTRUCT ADD MEDICATION TO DATABASE##
+
     flash("Medication Added!")
+    return render_template('user_page.html', user=user)
+
+@app.route("/add_med_unverified")
+def display_add_medication_form():
+
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+    session['user_name'] = user.f_name
+
+    ##CONSTRUCT ADD MEDICATION TO DATABASE##
+
+    flash("We added your medication, however, there is no further information regarding your medication at this time.")
     return render_template('user_page.html', user=user)
 
 
