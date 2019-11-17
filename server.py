@@ -226,7 +226,7 @@ def process_adding_medications():
     print("THIS IS THE DB", database_med, len(database_med))
 
     if len(database_med) == 0: 
-        api_results = api.query_fda_api(med_name)
+        api_results = api.query_fda_api(med_for_name)
         print("THIS IS THE API", api_results, len(api_results))
        
         return render_template('confirm_med_api.html', api_results=api_results)
@@ -245,21 +245,29 @@ def add_med_to_databse():
 
 
     api_info = request.form.get('api_results')
+    indications = request.form.get('indications')
+    dosing_info = request.form.get('dosing_info')
+    info_for_patients = request.form.get('info_for_patients')
+    contraindications = request.form.get('contraindications')
+    brand_name = request.form.get('brand_name')
+    pharm_class = request.form.get('pharm_class')
     print('###########THIS IS API INFO BACK IN /ADD_MED##################')
     print(api_info)
 
     db_med_image = request.form.get('med_image')
     db_med_strength = request.form.get('med_strength')
-    s = db_med_strength.split()
-    strength = s[0]
+    
     print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     print(db_med_image)
-    print(strength)
+    
     #THIS IS THE IMAGE LINK FOR THE MEDICATION
 
     #When API call then DB info img and strength is None 
     #When DB called APi is None. 
     if api_info == None:
+        s = db_med_strength.split()
+        strength = s[0]
+        # print(strength)
         med = Meds.query.filter((Meds.strength.like('%'+strength+'%')) &
                                 (Meds.img_path == db_med_image)).first()
         print('####THIS IS MED#####')
@@ -269,15 +277,76 @@ def add_med_to_databse():
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
 
-        new_med = User_meds(user_id=user_id,
+        new_user_med = User_meds(user_id=user_id,
                             med_id=med_id,
                             qty_per_dose=qty_per_dose,
                             times_per_day=times_per_day,
                             rx_start_date=rx_start_date)
+        db.session.add(new_user_med)
+        db.session.commit()
+
+        del session['med_for_name']
+        del session['strength']
+        del session['qty_per_dose']
+        del session['dosing_schedule']
+        del session['rx_start_date']
+    else:
+        strength = session['strength']
+        session_med_name = session['med_for_name']
+        med_name = ((session_med_name.upper())+ strength)
+        qty_per_dose = session['qty_per_dose']
+        dosing_schedule = session['dosing_schedule']
+        rx_start_date = session['rx_start_date']
+
+        if (len(indications)!=0) and (len(indications)<2000):
+            indications = indications[2:-2]
+
+        elif (len(indications) != 0) and (len(indications)>2000):
+            indications = (indications[2:1998]+"...")
+        
+        if (len(dosing_info)!=0) and (len(dosing_info)<2000):
+            dosing_info = dosing_info[2:-2]
+        elif (len(dosing_info) != 0) and (len(dosing_info)>2000):
+            dosing_info = (dosing_info[2:1998]+"...")
+
+        if (len(info_for_patients)!=0) and (len(info_for_patients)<2000):
+            info_for_patients = info_for_patients[2:-2]
+        elif (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
+            info_for_patients = (info_for_patients[2:1998]+"...")
+
+        if (len(contraindications)!=0) and (len(contraindications)<2000):
+            contraindications = contraindications[2:-2]
+        elif (len(contraindications) != 0) and (len(contraindications)>2000):
+            contraindications = (contraindications[2:1998]+"...")
+
+        if (len(brand_name)!=0) and (len(brand_name)<64):
+            brand_name = brand_name[2:-2]
+        elif (len(brand_name) != 0) and (len(brand_name)>64):
+            brand_name = (brand_name[2:62]+"...")
+        elif len(brand_name) == 0:
+            brand_name = med_name
+
+        if (len(pharm_class)!=0) and (len(pharm_class)<64):
+            pharm_class = pharm_class[2:-2]
+        elif (len(pharm_class) != 0) and (len(pharm_class)>64):
+            pharm_class = (pharm_class[2:62]+"...")
+
+        new_med = Meds(strength=strength,
+                       medicine_name=(brand_name.capitalize()),
+                       has_image=False)
         db.session.add(new_med)
         db.session.commit()
 
+        del session['med_for_name']
+        del session['strength']
+        del session['qty_per_dose']
+        del session['dosing_schedule']
+        del session['rx_start_date']
 
+
+
+        
+        
 
 
     flash("Medication Added!")

@@ -89,6 +89,7 @@ class User_meds(db.Model):
     dose_admin = db.Column(db.String(2000), nullable=True)
     more_info = db.Column(db.String(2000), nullable=True)
     contraindications = db.Column(db.String(2000), nullable=True)
+    pharm_class = db.Column(db.String(64), nullable=True)
 
     #Define relationship to meds.
     med = db.relationship("Meds", 
