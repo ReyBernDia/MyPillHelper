@@ -39,15 +39,20 @@
       {% for key, value in med_options.items() %}
 
         <div id="user_meds"> 
-        <h2 id="med_name"> Medication Name: {{ key }} </h2> 
-
-        <p>Strength: {{ value['strength'] }}</p>
+        <h3 id="med_name"> Medication Name: {{ key }} </h3> 
+        <h3>Strength</h3>
+        <p>{{ value['strength'] }}</p>
         <img src="{{ value['img_path'][0] }}" width =10% height=10%>
-        <p>Indications: {{ value['indications'] }}</p>
-        <p>Dosing Information: {{ value['dose_admin'] }}</p>
-        <p>Pharmacy Class: {{ value['pharm_class'] }}</p>
-        <p>Contraindications: {{ value['contraindications'] }}</p>
-        <p>More Information for Patients: {{ value['more_info'] }}</p>
+        <h3>Indications</h3>
+        <p>{{ value['indications'] }}</p>
+        <h3>Dosing Information</h3>
+        <p>{{ value['dose_admin'] }}</p>
+        <h3>Pharmacy Class</h3>
+        <p>{{ value['pharm_class'] }}</p>
+        <h3>Contraindications</h3>
+        <p>{{ value['contraindications'] }}</p>
+        <h3>More Information for Patients</h3>
+        <p>{{ value['more_info'] }}</p>
         </div> 
 
       {% endfor %}

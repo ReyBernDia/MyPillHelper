@@ -66,6 +66,11 @@ def display_more_info(value):
 
     api_results = api.query_fda_api(value)
 
+    print("########API RESULTS#########")
+    print(value)
+    print(api_results)
+    print("####################")
+
     return render_template("more_info.html", 
                            indications=api_results[0],
                            dosing_info=api_results[1],
@@ -374,17 +379,56 @@ def add_med_to_databse():
     flash("Medication Added!")
     return render_template('user_page.html', user=user, med_options=med_dictionary)
 
-# @app.route("/add_med_unverified")
-# def display_add_medication_form():
+@app.route("/add_med_unverified")
+def display_add_medication_form():
 
-#     user = Users.query.filter(Users.user_id == session['user_id']).first()
-#     session['user_name'] = user.f_name
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+    session['user_name'] = user.f_name
+    user_id = session['user_id']
 
-#     ##CONSTRUCT ADD MEDICATION TO DATABASE##
+    med_name = session['med_for_name']
 
-#     flash("""We added your medication, however, there is no further information 
-#              regarding your medication at this time.""")
-#     return render_template('user_page.html', user=user)
+    session_strength = session['strength']
+    strength = ((med_name.upper())+ " " + session_strength)
+
+    qty_per_dose = session['qty_per_dose']
+    times_per_day = session['dosing_schedule']
+    rx_start_date = session['rx_start_date']
+
+    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573708367/production_images/No_Image_Available.jpg")    
+
+    new_med = Meds(strength=strength,
+                   medicine_name=(med_name.capitalize()),
+                   has_image=False, 
+                   img_path=img_path)
+    db.session.add(new_med)
+    db.session.commit()
+
+    new = Meds.query.filter((Meds.strength == strength) & 
+                                (Meds.medicine_name == (med_name.capitalize()))).first()
+    med_id = new.med_id
+
+    new_user_med = User_meds(user_id=user_id,
+                        med_id=med_id,
+                        qty_per_dose=qty_per_dose,
+                        times_per_day=times_per_day,
+                        rx_start_date=rx_start_date)
+    db.session.add(new_user_med)
+    db.session.commit()
+
+    del session['med_for_name']
+    del session['strength']
+    del session['qty_per_dose']
+    del session['dosing_schedule']
+    del session['rx_start_date']
+
+    medications = user.u_meds #get medications for user in session. 
+
+    med_dictionary = db_query.make_dictionary_for_user_meds(medications)
+
+    flash("""We added your medication, however, there is no further information 
+             regarding your medication at this time.""")
+    return render_template('user_page.html', user=user, med_options=med_dictionary)
 
 
 if __name__ == "__main__":
