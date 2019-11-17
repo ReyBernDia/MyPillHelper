@@ -68,6 +68,32 @@ def make_dictionary_from_query(query_results):
         print(query_dictionary)
         return query_dictionary
 
+def make_dictionary_for_user_meds(query_results):
+
+    query_dictionary = {}
+    for med in query_results:
+
+        key = med.med.medicine_name  
+        strength = med.med.strength
+        img_path = med.med.img_path 
+        indications = med.indications
+        dose_admin = med.dose_admin
+        pharm_class = med.pharm_class
+        contraindications = med.contraindications
+        more_info = med.more_info
+
+        if key not in query_dictionary:
+                query_dictionary[key] = {"strength":[strength],
+                                         "img_path": [img_path],
+                                         "indications":indications,
+                                         "dose_admin": dose_admin,
+                                         "pharm_class": pharm_class,
+                                         "contraindications": contraindications,
+                                         "more_info": more_info} 
+        else:  
+            query_dictionary[key]["img_path"].append(img_path)
+
+    return query_dictionary
 
 
 

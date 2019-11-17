@@ -154,11 +154,15 @@ def display_user_page():
     user = Users.query.filter(Users.user_id == session['user_id']).first()
 
     medications = user.u_meds #get medications for user in session. 
+    print(medications)
+
+    med_dictionary = db_query.make_dictionary_for_user_meds(medications)
+    print(med_dictionary)
     
 
     return render_template('user_page.html', 
                             user=user,
-                            medications=medications) 
+                            med_options=med_dictionary) 
                             
 # @app.route('/user-settings', methods=['POST'])
 # def process_user_settings():
@@ -260,10 +264,6 @@ def add_med_to_databse():
     print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     print(db_med_image)
     
-    #THIS IS THE IMAGE LINK FOR THE MEDICATION
-
-    #When API call then DB info img and strength is None 
-    #When DB called APi is None. 
     if api_info == None:
         s = db_med_strength.split()
         strength = s[0]
@@ -291,9 +291,12 @@ def add_med_to_databse():
         del session['dosing_schedule']
         del session['rx_start_date']
     else:
-        strength = session['strength']
-        session_med_name = session['med_for_name']
-        med_name = ((session_med_name.upper())+ strength)
+        
+        med_name = session['med_for_name']
+
+        session_strength = session['strength']
+        strength = ((med_name.upper())+ " " + session_strength)
+
         qty_per_dose = session['qty_per_dose']
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
@@ -331,9 +334,12 @@ def add_med_to_databse():
         elif (len(pharm_class) != 0) and (len(pharm_class)>64):
             pharm_class = (pharm_class[2:62]+"...")
 
+        img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573708367/production_images/No_Image_Available.jpg")    
+
         new_med = Meds(strength=strength,
                        medicine_name=(brand_name.capitalize()),
-                       has_image=False)
+                       has_image=False, 
+                       img_path=img_path)
         db.session.add(new_med)
         db.session.commit()
 
@@ -361,21 +367,24 @@ def add_med_to_databse():
         del session['dosing_schedule']
         del session['rx_start_date']
 
+    medications = user.u_meds #get medications for user in session. 
+
+    med_dictionary = db_query.make_dictionary_for_user_meds(medications)
 
     flash("Medication Added!")
-    return render_template('user_page.html', user=user)
+    return render_template('user_page.html', user=user, med_options=med_dictionary)
 
-@app.route("/add_med_unverified")
-def display_add_medication_form():
+# @app.route("/add_med_unverified")
+# def display_add_medication_form():
 
-    user = Users.query.filter(Users.user_id == session['user_id']).first()
-    session['user_name'] = user.f_name
+#     user = Users.query.filter(Users.user_id == session['user_id']).first()
+#     session['user_name'] = user.f_name
 
-    ##CONSTRUCT ADD MEDICATION TO DATABASE##
+#     ##CONSTRUCT ADD MEDICATION TO DATABASE##
 
-    flash("""We added your medication, however, there is no further information 
-             regarding your medication at this time.""")
-    return render_template('user_page.html', user=user)
+#     flash("""We added your medication, however, there is no further information 
+#              regarding your medication at this time.""")
+#     return render_template('user_page.html', user=user)
 
 
 if __name__ == "__main__":
