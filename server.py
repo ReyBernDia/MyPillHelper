@@ -295,7 +295,7 @@ def add_med_to_databse():
         session_med_name = session['med_for_name']
         med_name = ((session_med_name.upper())+ strength)
         qty_per_dose = session['qty_per_dose']
-        dosing_schedule = session['dosing_schedule']
+        times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
 
         if (len(indications)!=0) and (len(indications)<2000):
@@ -337,16 +337,29 @@ def add_med_to_databse():
         db.session.add(new_med)
         db.session.commit()
 
+        new = Meds.query.filter((Meds.strength == strength) & 
+                                (Meds.medicine_name == (brand_name.capitalize()))).first()
+        med_id = new.med_id
+
+        new_user_med = User_meds(user_id=user_id,
+                            med_id=med_id,
+                            qty_per_dose=qty_per_dose,
+                            times_per_day=times_per_day,
+                            rx_start_date=rx_start_date, 
+                            brand_name=brand_name,
+                            indications=indications,
+                            dose_admin=dosing_info,
+                            more_info=info_for_patients,
+                            contraindications=contraindications,
+                            pharm_class=pharm_class)
+        db.session.add(new_user_med)
+        db.session.commit()
+
         del session['med_for_name']
         del session['strength']
         del session['qty_per_dose']
         del session['dosing_schedule']
         del session['rx_start_date']
-
-
-
-        
-        
 
 
     flash("Medication Added!")
