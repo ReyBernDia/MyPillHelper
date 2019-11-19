@@ -451,6 +451,20 @@ def display_add_medication_form():
     return render_template('user_page.html', user=user, med_options=med_dictionary)
 
 
+@app.route("/show_schedule_form")
+def display_schedule_medication_form():
+    """Display form to fill in order to schedule patients medication."""
+
+    return render_template('schedule_meds_form.html')
+
+@app.route("/schedule_med", methods=['POST'])
+def schedule_medication():
+    """Update u_med in DB and schedule text notifications for medication."""
+
+
+    return render_template('/')
+
+
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension

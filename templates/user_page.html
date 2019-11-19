@@ -37,11 +37,19 @@
     <div>
       <ul>
       {% for key, value in med_options.items() %}
-
+        <div>
+            <form action="/show_schedule_form">
+            <input type="submit" value="Schedule This Med">
+            </form>
+        </div>
         <div id="user_meds"> 
         <h3 id="med_name"> Medication Name: {{ key }} </h3> 
-        <h3>Strength</h3>
-        <p>{{ value['strength'] }}</p>
+        <h3>Strength(s)</h3>
+        <p>
+            {% for val in value['strength'] %}
+                <ul>{{ val }}</ul>
+            {% endfor %}
+        </p>
         <img src="{{ value['img_path'][0] }}" width =10% height=10%>
         <h3>Indications</h3>
         <p>{{ value['indications'] }}</p>
