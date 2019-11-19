@@ -69,15 +69,10 @@ def display_more_info(value):
     print("########API RESULTS#########")
     print(value)
     print(api_results)
+    #Can return a dictionary -- then pass entire dictionary to jinja. 
     print("####################")
 
-    return render_template("more_info.html", 
-                           indications=api_results[0],
-                           dosing_info=api_results[1],
-                           info_for_patients=api_results[2],
-                           contraindications=api_results[3], 
-                           brand_name=api_results[4],
-                           pharm_class=api_results[5])
+    return render_template("more_info.html", api_results=api_results)
 
 @app.route('/register', methods=['GET'])
 def register_new_user():
@@ -251,8 +246,6 @@ def add_med_to_databse():
     session['user_name'] = user.f_name
     user_id = session['user_id']
 
-
-
     api_info = request.form.get('api_results')
     indications = request.form.get('indications')
     dosing_info = request.form.get('dosing_info')
@@ -260,6 +253,7 @@ def add_med_to_databse():
     contraindications = request.form.get('contraindications')
     brand_name = request.form.get('brand_name')
     pharm_class = request.form.get('pharm_class')
+
     print('###########THIS IS API INFO BACK IN /ADD_MED##################')
     print(api_info)
 
@@ -269,24 +263,64 @@ def add_med_to_databse():
     print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     print(db_med_image)
     
-    if api_info == None:
+    if api_info == None:  #if med existed in the DB. 
         s = db_med_strength.split()
         strength = s[0]
         # print(strength)
         med = Meds.query.filter((Meds.strength.like('%'+strength+'%')) &
                                 (Meds.img_path == db_med_image)).first()
+        
         print('####THIS IS MED#####')
         print(med)
+        #pull variables from session. 
+        med_name = session['med_for_name']
+        session_strength = session['strength']
+        strength = ((med_name.upper())+ " " + session_strength)
+        #serch for med name in API 
+        api_results = api.query_fda_api(med_name)
+        print("THIS IS THE API", api_results, len(api_results))
+
+        indications = api_results["indications"]
+        dosing_info = api_results["dosing_info"]
+        info_for_patients = api_results["info_for_patients"]
+        contraindications = api_results["contraindications"]
+        brand_name = api_results["brand_name"]
+        pharm_class = api_results["pharm_class"]
+       
         med_id = med.med_id
         qty_per_dose = session['qty_per_dose']
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
 
+        if (len(indications) != 0) and (len(indications)>2000):
+            indications = (indications[0:1997]+"...")
+        
+        if (len(dosing_info) != 0) and (len(dosing_info)>2000):
+            dosing_info = (dosing_info[0:1997]+"...")
+
+        if (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
+            info_for_patients = (info_for_patients[0:1997]+"...")
+
+        if (len(contraindications) != 0) and (len(contraindications)>2000):
+            contraindications = (contraindications[0:1997]+"...")
+
+        if (len(brand_name) != 0) and (len(brand_name)>64):
+            brand_name = (brand_name[0:62]+"...")
+
+        if (len(pharm_class) != 0) and (len(pharm_class)>64):
+            pharm_class = (pharm_class[0:62]+"...")
+
         new_user_med = User_meds(user_id=user_id,
                             med_id=med_id,
                             qty_per_dose=qty_per_dose,
                             times_per_day=times_per_day,
-                            rx_start_date=rx_start_date)
+                            rx_start_date=rx_start_date,
+                            brand_name=brand_name,
+                            indications=indications,
+                            dose_admin=dosing_info,
+                            more_info=info_for_patients,
+                            contraindications=contraindications,
+                            pharm_class=pharm_class)
         db.session.add(new_user_med)
         db.session.commit()
 
@@ -300,44 +334,29 @@ def add_med_to_databse():
         med_name = session['med_for_name']
 
         session_strength = session['strength']
-        strength = ((med_name.upper())+ " " + session_strength)
+        strength = (" ".join((med_name.upper())+ " " + session_strength))
 
         qty_per_dose = session['qty_per_dose']
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
 
-        if (len(indications)!=0) and (len(indications)<2000):
-            indications = indications[2:-2]
-
-        elif (len(indications) != 0) and (len(indications)>2000):
-            indications = (indications[2:1998]+"...")
+        if (len(indications) != 0) and (len(indications)>2000):
+            indications = (indications[0:1997]+"...")
         
-        if (len(dosing_info)!=0) and (len(dosing_info)<2000):
-            dosing_info = dosing_info[2:-2]
-        elif (len(dosing_info) != 0) and (len(dosing_info)>2000):
-            dosing_info = (dosing_info[2:1998]+"...")
+        if (len(dosing_info) != 0) and (len(dosing_info)>2000):
+            dosing_info = (dosing_info[0:1997]+"...")
 
-        if (len(info_for_patients)!=0) and (len(info_for_patients)<2000):
-            info_for_patients = info_for_patients[2:-2]
-        elif (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
-            info_for_patients = (info_for_patients[2:1998]+"...")
+        if (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
+            info_for_patients = (info_for_patients[0:1997]+"...")
 
-        if (len(contraindications)!=0) and (len(contraindications)<2000):
-            contraindications = contraindications[2:-2]
-        elif (len(contraindications) != 0) and (len(contraindications)>2000):
-            contraindications = (contraindications[2:1998]+"...")
+        if (len(contraindications) != 0) and (len(contraindications)>2000):
+            contraindications = (contraindications[0:1997]+"...")
 
-        if (len(brand_name)!=0) and (len(brand_name)<64):
-            brand_name = brand_name[2:-2]
-        elif (len(brand_name) != 0) and (len(brand_name)>64):
-            brand_name = (brand_name[2:62]+"...")
-        elif len(brand_name) == 0:
-            brand_name = med_name
+        if (len(brand_name) != 0) and (len(brand_name)>64):
+            brand_name = (brand_name[0:62]+"...")
 
-        if (len(pharm_class)!=0) and (len(pharm_class)<64):
-            pharm_class = pharm_class[2:-2]
-        elif (len(pharm_class) != 0) and (len(pharm_class)>64):
-            pharm_class = (pharm_class[2:62]+"...")
+        if (len(pharm_class) != 0) and (len(pharm_class)>64):
+            pharm_class = (pharm_class[0:62]+"...")
 
         img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573708367/production_images/No_Image_Available.jpg")    
 
@@ -381,6 +400,7 @@ def add_med_to_databse():
 
 @app.route("/add_med_unverified")
 def display_add_medication_form():
+    """Add med to DB if not in DB and not in API call- rare case."""
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
     session['user_name'] = user.f_name

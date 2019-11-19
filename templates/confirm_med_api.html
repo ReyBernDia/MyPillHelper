@@ -8,15 +8,11 @@
 <div id="med_info">
 <p>
     Brand Name/s: 
-    {% for info in api_results[4] %}
-      {{ info }}
-    {% endfor %}
+    {{api_results['brand_name']}}
 </p>
 <p>
     Indications: 
-    {% for info in api_results[0] %}
-      {{ info }}
-    {% endfor %}
+    {{api_results['indications']}}
 </p>
 </div>
 <h1>Is this your correct medication?</h1>

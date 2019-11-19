@@ -13,39 +13,27 @@
   <h2>More Information on Your Medication</h2> 
   <h3>Common Medication Name:</h3>
   <p>  
-    {% for name in brand_name %}
-      {{name}}
-    {% endfor %}
+    {{api_results['brand_name']}}
   </p>
   <h3>This medication is commonly used for the following purpose:</h3>
   <p> 
-    {% for info in indications %}
-      {{ info }}
-    {% endfor %}
+    {{api_results['indications']}}
   </p>
   <h3>Dosing Information:</h3>
   <p>
-    {% for dose in dosing_info %}
-      {{ dose }}
-    {% endfor %}
+    {{api_results['dosing_info']}}
   </p>
   <h3>More Information for Patients:</h3>
   <p>
-    {% for pt_info in info_for_patients %}
-      {{ pt_info }}
-    {% endfor %}
+    {{api_results['info_for_patients']}}
   </p>
   <h3>Consider these Contraindications:</h3>
   <p>
-    {% for contra in contraindications %}
-      {{ contra }}
-    {% endfor %}
+    {{api_results['contraindications']}}
   </p>
   <h3>This medication is of the following Pharmacy Class:</h3>
   <p>  
-    {% for pharm in pharm_class %}
-      {{ pharm }}
-    {% endfor %}
+    {{api_results['pharm_class']}}
   </p>
   
 
