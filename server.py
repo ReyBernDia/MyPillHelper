@@ -164,32 +164,6 @@ def display_user_page():
                             user=user,
                             med_options=med_dictionary) 
                             
-# @app.route('/user-settings', methods=['POST'])
-# def process_user_settings():
-
-#     user = Users.query.filter(Users.user_id == session['user_id']).first()
-
-#     medications = user.u_meds #get medications for user in session. 
-
-#     def access_users():
-#         am = request.form.get('AM_time')
-#         mid = request.form.get('Mid_time')
-#         pm = request.form.get('PM_time')
-        
-#         am_time = datetime.strptime(am, '%H:%M')
-#         mid = datetime.strptime(mid, '%H:%M')
-#         pm_time = datetime.strptime(pm, '%H:%M')
-        
-#         print(am_time, type(am_time))
-#         print(mid, type(mid))
-#         print(pm_time, type(pm_time))
-#         return 
-
-#     flash("Your reminder time has been updated!")
-#     return render_template('user_page.html', 
-#                             user=user, 
-#                             medications=medications) 
-
 
 @app.route('/user-page', methods=['POST'])
 def process_adding_medications():
@@ -262,6 +236,7 @@ def add_med_to_databse():
     
     print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     print(db_med_image)
+    print(db_med_strength)
     
     if api_info == None:  #if med existed in the DB. 
         s = db_med_strength.split()
@@ -451,18 +426,59 @@ def display_add_medication_form():
     return render_template('user_page.html', user=user, med_options=med_dictionary)
 
 
-@app.route("/show_schedule_form")
+@app.route("/show_schedule_form", methods=['POST'])
 def display_schedule_medication_form():
     """Display form to fill in order to schedule patients medication."""
+    
+    med_strength = request.form.get('med_strength')
+    print("MED STRENGTH IN DISPLAY FORM", med_strength) 
+    med_id = request.form.get('med_id')   
 
-    return render_template('schedule_meds_form.html')
+    return render_template('schedule_meds_form.html', med_strength=med_strength, med_id=med_id)
 
 @app.route("/schedule_med", methods=['POST'])
 def schedule_medication():
     """Update u_med in DB and schedule text notifications for medication."""
 
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
 
-    return render_template('/')
+    medications = user.u_meds #get medications for user in session. 
+    print(medications)
+
+    med_dictionary = db_query.make_dictionary_for_user_meds(medications)
+    print(med_dictionary) 
+
+    
+    am_time = datetime.strptime((request.form.get('AM_time')),'%H:%M')
+    mid_day_time = datetime.strptime((request.form.get('Mid_time')),'%H:%M')
+    pm_time = datetime.strptime((request.form.get('PM_time')), '%H:%M')
+    
+    print("AM", am_time, type(am_time))
+    print("MID", mid_day_time, type(mid_day_time))
+    print("PM", pm_time, type(pm_time))
+
+    rx_duration = int(request.form.get('duration'))
+    qty = int(request.form.get('qty'))
+    refills = int(request.form.get('refills'))
+
+    print("DURATION", rx_duration, type(rx_duration))
+    print("QTY", qty, type(qty))
+    print("REFILLS", refills, type(refills))
+
+    med_strength = request.form.get('med_strength')
+    print("MED STRENGTH", med_strength)
+    med_id = request.form.get('med_id')
+    print("MED ID", med_id)
+    
+
+    user_med = User_meds.query.filter((User_meds.med_id == med_id)).first()
+    print(user_med)
+
+    flash("Your reminder time has been updated!")
+
+    return render_template('user_page.html', 
+                            user=user,
+                            med_options=med_dictionary)  
 
 
 if __name__ == "__main__":

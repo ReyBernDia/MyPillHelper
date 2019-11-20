@@ -81,6 +81,7 @@ def make_dictionary_for_user_meds(query_results):
         pharm_class = med.pharm_class
         contraindications = med.contraindications
         more_info = med.more_info
+        med_id = med.med_id
 
         if key not in query_dictionary:
                 query_dictionary[key] = {"strength":[strength],
@@ -89,7 +90,8 @@ def make_dictionary_for_user_meds(query_results):
                                          "dose_admin": dose_admin,
                                          "pharm_class": pharm_class,
                                          "contraindications": contraindications,
-                                         "more_info": more_info} 
+                                         "more_info": more_info,
+                                         "med_id": med_id} 
         else:  
             query_dictionary[key]["img_path"].append(img_path)
 

@@ -6,6 +6,7 @@
 {% block content %}
 
   <div>
+    <h2>Scheduling Text Reminders for {{ med_strength }}</h2>
       <form action="/schedule_med" id="settings" method="POST">
         <h3>When do you want to recieve your text notifications?</h3>
           <label for="AM_time">Morning Notification:</label>
@@ -22,11 +23,11 @@
           <input type="number" id="qty" name="qty" value=30>
           <label for="refills">Refills:</label>
           <input type="number" id="refills" name="refills" value=1>
-        
+          <input type="hidden" name="med_strength" value="{{med_strength}}">
+          <input type="hidden" name="med_id" value="{{med_id}}">
         <input type="submit" value="Schedule Medication">
       </form>
   </div>
-
 
 {% endblock %}
 
