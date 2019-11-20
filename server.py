@@ -474,6 +474,16 @@ def schedule_medication():
     user_med = User_meds.query.filter((User_meds.med_id == med_id)).first()
     print(user_med)
 
+    user_med.am_time = am_time
+    user_med.mid_day_time = mid_day_time
+    user_med.pm_time = pm_time
+    user_med.rx_duration = rx_duration
+    user_med.qty = qty
+    user_med.refills = refills
+
+    db.session.add(user_med)
+    db.session.commit()
+
     flash("Your reminder time has been updated!")
 
     return render_template('user_page.html', 
