@@ -19,4 +19,4 @@ six==1.13.0
 SQLAlchemy==1.2.8
 twilio==6.33.1
 urllib3==1.25.6
-Werkzeug==0.14.1
+Werkzeug==0.15.3
