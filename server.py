@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 
 import db_query_functions as db_query
 import api
+import reminders as r
 
 import os
 from sys import argv
@@ -96,6 +97,7 @@ def process_registration():
         pass
     # if user cell does not exist, add to db
     else: 
+        cell_number = r.cell_verify(cell_number)
         user = Users(f_name=f_name, 
                      l_name=l_name, 
                      email=email, 
