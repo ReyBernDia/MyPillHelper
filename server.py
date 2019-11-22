@@ -1,6 +1,6 @@
 from jinja2 import StrictUndefined
 
-from flask import Flask, render_template, redirect, request, flash, session, g
+from flask import Flask, render_template, redirect, request, flash, session, g, make_response, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from test_model import connect_to_db, db, Meds, Users, User_meds
@@ -98,6 +98,7 @@ def process_registration():
     # if user cell does not exist, add to db
     else: 
         cell_number = r.cell_verify(cell_number)
+        #NEED TO ADD CONDITIONAL FOR VERIFYING WRONG NUMBER.
         user = Users(f_name=f_name, 
                      l_name=l_name, 
                      email=email, 
@@ -450,27 +451,30 @@ def schedule_medication():
     med_dictionary = db_query.make_dictionary_for_user_meds(medications)
     print(med_dictionary) 
 
+    req = request.get_json()
+
+    am = req['am_time']
+    mid = req['mid_time']
+    pm = req['pm_time']
+    rx_duration = req['duration']
+    qty = req['qty']
+    refills = req['refills']
+    med_strength = req['med_strength']
+    med_id = req['med_id']
     
-    am_time = datetime.strptime((request.form.get('AM_time')),'%H:%M')
-    mid_day_time = datetime.strptime((request.form.get('Mid_time')),'%H:%M')
-    pm_time = datetime.strptime((request.form.get('PM_time')), '%H:%M')
-    
-    print("AM", am_time, type(am_time))
-    print("MID", mid_day_time, type(mid_day_time))
-    print("PM", pm_time, type(pm_time))
+    am_time = datetime.strptime(am,'%H:%M')
+    mid_day_time = datetime.strptime(mid,'%H:%M')
+    pm_time = datetime.strptime(pm, '%H:%M')
 
-    rx_duration = int(request.form.get('duration'))
-    qty = int(request.form.get('qty'))
-    refills = int(request.form.get('refills'))
-
-    print("DURATION", rx_duration, type(rx_duration))
-    print("QTY", qty, type(qty))
-    print("REFILLS", refills, type(refills))
-
-    med_strength = request.form.get('med_strength')
-    print("MED STRENGTH", med_strength)
-    med_id = request.form.get('med_id')
-    print("MED ID", med_id)
+    print(req, type(req))
+    print(am_time, type(am_time))
+    print(mid_day_time, type(mid_day_time))
+    print(pm_time, type(pm_time))
+    print(rx_duration, type(rx_duration))
+    print(qty, type(qty))
+    print(refills, type(refills))
+    print(med_strength, type(med_strength))
+    print(med_id, type(med_id))
     
 
     user_med = User_meds.query.filter((User_meds.med_id == med_id)).first()
@@ -486,11 +490,9 @@ def schedule_medication():
     db.session.add(user_med)
     db.session.commit()
 
-    flash("Your reminder time has been updated!")
+    res = make_response(jsonify(req), 200)
 
-    return render_template('user_page.html', 
-                            user=user,
-                            med_options=med_dictionary)  
+    return res 
 
 
 if __name__ == "__main__":
