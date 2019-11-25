@@ -290,6 +290,7 @@ def add_med_to_databse():
 
         new_user_med = User_meds(user_id=user_id,
                             med_id=med_id,
+                            text_remind=False,
                             qty_per_dose=qty_per_dose,
                             times_per_day=times_per_day,
                             rx_start_date=rx_start_date,
@@ -351,6 +352,7 @@ def add_med_to_databse():
 
         new_user_med = User_meds(user_id=user_id,
                             med_id=med_id,
+                            text_remind=False,
                             qty_per_dose=qty_per_dose,
                             times_per_day=times_per_day,
                             rx_start_date=rx_start_date, 
@@ -408,6 +410,7 @@ def display_add_medication_form():
 
     new_user_med = User_meds(user_id=user_id,
                         med_id=med_id,
+                        text_remind=False,
                         qty_per_dose=qty_per_dose,
                         times_per_day=times_per_day,
                         rx_start_date=rx_start_date)
@@ -486,6 +489,7 @@ def schedule_medication():
     user_med.rx_duration = rx_duration
     user_med.qty = qty
     user_med.refills = refills
+    user_med.text_remind = True 
 
     db.session.add(user_med)
     db.session.commit()

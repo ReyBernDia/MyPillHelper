@@ -73,6 +73,7 @@ class User_meds(db.Model):
     user_med_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
     med_id = db.Column(db.Integer, db.ForeignKey('meds.med_id'), nullable=False)
+    text_remind = db.Column(db.Boolean, nullable=False)
     qty_per_dose = db.Column(db.Integer, nullable=False)
     times_per_day = db.Column(db.Integer, nullable=False)
     rx_duration = db.Column(db.Integer, nullable=True)

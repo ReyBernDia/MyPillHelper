@@ -1,5 +1,6 @@
 from twilio.rest import Client
 import os
+from test_model import connect_to_db, db, Meds, Users, User_meds
 
 
 def send_text_reminders():
@@ -30,3 +31,6 @@ def cell_verify(cell):
                          .fetch(type=['carrier'])
 
     return phone_number.phone_number
+
+def schedule_reminders(): 
+    pass

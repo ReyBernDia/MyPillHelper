@@ -9,11 +9,11 @@
   <p><a href="/user-page">Your Profile</a></p>
 {% endif %}
 
-<h1> Select your medication </h1>
+<h1> Select your medication for more information</h1>
 
 <div>
 <ul>
-  {% for key, value in med_options.items() %}
+ {% for key, value in med_options.items() %}
 
     
     <div id="med_results"> 
@@ -25,6 +25,45 @@
     </div> 
     
   {% endfor %}
+
 </ul>
 </div>
+    <script>
+
+      document.addEventListener('DOMContentLoaded', () => {
+        $('#med_results').on('click', queryApi)
+      
+      function queryApi() {
+          console.log('hii I am in event listener');
+          let med_name = document.getElementById("med_name_id");
+         
+          let entry = {
+              med_name: med_name.value
+          };
+
+          fetch(`${window.origin}/more_info`, {
+              method: "POST",
+              credentials: "include",
+              body: JSON.stringify(entry),
+              cache: "no-cache",
+              headers: new Headers({
+                "content-type": "application/json"
+              })
+            })
+            .then(function(response) {
+              if (response.status !== 200) {
+                console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                return;
+              }
+              response.json().then(function(data) {
+                console.log(data);
+              });
+            })
+            .catch(function(error) {
+              console.log("Fetch error: " + error);
+          });
+        };
+      });
+  </script>
+ 
 {% endblock %}
