@@ -439,6 +439,7 @@ def display_schedule_medication_form():
     med_strength = request.form.get('med_strength')
     print("MED STRENGTH IN DISPLAY FORM", med_strength) 
     med_id = request.form.get('med_id')   
+    print("MED STRENGTH IN DISPLAY FORM", med_id) 
 
     return render_template('schedule_meds_form.html', med_strength=med_strength, med_id=med_id)
 
@@ -491,6 +492,8 @@ def schedule_medication():
     user_med.current_qty = qty
     user_med.refills = refills
     user_med.text_remind = True 
+
+
 
     db.session.add(user_med)
     db.session.commit()

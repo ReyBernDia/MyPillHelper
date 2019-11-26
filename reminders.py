@@ -43,39 +43,100 @@ def find_active_users():
         mid_day = user.mid_day_time
         pm = user.pm_time
         duration = user.rx_duration
+        print(duration, type(duration))
         qty = user.qty  
+        print(qty, type(qty))
         current = user.current_qty
+        print("CURRENT", current, type(current))
         refills = user.refills
+        print(refills, type(refills))
         qty_per_dose = user.qty_per_dose
+        print(qty_per_dose, type(qty_per_dose))
         times_per_day = user.times_per_day
+        print(times_per_day, type(times_per_day))
 
         daily_qty = qty_per_dose * times_per_day
+        print(daily_qty, type(daily_qty))
 
-        if current == 0 and 
+        if current < qty_per_dose and refills > 0:  #current amount less than qty per dose. 
+            
+            #reset current qty to start qty & deduct dose amount 
+            new_current_qty = (qty - qty_per_dose - 1) 
+            user.current_qty = qty  
 
-        elif current < (3 * daily_qty):
+            new_refills = refills - 1  #deduct refills
+            user.refills = new_refills
 
-        elif current > (3 * daily_qty):
+            db.session.add(user)
+            db.session.commit()
+
+            message = f"""{user.user.f_name}, assuming you refilled your medication. 
+            It is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. 
+            You have {user.refills} left."""
+
+            return message
+
+        elif (current < (3 * daily_qty)) and (current > qty_per_dose) and refills > 0:  #current amount less than 3 times the daily qty. 
+
+            update = current - qty_per_dose - 1 #update current qty from one dose. 
+            user.current_qty = update
+
+            db.session.add(user)
+            db.session.commit()
 
 
-        update = current - qty_per_dose - 1 
+            message = f"""{user.user.f_name}, it is time to take 
+            {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have 
+            less than 3 days worth of medication, so remember to refill! 
+            You have {user.refills} left."""
 
-        user.current_qty = update
+            return message
 
-        db.session.add(user_med)
-        db.session.commit()
+        elif current > (3 * daily_qty) and refills > 0:
+            update = current - qty_per_dose - 1 #update current qty from one dose. 
+            user.current_qty = update
 
-         
+            db.session.add(user)
+            db.session.commit()
 
-    #update = curr_qty - qty/dose -1 per time text is sent 
-    #when qty < 3 (qty/dose * times/day)
-        #check for refills
-            #if refill not zero, then tell pt they have a refill of x amount 
-            #if no refills left, then tell patient they no longer have refills 
-            #and their txt reminders will turn off for this medciation. 
-    #when qty is 0 and refills are > 0 
-        #update curr qty to qty 
-        #else qty = 0 and refills = 0. tell pt that their refills are null and they will be done with rx
+
+            message = f"""{user.user.f_name}, it is time to take 
+            {user.qty_per_dose} tablets/capsules of {user.brand_name}."""
+
+            return message
+
+        elif (current < (5 * daily_qty)) and (current > qty_per_dose) and refills == 0:
+
+            update = current - qty_per_dose - 1 #update current qty from one dose. 
+            user.current_qty = update
+
+            db.session.add(user)
+            db.session.commit()
+
+
+            message = f"""{user.user.f_name}, it is time to take 
+            {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have 
+            less than 5 days worth of medication. You do not have any refills left. 
+            Remember to ask your doctor for refills if you need to!"""
+
+            return message
+
+        elif current < qty_per_dose and refills == 0:
+
+            user.current_qty = 0
+            user.text_remind = False 
+
+            db.session.add(user)
+            db.session.commit()
+
+            message = f"""{user.user.f_name}, it is time to finish up the rest of your
+            {user.brand_name}. You dont have any more refills and you will be 
+            out of medication after this dose. Your text reminders for this 
+            medication will turn off now."""
+
+            return message
+
+
     #send at if QD then send at AM or PM or default to 9:00 AM
         #if bid then send at AM & PM or default to 9 & 9 
         #if TID then send at AM, MId, and PM or default to 8,12, and 8 
