@@ -145,11 +145,8 @@ def find_active_users():
 
 
 # def send_text():
-#     """Sends text alerts to user subscribers for current moon phase"""
-#     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-#     tonights_moon_phase = find_tonights_moon()
-#     alerts = check_alerts(tonights_moon_phase)
+#     client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
 #     if alerts != None: 
 
