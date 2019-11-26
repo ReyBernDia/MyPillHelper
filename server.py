@@ -488,6 +488,7 @@ def schedule_medication():
     user_med.pm_time = pm_time
     user_med.rx_duration = rx_duration
     user_med.qty = qty
+    user_med.current_qty = qty
     user_med.refills = refills
     user_med.text_remind = True 
 

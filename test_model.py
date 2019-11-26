@@ -78,6 +78,7 @@ class User_meds(db.Model):
     times_per_day = db.Column(db.Integer, nullable=False)
     rx_duration = db.Column(db.Integer, nullable=True)
     qty = db.Column(db.Integer, nullable=True)
+    current_qty = db.Column(db.Integer, nullable=True)
     refills = db.Column(db.Integer, nullable=True)
     rx_start_date = db.Column(db.DateTime, nullable=False)
     am_time = db.Column(db.String(25), nullable=True)
