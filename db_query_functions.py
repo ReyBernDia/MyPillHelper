@@ -1,6 +1,6 @@
 from model import connect_to_db, db, Meds, Users, User_meds
 
-def query_with_find_meds_values(form_imprint, score, shape, color):
+def query_with_find_meds_values(form_imprint, score, shape, color, name):
         """Get each value from the form in find_medications.html and query the DB."""
 
         imprint = (form_imprint.split(" "))[0] #incase user populates scentence. 
@@ -24,6 +24,9 @@ def query_with_find_meds_values(form_imprint, score, shape, color):
             .order_by(Meds.has_image.desc()))
         if (color.upper() != "UNKNOWN"):
             query = (query.filter((Meds.color.like('%'+color+'%')))
+            .order_by(Meds.has_image.desc()))
+        if (name != ""):
+            query = (query.filter((Meds.medicine_name.like('%'+name+'%')))
             .order_by(Meds.has_image.desc()))
         query.all()
 

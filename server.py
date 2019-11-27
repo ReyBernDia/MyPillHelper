@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 import db_query_functions as db_query
 import api
-import reminders as r
+import reminders 
 
 import os
 from sys import argv
@@ -50,8 +50,9 @@ def display_medication_search_results():
     score = request.args.get('pill_score')
     shape = (request.args.get('pill_shape')).upper() #in DB as all caps.
     color = (request.args.get('pill_color')).upper() #in DB as all caps.
+    name = (request.args.get('name_of_med')).capitalize() #names in snakecase. 
 
-    query_results = db_query.query_with_find_meds_values(form_imprint, score, shape, color)
+    query_results = db_query.query_with_find_meds_values(form_imprint, score, shape, color, name)
 
     med_dictionary = db_query.make_dictionary_from_query(query_results)
 
@@ -521,18 +522,12 @@ if __name__ == "__main__":
 
     connect_to_db(app)
 
-    while True: 
-        r.schedule.run_pending() 
-        print("running texts")
-        r.time.sleep(1) 
-        r.send_for_active_users()
-        print("running sending users in reminders.py")
-        r.time.sleep(10) 
-
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
     app.run(port=5000, host='0.0.0.0')
+
+
 
     
 

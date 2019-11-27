@@ -3,6 +3,7 @@ import os
 from test_model import connect_to_db, db, Meds, Users, User_meds
 import schedule
 import time
+import server
 
 
 def send_text_reminders(message, phone):
@@ -221,6 +222,15 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
+
+if __name__ == "__server__":
+    while True: 
+        r.schedule.run_pending() 
+        print("running texts")
+        r.time.sleep(1) 
+        r.send_for_active_users()
+        print("running sending users in reminders.py")
+        r.time.sleep(10) 
 
 
 
