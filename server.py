@@ -465,10 +465,20 @@ def schedule_medication():
     refills = req['refills']
     med_strength = req['med_strength']
     med_id = req['med_id']
+
     
-    am_time = datetime.strptime(am,'%H:%M')
-    mid_day_time = datetime.strptime(mid,'%H:%M')
-    pm_time = datetime.strptime(pm, '%H:%M')
+    if am != "":
+        am_time = datetime.strptime(am,'%H:%M')
+    else: 
+        am_time = None
+    if mid != "":
+        mid_day_time = datetime.strptime(mid,'%H:%M')
+    else: 
+        mid_day_time = None 
+    if pm != "":
+        pm_time = datetime.strptime(pm, '%H:%M')
+    else: 
+        pm_time = None 
 
     print(req, type(req))
     print(am_time, type(am_time))
