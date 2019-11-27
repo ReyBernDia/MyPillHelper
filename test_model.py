@@ -52,7 +52,7 @@ class Users(db.Model):
     user_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
     f_name = db.Column(db.String(25), nullable=False)
     l_name = db.Column(db.String(25), nullable=True)
-    email = db.Column(db.String(120), nullable=True, unique=True)
+    email = db.Column(db.String(120), nullable=True)
     cell_number = db.Column(db.String(12), nullable=False, unique=True)
     password_hash = db.Column(db.String(128), nullable=False)
 

@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 import db_query_functions as db_query
 import api
-import reminders 
+import reminders_twilio as r
 
 import os
 from sys import argv
@@ -90,16 +90,18 @@ def process_registration():
     f_name = request.form.get('first_name')
     l_name = request.form.get('last_name')
     email = request.form.get('email')
-    cell_number = request.form.get('cell')
+    cell = request.form.get('cell')
     password_hash = request.form.get('password')
+    cell_number = r.cell_verify(cell)  #verify cell number using Twilio API.
 
     # if user cell already exists, ignore
     if Users.query.filter(Users.cell_number == cell_number).first():
-        pass
-    # if user cell does not exist, add to db
-    else: 
-        cell_number = r.cell_verify(cell_number)
-        #NEED TO ADD CONDITIONAL FOR VERIFYING WRONG NUMBER.
+        flash("That cell number already exists, please login.")
+        return redirect('/login')
+    else:  # if user cell does not exist, add to db
+        # if cell_number == False:
+        #     flash("That is not a valid phone number, please try again!")
+        #     return redirect('/register')
         user = Users(f_name=f_name, 
                      l_name=l_name, 
                      email=email, 
