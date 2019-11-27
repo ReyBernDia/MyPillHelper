@@ -6,6 +6,9 @@ import time
 
 
 def send_text_reminders(message, phone):
+
+    print("I AM IN send_text_reminders!!!!!")
+
     account_sid = os.environ['TWILIO_ACCOUNT_SID']
     auth_token = os.environ['TWILIO_AUTH_TOKEN']
     client = Client(account_sid, auth_token)
@@ -36,7 +39,7 @@ def cell_verify(cell):
 
 def send_for_active_users(): 
     """Find users that have scheduled their medications & send texts."""
-
+    print("I AM IN SEND_FOR ACTIVE USERS")
     active = User_meds.query.filter(User_meds.text_remind == True).all()
 
     print(active)
@@ -44,31 +47,32 @@ def send_for_active_users():
         for user in active:
             print(user)
             am = user.am_time
-            print(am, type(am))
+            # print(am, type(am))
             mid_day = user.mid_day_time
-            print(mid_day, type(mid_day))
+            # print(mid_day, type(mid_day))
             pm = user.pm_time
-            print(pm, type(pm))
+            # print(pm, type(pm))
             times_per_day = user.times_per_day
-            print(times_per_day, type(times_per_day))
+            # print(times_per_day, type(times_per_day))
 
             duration = user.rx_duration
-            print(duration, type(duration))
+            # print(duration, type(duration))
             qty = user.qty  
-            print(qty, type(qty))
+            # print(qty, type(qty))
             current = user.current_qty
-            print("CURRENT", current, type(current))
+            # print("CURRENT", current, type(current))
             refills = user.refills
-            print(refills, type(refills))
+            # print(refills, type(refills))
             qty_per_dose = user.qty_per_dose
-            print(qty_per_dose, type(qty_per_dose))
+            # print(qty_per_dose, type(qty_per_dose))
             
 
             daily_qty = qty_per_dose * times_per_day
-            print(daily_qty, type(daily_qty))
+            # print(daily_qty, type(daily_qty))
 
             if current > (3 * daily_qty) and refills > 0:
-                update = current - qty_per_dose - 1 #update current qty from one dose. 
+                print("I AM IN A CONDITIONAL")
+                update = current - (qty_per_dose * times_per_day) #update current qty from one dose. 
                 user.current_qty = update
 
                 db.session.add(user)
@@ -84,7 +88,8 @@ def send_for_active_users():
 
             elif (current < (3 * daily_qty)) and (current > qty_per_dose) and refills > 0:  #current amount less than 3 times the daily qty. 
 
-                update = current - qty_per_dose - 1 #update current qty from one dose. 
+                print("I AM IN A CONDITIONAL")
+                update = current - (qty_per_dose * times_per_day) #update current qty from one dose. 
                 user.current_qty = update
 
                 db.session.add(user)
@@ -101,8 +106,9 @@ def send_for_active_users():
 
             elif current < qty_per_dose and refills > 0:  #current amount less than qty per dose. 
                 
+                print("I AM IN A CONDITIONAL")
                 #reset current qty to start qty & deduct dose amount 
-                new_current_qty = (qty - qty_per_dose - 1) 
+                new_current_qty = qty - (qty_per_dose * times_per_day)
                 user.current_qty = qty  
 
                 new_refills = refills - 1  #deduct refills
@@ -119,8 +125,8 @@ def send_for_active_users():
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
 
             elif (current < (5 * daily_qty)) and (current > qty_per_dose) and refills == 0:
-
-                update = current - qty_per_dose - 1 #update current qty from one dose. 
+                print("I AM IN A CONDITIONAL")
+                update = current - (qty_per_dose * times_per_day) #update current qty from one dose. 
                 user.current_qty = update
 
                 db.session.add(user)
@@ -137,7 +143,7 @@ def send_for_active_users():
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
 
             elif current < qty_per_dose and refills == 0:
-
+                print("I AM IN A CONDITIONAL")
                 user.current_qty = 0
                 user.text_remind = False 
 
@@ -153,54 +159,60 @@ def send_for_active_users():
 
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
     else: 
+        print("THis is returning NONE!!!!!")
         return None 
 
-    #send at if QD then send at AM or PM or default to 9:00 AM
-        #if bid then send at AM & PM or default to 9 & 9 
-        #if TID then send at AM, MId, and PM or default to 8,12, and 8 
 
-def run_scheduled_for_texts(am,mid,pm,message,phone):
+def run_scheduled_for_texts(message,phone):
     """Determine schedule for sending out texts."""
+    # am,mid,pm,
+    print("I AM IN run_scheduled_for_texts")
 
-    if am and mid and pm == None: 
-                    time = "09:00"
-                elif (am != None) and ((mid and pm) == None): 
-                    am_time = am[10:-3]
-                    schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
-                elif (pm != None) and ((am and mid) == None):
-                    pm_time = pm[10:-3]
-                    schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
-                elif (mid != None) and ((am and pm) == None):
-                    mid_time = mid[10:-3]
-                    schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
-                elif ((am and mid) != None) and (pm == None):
-                    am_time = am[10:-3]
-                    mid_time = mid[10:-3]
-                    (schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone))
-                    and 
-                    (schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone))
-                elif ((am and mid and pm) != None):
-                    am_time = am[10:-3]
-                    mid_time = mid[10:-3]
-                    pm_time = pm[10:-3]
+    schedule.every().day.at("22:25").do(send_text_reminders, message=message, phone=phone)
+    # schedule.every().day.at("22:21").do(send_text_reminders(message, phone))
 
-                    (schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone))
-                    and 
-                    (schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone))
-                    and 
-                    (schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone))
-                elif ((am and pm) != None) and (mid == None):
-                    am_time = am[10:-3]
-                    pm_time = mid[10:-3]
-                    (schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone))
-                    and 
-                    (schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone))
-                elif ((pm and mid) != None) and (am == None):
-                    mid_time = am[10:-3]
-                    pm_time = mid[10:-3]
-                    (schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone))
-                    and 
-                    (schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone))
+    # if am and mid and pm == None: 
+    #     schedule.every().day.at("09:00").do(send_text_reminders, message=message, phone=phone)
+    # elif (am != None) and ((mid and pm) == None):
+    #     am_time = am[10:-3]
+    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+
+    # elif (pm != None) and ((am and mid) == None):
+    #     pm_time = pm[10:-3]
+    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+
+    # elif (mid != None) and ((am and pm) == None):
+    #     mid_time = mid[10:-3]
+    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+
+    # elif ((am and mid) != None) and (pm == None):
+    #     am_time = am[10:-3]
+    #     mid_time = mid[10:-3]
+    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+
+    # elif ((am and mid and pm) != None):
+    #     am_time = am[10:-3]
+    #     print("AM TIME", am_time)
+    #     mid_time = mid[10:-3]
+    #     print("mid TIME", mid_time)
+    #     pm_time = pm[10:-3]
+    #     print("PM TIME", pm_time)
+    #     schedule.every().day.at(f"{am_time}").do(send_text_reminders, message=message, phone=phone)
+    #     schedule.every().day.at(f"{mid_time}").do(send_text_reminders, message=message, phone=phone)
+    #     schedule.every().day.at(f"{pm_time}").do(send_text_reminders, message=message, phone=phone)
+
+    # elif ((am and pm) != None) and (mid == None):
+    #     am_time = am[10:-3]
+    #     pm_time = mid[10:-3]
+    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+
+    # elif ((pm and mid) != None) and (am == None):
+    #     mid_time = am[10:-3]
+    #     pm_time = mid[10:-3]
+    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
 
 
 if __name__ == "__main__":
@@ -210,14 +222,6 @@ if __name__ == "__main__":
     from server import app
     connect_to_db(app)
 
-
-# if __name__ == "__main__":
-    
-#     connect_to_db(app)
-#     app.debug=True
-#     while True: 
-#         schedule.run_pending() 
-#         time.sleep(1) 
 
 
 

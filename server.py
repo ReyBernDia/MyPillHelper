@@ -504,7 +504,6 @@ def schedule_medication():
     user_med.text_remind = True 
 
 
-
     db.session.add(user_med)
     db.session.commit()
 
@@ -522,7 +521,18 @@ if __name__ == "__main__":
 
     connect_to_db(app)
 
+    while True: 
+        r.schedule.run_pending() 
+        print("running texts")
+        r.time.sleep(1) 
+        r.send_for_active_users()
+        print("running sending users in reminders.py")
+        r.time.sleep(10) 
+
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
     app.run(port=5000, host='0.0.0.0')
+
+    
+
