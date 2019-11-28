@@ -23,17 +23,17 @@ class Meds(db.Model):
     __tablename__ = "meds"
 
     med_id = db.Column(db.Integer, autoincrement=True, primary_key=True)
-    shape = db.Column(db.String(20), nullable=True)
+    shape = db.Column(db.String(65), nullable=True)
     score = db.Column(db.String(5), nullable=True)
-    imprint = db.Column(db.String(25), nullable=True)
-    color = db.Column(db.String(20), nullable=True)
-    strength = db.Column(db.String(200), nullable=True)
+    imprint = db.Column(db.String(65), nullable=True)
+    color = db.Column(db.String(65), nullable=True)
+    strength = db.Column(db.String(3000), nullable=True)
     rxcui = db.Column(db.String(15), nullable=True)
     ndc9 = db.Column(db.String(20), nullable=True)
-    medicine_name = db.Column(db.String(64), nullable=True)
-    image_label = db.Column(db.String(64), nullable=True)
+    medicine_name = db.Column(db.String(240), nullable=True)
+    image_label = db.Column(db.String(200), nullable=True)
     has_image = db.Column(db.Boolean, nullable=True)
-    img_path = db.Column(db.String(120), nullable=True)
+    img_path = db.Column(db.String(380), nullable=True)
 
     def __repr__(self):
         return f"<Medication: {self.medicine_name} RXCUI: {self.rxcui}>"

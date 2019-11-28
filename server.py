@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g, make_response, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from test_model import connect_to_db, db, Meds, Users, User_meds
+from model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
@@ -511,7 +511,12 @@ def schedule_medication():
     db.session.commit()
 
     res = make_response(jsonify(req), 200)
-
+    med_name = user_med.brand_name
+    cell = user_med.user.cell_number
+    name = user_med.user.f_name
+    message = (f"""Hello {name}! Thank you for signing up and scheduling your meds!
+    You will now recieve text reminders when it is time to take your {med_name}.""")
+    r.send_text_reminders(message, cell)
     return res 
 
 

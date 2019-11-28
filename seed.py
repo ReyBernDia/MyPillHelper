@@ -1,14 +1,39 @@
-"""Utility file to seed image database from MovieLens data in seed_data/"""
+"""Utility file to seed image database from FDA data in seed_data/"""
 
 from sqlalchemy import func
 
-from model import Meds
+from model import Meds, Users, User_meds
 
 from model import connect_to_db, db
 from server import app
 from datetime import datetime
 import csv
 
+
+#EXAMPLE DATA PULL FROM SEED DATA.
+# def load_users():
+#     """Load users from u.user into database."""
+
+#     print("Users")
+
+#     # Delete all rows in table, so if we need to run this a second time,
+#     # we won't be trying to add duplicate users
+#     User.query.delete()
+
+#     # Read u.user file and insert data
+#     for row in open("seed_data/u.user"):
+#         row = row.rstrip()
+#         user_id, age, gender, occupation, zipcode = row.split("|")
+
+#         user = User(user_id=user_id,
+#                     age=age,
+#                     zipcode=zipcode)
+
+#         # We need to add to the session or it won't ever be stored
+#         db.session.add(user)
+
+#     # Once we're done, we should commit our work
+#     db.session.commit()
 
 
 def load_pill_data():
@@ -32,19 +57,19 @@ def load_pill_data():
             else: 
                 print('THIS IS NOT THE FIRST ROW')
                 print('#############')
-                shape = row[9]
+                shape = (row[9]).upper()
                 print(f'{shape} = shape',type(shape))
 
-                score = row[11]
+                score = (row[11]).upper()
                 print(f'{score} = score', type(score))
 
-                imprint = row[13]
+                imprint = (row[13]).upper()
                 print(f'{imprint} = imprint', type(imprint))
 
-                color = row[16]
+                color = (row[16]).upper()
                 print(f'{color} = color', type(color))
 
-                strength = row[18]
+                strength = (row[18]).upper()
                 print(f'{strength} = strength', type(strength))
                 print(len(strength))
 
@@ -54,7 +79,7 @@ def load_pill_data():
                 ndc9 = row[29]
                 print(f'{ndc9} = ndc9', type(ndc9))
 
-                medicine_name = row[32]
+                medicine_name = (row[32]).capitalize()
                 print(f'{medicine_name} = medicine_name',type(medicine_name))
                 print(len(medicine_name))
 
@@ -69,7 +94,7 @@ def load_pill_data():
 
                 else: 
                     has_image = False
-                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573593090/production_images/No_Image_Available.jpg")
+                    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1574898450/production_images/No_Image_Available.jpg")
 
                 print(f'{has_image} = does this have an image',type(has_image))
                 print(f'{img_path} ##IMAGE PAGE IS THIS##', type(img_path))
