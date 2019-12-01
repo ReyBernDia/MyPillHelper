@@ -1,4 +1,5 @@
-from model import connect_to_db, db, Meds, Users, User_meds
+from test_model import connect_to_db, db, Meds, Users, User_meds
+import api
 
 def query_with_find_meds_values(form_imprint, score, shape, color, name):
         """Get each value from the form in find_medications.html and query the DB."""
@@ -101,8 +102,78 @@ def make_dictionary_for_user_meds(query_results):
     return query_dictionary
 
 
+def add_user_med_to_database(api_results, med_id, user_id, qty_per_dose, 
+                             times_per_day, rx_start_date):
+    """Given user/med info process adding a new user medication to the database."""
 
+    
+    # print(strength)
+    
+    
+    # print('####THIS IS MED#####')
+    # print(med)
 
+    #pull variables from session. 
+    # med_name = session['for_med_name']
+    # session_strength = session['strength']
+    # strength = ((med_name.upper())+ " " + session_strength)
+
+    
+    # print("THIS IS THE API", api_results, len(api_results))
+
+    #pull all info needed to instantiate a new med from api_results.
+    brand_name = api_results["brand_name"]
+    indications = api_results["indications"]
+    dosing_info = api_results["dosing_info"]
+    info_for_patients = api_results["info_for_patients"]
+    contraindications = api_results["contraindications"]
+    pharm_class = api_results["pharm_class"]
+   
+    #truncate length to place in database. 
+    if (len(indications) != 0) and (len(indications)>2000):
+        indications = (indications[0:1997]+"...")
+    
+    if (len(dosing_info) != 0) and (len(dosing_info)>2000):
+        dosing_info = (dosing_info[0:1997]+"...")
+
+    if (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
+        info_for_patients = (info_for_patients[0:1997]+"...")
+
+    if (len(contraindications) != 0) and (len(contraindications)>2000):
+        contraindications = (contraindications[0:1997]+"...")
+
+    if (len(brand_name) != 0) and (len(brand_name)>64):
+        brand_name = (brand_name[0:62]+"...")
+
+    if (len(pharm_class) != 0) and (len(pharm_class)>64):
+        pharm_class = (pharm_class[0:62]+"...")
+
+    new_user_med = User_meds(user_id=user_id,
+                        med_id=med_id,
+                        text_remind=False,
+                        qty_per_dose=qty_per_dose,
+                        times_per_day=times_per_day,
+                        rx_start_date=rx_start_date,
+                        brand_name=brand_name,
+                        indications=indications,
+                        dose_admin=dosing_info,
+                        more_info=info_for_patients,
+                        contraindications=contraindications,
+                        pharm_class=pharm_class)
+    db.session.add(new_user_med)
+    db.session.commit()
+
+def instantiate_new_medication(strength, med_name):
+    """Instantiate new medication into the Meds table."""
+
+    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1574898450/production_images/No_Image_Available.jpg")    
+
+    new_med = Meds(strength=strength,
+                   medicine_name=(med_name.capitalize()),
+                   has_image=False, 
+                   img_path=img_path)
+    db.session.add(new_med)
+    db.session.commit()
 
 
 

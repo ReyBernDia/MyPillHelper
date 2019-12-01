@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g, make_response, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from model import connect_to_db, db, Meds, Users, User_meds
+from test_model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
@@ -226,90 +226,44 @@ def add_med_to_databse():
     session['user_name'] = user.f_name
     user_id = session['user_id']
 
-    api_info = request.form.get('api_results')
+    #pulling info from confirm_med_api.html
+    api_info = request.form.get('api_results') 
     indications = request.form.get('indications')
     dosing_info = request.form.get('dosing_info')
     info_for_patients = request.form.get('info_for_patients')
     contraindications = request.form.get('contraindications')
     brand_name = request.form.get('brand_name')
     pharm_class = request.form.get('pharm_class')
-
     # print('###########THIS IS API INFO BACK IN /ADD_MED##################')
     # print(api_info)
 
+    #pulling info from confirm_med_db.html
     db_med_image = request.form.get('med_image')
     db_med_strength = request.form.get('med_strength')
-    
     # print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     # print(db_med_image)
     # print(db_med_strength)
     
-    if api_info == None:  #if med existed in the DB. 
+    if api_info == None:  #if med existed in the DB.
+        #pull info needed to call db_helper function. 
         s = db_med_strength.split() #split med strength to ignore the space and miligrams.
         name_from_strength = s[0]
-        # print(strength)
         med = Meds.query.filter((Meds.strength.like('%'+name_from_strength+'%')) &
-                                (Meds.img_path == db_med_image)).first()
-        
-        # print('####THIS IS MED#####')
-        # print(med)
-
-        #pull variables from session. 
-        # med_name = session['for_med_name']
-        # session_strength = session['strength']
-        # strength = ((med_name.upper())+ " " + session_strength)
-
-        #serch for med name in API 
-        api_results = api.query_fda_api(med_name)
-        # print("THIS IS THE API", api_results, len(api_results))
-
-        indications = api_results["indications"]
-        dosing_info = api_results["dosing_info"]
-        info_for_patients = api_results["info_for_patients"]
-        contraindications = api_results["contraindications"]
-        brand_name = api_results["brand_name"]
-        pharm_class = api_results["pharm_class"]
-       
+                            (Meds.img_path == db_med_image)).first()
         med_id = med.med_id
+        med_name = session['for_med_name']
         qty_per_dose = session['qty_per_dose']
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
+        api_results = api.query_fda_api(med_name)
 
-        if (len(indications) != 0) and (len(indications)>2000):
-            indications = (indications[0:1997]+"...")
-        
-        if (len(dosing_info) != 0) and (len(dosing_info)>2000):
-            dosing_info = (dosing_info[0:1997]+"...")
-
-        if (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
-            info_for_patients = (info_for_patients[0:1997]+"...")
-
-        if (len(contraindications) != 0) and (len(contraindications)>2000):
-            contraindications = (contraindications[0:1997]+"...")
-
-        if (len(brand_name) != 0) and (len(brand_name)>64):
-            brand_name = (brand_name[0:62]+"...")
-
-        if (len(pharm_class) != 0) and (len(pharm_class)>64):
-            pharm_class = (pharm_class[0:62]+"...")
-
-        # make def to instantiate new user meds and meds? 
-
-        new_user_med = User_meds(user_id=user_id,
-                            med_id=med_id,
-                            text_remind=False,
-                            qty_per_dose=qty_per_dose,
-                            times_per_day=times_per_day,
-                            rx_start_date=rx_start_date,
-                            brand_name=brand_name,
-                            indications=indications,
-                            dose_admin=dosing_info,
-                            more_info=info_for_patients,
-                            contraindications=contraindications,
-                            pharm_class=pharm_class)
-        db.session.add(new_user_med)
-        db.session.commit()
-
+        db_helper.add_user_med_to_database(api_results, 
+                                           med_id, 
+                                           user_id, 
+                                           qty_per_dose, 
+                                           times_per_day, 
+                                           rx_start_date) 
+        #delete items placed in session when user starts to add a new medication.
         del session['for_med_name']
         del session['strength']
         del session['qty_per_dose']
@@ -326,53 +280,21 @@ def add_med_to_databse():
         times_per_day = session['dosing_schedule']
         rx_start_date = session['rx_start_date']
 
-        #make def to check lengths and trunkate. 
+        api_results = api.query_fda_api(med_name) 
 
-        if (len(indications) != 0) and (len(indications)>2000):
-            indications = (indications[0:1997]+"...")
-        
-        if (len(dosing_info) != 0) and (len(dosing_info)>2000):
-            dosing_info = (dosing_info[0:1997]+"...")
-
-        if (len(info_for_patients) != 0) and (len(info_for_patients)>2000):
-            info_for_patients = (info_for_patients[0:1997]+"...")
-
-        if (len(contraindications) != 0) and (len(contraindications)>2000):
-            contraindications = (contraindications[0:1997]+"...")
-
-        if (len(brand_name) != 0) and (len(brand_name)>64):
-            brand_name = (brand_name[0:62]+"...")
-
-        if (len(pharm_class) != 0) and (len(pharm_class)>64):
-            pharm_class = (pharm_class[0:62]+"...")
-
-        img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1573708367/production_images/No_Image_Available.jpg")    
-
-        new_med = Meds(strength=strength,
-                       medicine_name=(brand_name.capitalize()),
-                       has_image=False, 
-                       img_path=img_path)
-        db.session.add(new_med)
-        db.session.commit()
+        db_helper.instantiate_new_medication(strength, brand_name)
 
         new = Meds.query.filter((Meds.strength == strength) & 
                                 (Meds.medicine_name == (brand_name.capitalize()))).first()
         med_id = new.med_id
 
-        new_user_med = User_meds(user_id=user_id,
-                            med_id=med_id,
-                            text_remind=False,
-                            qty_per_dose=qty_per_dose,
-                            times_per_day=times_per_day,
-                            rx_start_date=rx_start_date, 
-                            brand_name=brand_name,
-                            indications=indications,
-                            dose_admin=dosing_info,
-                            more_info=info_for_patients,
-                            contraindications=contraindications,
-                            pharm_class=pharm_class)
-        db.session.add(new_user_med)
-        db.session.commit()
+        
+        db_helper.add_user_med_to_database(api_results, 
+                                           med_id, 
+                                           user_id, 
+                                           qty_per_dose, 
+                                           times_per_day, 
+                                           rx_start_date) 
 
         del session['for_med_name']
         del session['strength']
@@ -404,14 +326,7 @@ def display_add_medication_form():
     times_per_day = session['dosing_schedule']
     rx_start_date = session['rx_start_date']
 
-    img_path = ("https://res.cloudinary.com/ddvw70vpg/image/upload/v1574898450/production_images/No_Image_Available.jpg")    
-
-    new_med = Meds(strength=strength,
-                   medicine_name=(med_name.capitalize()),
-                   has_image=False, 
-                   img_path=img_path)
-    db.session.add(new_med)
-    db.session.commit()
+    db_helper.instantiate_new_medication(strength, med_name)
 
     new = Meds.query.filter((Meds.strength == strength) & 
                                 (Meds.medicine_name == (med_name.capitalize()))).first()
