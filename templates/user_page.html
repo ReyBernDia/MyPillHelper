@@ -40,7 +40,7 @@
             <form action="/show_schedule_form", method = "POST">
             <input type="submit" value="Schedule This Med">
             <input type="hidden" name="med_strength" value="{{key}}">
-            <input type="hidden" name="med_id" value="{{value['med_id']}}">
+            <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
             </form>
         </div>
         <h3>Strength(s)</h3>
@@ -51,8 +51,8 @@
             {% endfor %}
         </p>
         <img src="{{ value['img_path'][0] }}" width =10% height=10%>
-        <h3>Indications</h3>
-        <p>{{ value['indications'] }}</p>
+        <button id="med_values"><h3>Indications</h3></button>
+        <p id="indications"></p>
         <h3>Dosing Information</h3>
         <p>{{ value['dose_admin'] }}</p>
         <h3>Pharmacy Class</h3>
@@ -67,9 +67,51 @@
       </ul>
     </div>
 
-    <ul>
-     
-    </ul>
+    <script>
+ 
+    document.addEventListener('DOMContentLoaded', () => {
+        $('#med_values').on('click', get_med_info)
+    
+        function get_med_info() {
+            console.log('I am getting med info.');
+            const med_id = document.getElementById("med_id");
+
+            const entry = {
+                med_id: med_id.value,
+            };
+
+            fetch(`${window.origin}/user_data`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(entry),
+                cache: "no-cache",
+                headers: new Headers({
+                  "content-type": "application/json"
+                })
+              })
+              .then(function(response) {
+                if (response.status !== 200) {
+                  console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                  return;
+                }
+                response.json().then(function(data) {
+                  console.log(data);
+                  console.log(data['contraindications'])
+                  console.log(data['indications'])
+                  const valIndications = (data['indications']);
+                  const updateIndications = document.querySelector('#indications');
+                  updateIndications.innerHTML = (`${valIndications}`);
+                });
+
+              })
+              .catch(function(error) {
+                console.log("Fetch error: " + error);
+            });
+          };
+    });
+         
+    </script>
+
 
 
 {% endblock %}

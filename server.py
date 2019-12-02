@@ -171,6 +171,33 @@ def display_user_page():
                             user=user,
                             med_options=med_dictionary) 
                             
+@app.route('/user_data', methods=['POST'])
+def send_user_data():
+    """Display specific information about user."""
+
+    req = request.get_json()
+
+    print(req, "THIS IS IN USER DATA")
+    med_id = req['med_id']
+    print(med_id, type(med_id))
+
+    user = Users.query.filter(Users.user_id == session['user_id']).first()
+
+    medications = user.u_meds #get medications for user in session. 
+    # print(medications)
+    med_info = User_meds.query.filter(User_meds.med_id == med_id).one()
+
+    print(med_info)
+    med_dictionary = db_helper.make_object_dictionary(med_info)
+
+    print(med_dictionary, "THIS IS THE MED INFO DICT.")
+    # med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
+    # # print(med_dictionary)
+    res = make_response(jsonify(med_dictionary), 200)
+
+    return res
+
+    
 
 @app.route('/user-page', methods=['POST'])
 def process_adding_user_medications():

@@ -174,4 +174,18 @@ def add_unverified_med(user_id, med_id, qty_per_dose, times_per_day, rx_start_da
     db.session.commit()
 
 
+def make_object_dictionary(med_obj):
+    """Make dictionary from medication object."""
+
+    med_obj_dict = {}
+
+    med_obj_dict['name'] = med_obj.brand_name
+    med_obj_dict['indications'] = med_obj.indications
+    med_obj_dict['dose_admin'] = med_obj.dose_admin
+    med_obj_dict['more_info'] = med_obj.more_info
+    med_obj_dict['contraindications'] = med_obj.contraindications
+    med_obj_dict['pharm_class'] = med_obj.pharm_class
+
+    return med_obj_dict
+
 
