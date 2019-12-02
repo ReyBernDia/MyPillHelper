@@ -51,16 +51,22 @@
             {% endfor %}
         </p>
         <img src="{{ value['img_path'][0] }}" width =10% height=10%>
-        <button id="med_values"><h3>Indications</h3></button>
-        <p id="indications"></p>
-        <h3>Dosing Information</h3>
-        <p>{{ value['dose_admin'] }}</p>
-        <h3>Pharmacy Class</h3>
-        <p>{{ value['pharm_class'] }}</p>
-        <h3>Contraindications</h3>
-        <p>{{ value['contraindications'] }}</p>
-        <h3>More Information for Patients</h3>
-        <p>{{ value['more_info'] }}</p>
+        <br>
+        <button class="userMedInfo" id="med_indication"><h3>Indications</h3></button>
+        <p id="dict_indications"></p>
+
+        <button class="userMedInfo" id="med_dosing"><h3>Dosing Information</h3></button>
+        <p id="dict_dosing"></p>
+
+        <button class="userMedInfo" id="med_pharm"><h3>Pharmacy Class</h3></button>
+        <p id="dict_pharm"></p>
+
+        <button class="userMedInfo" id="med_contraindications"><h3>Contraindications</h3></button>
+        <p id="dict_contra"></p>
+
+        <button class="userMedInfo" id="med_more_info"><h3>More Information for Patients</h3></button>
+        <p id="dict_more"></p>
+        
         </div> 
 
       {% endfor %}
@@ -70,9 +76,8 @@
     <script>
  
     document.addEventListener('DOMContentLoaded', () => {
-        $('#med_values').on('click', get_med_info)
-    
-        function get_med_info() {
+        
+        $('#med_indication').on('click', (get_med_info) =>  {
             console.log('I am getting med info.');
             const med_id = document.getElementById("med_id");
 
@@ -96,10 +101,8 @@
                 }
                 response.json().then(function(data) {
                   console.log(data);
-                  console.log(data['contraindications'])
-                  console.log(data['indications'])
                   const valIndications = (data['indications']);
-                  const updateIndications = document.querySelector('#indications');
+                  const updateIndications = document.querySelector('#dict_indications');
                   updateIndications.innerHTML = (`${valIndications}`);
                 });
 
@@ -107,7 +110,148 @@
               .catch(function(error) {
                 console.log("Fetch error: " + error);
             });
-          };
+        });
+
+        $('#med_dosing').on('click', (get_med_info) =>  {
+            console.log('I am getting med info.');
+            const med_id = document.getElementById("med_id");
+
+            const entry = {
+                med_id: med_id.value,
+            };
+
+            fetch(`${window.origin}/user_data`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(entry),
+                cache: "no-cache",
+                headers: new Headers({
+                  "content-type": "application/json"
+                })
+              })
+              .then(function(response) {
+                if (response.status !== 200) {
+                  console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                  return;
+                }
+                response.json().then(function(data) {
+                  console.log(data);
+                
+                  const valDosing = (data['dose_admin']);
+                  const updateDosing = document.querySelector('#dict_dosing');
+                  updateDosing.innerHTML = (`${valDosing}`);
+                });
+
+              })
+              .catch(function(error) {
+                console.log("Fetch error: " + error);
+            });
+        });
+        $('#med_pharm').on('click', (get_med_info) =>  {
+            console.log('I am getting med info.');
+            const med_id = document.getElementById("med_id");
+
+            const entry = {
+                med_id: med_id.value,
+            };
+
+            fetch(`${window.origin}/user_data`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(entry),
+                cache: "no-cache",
+                headers: new Headers({
+                  "content-type": "application/json"
+                })
+              })
+              .then(function(response) {
+                if (response.status !== 200) {
+                  console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                  return;
+                }
+                response.json().then(function(data) {
+                  console.log(data);
+                
+                  const valPharm = (data['pharm_class']);
+                  const updatePharm = document.querySelector('#dict_pharm');
+                  updatePharm.innerHTML = (`${valPharm}`);
+                });
+
+              })
+              .catch(function(error) {
+                console.log("Fetch error: " + error);
+            });
+        });
+        $('#med_contraindications').on('click', (get_med_info) =>  {
+            console.log('I am getting med info.');
+            const med_id = document.getElementById("med_id");
+
+            const entry = {
+                med_id: med_id.value,
+            };
+
+            fetch(`${window.origin}/user_data`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(entry),
+                cache: "no-cache",
+                headers: new Headers({
+                  "content-type": "application/json"
+                })
+              })
+              .then(function(response) {
+                if (response.status !== 200) {
+                  console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                  return;
+                }
+                response.json().then(function(data) {
+                  console.log(data);
+                
+                  const valContra = (data['contraindications']);
+                  const updateContra = document.querySelector('#dict_contra');
+                  updateContra.innerHTML = (`${valContra}`);
+                });
+
+              })
+              .catch(function(error) {
+                console.log("Fetch error: " + error);
+            });
+        });
+        $('#med_more_info').on('click', (get_med_info) =>  {
+            console.log('I am getting med info.');
+            const med_id = document.getElementById("med_id");
+
+            const entry = {
+                med_id: med_id.value,
+            };
+
+            fetch(`${window.origin}/user_data`, {
+                method: "POST",
+                credentials: "include",
+                body: JSON.stringify(entry),
+                cache: "no-cache",
+                headers: new Headers({
+                  "content-type": "application/json"
+                })
+              })
+              .then(function(response) {
+                if (response.status !== 200) {
+                  console.log(`Looks like there was a problem. Status code: ${response.status}`);
+                  return;
+                }
+                response.json().then(function(data) {
+                  console.log(data);
+                
+                  const valMoreInfo = (data['more_info']);
+                  const updateMoreInfo = document.querySelector('#dict_more');
+                  updateMoreInfo.innerHTML = (`${valMoreInfo}`);
+                });
+
+              })
+              .catch(function(error) {
+                console.log("Fetch error: " + error);
+            });
+        });
     });
          
     </script>
