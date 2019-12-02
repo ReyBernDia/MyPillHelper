@@ -106,20 +106,6 @@ def add_user_med_to_database(api_results, med_id, user_id, qty_per_dose,
                              times_per_day, rx_start_date):
     """Given user/med info process adding a new user medication to the database."""
 
-    
-    # print(strength)
-    
-    
-    # print('####THIS IS MED#####')
-    # print(med)
-
-    #pull variables from session. 
-    # med_name = session['for_med_name']
-    # session_strength = session['strength']
-    # strength = ((med_name.upper())+ " " + session_strength)
-
-    
-    # print("THIS IS THE API", api_results, len(api_results))
 
     #pull all info needed to instantiate a new med from api_results.
     brand_name = api_results["brand_name"]
@@ -173,6 +159,18 @@ def instantiate_new_medication(strength, med_name):
                    has_image=False, 
                    img_path=img_path)
     db.session.add(new_med)
+    db.session.commit()
+
+def add_unverified_med(user_id, med_id, qty_per_dose, times_per_day, rx_start_date):
+    """Add user medication that does not exist in DB Meds or in FDA API."""
+
+    new_user_med = User_meds(user_id=user_id,
+                        med_id=med_id,
+                        text_remind=False,
+                        qty_per_dose=qty_per_dose,
+                        times_per_day=times_per_day,
+                        rx_start_date=rx_start_date)
+    db.session.add(new_user_med)
     db.session.commit()
 
 

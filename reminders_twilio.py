@@ -1,4 +1,5 @@
 from twilio.rest import Client
+from twilio.base.exceptions import TwilioRestException
 import os
 from test_model import connect_to_db, db, Meds, Users, User_meds
 import schedule
@@ -33,16 +34,16 @@ def cell_verify(cell):
     print("#####USERS CELL IS BEING VERIFIED#####")
 
     client = Client(ACCOUNT_SID, AUTH_TOKEN)
-
-    phone_number = client.lookups \
-                         .phone_numbers(cell) \
-                         .fetch(type=['carrier'])
-    if phone_number.phone_number == "Unable to fetch record: The requested resource /PhoneNumbers/1231231234 was not found": 
-        print("FALSE")
-        return False
-    else: 
-        print("NOT FALSE")
+    try:
+        phone_number = client.lookups \
+                             .phone_numbers(cell) \
+                             .fetch(type=['carrier'])
         return phone_number.phone_number
+    except TwilioRestException as e:
+        if e.code == 20404:
+            return False
+        else:
+            raise e
 
 def send_for_active_users(): 
     """Find users that have scheduled their medications & send texts."""

@@ -93,15 +93,14 @@ def process_registration():
     cell = request.form.get('cell')
     password_hash = request.form.get('password')
     cell_number = r.cell_verify(cell)  #verify cell number using Twilio API.
-
+    if cell_number == False:
+            flash("That is not a valid phone number, please try again!")
+            return redirect('/register')
     # if user cell already exists, ignore
     if Users.query.filter(Users.cell_number == cell_number).first():
         flash("That cell number already exists, please login.")
         return redirect('/login')
     else:  # if user cell does not exist, add to db
-        # if cell_number == False:
-        #     flash("That is not a valid phone number, please try again!")
-        #     return redirect('/register')
         user = Users(f_name=f_name,
                      l_name=l_name,
                      email=email,
@@ -222,106 +221,89 @@ def process_adding_user_medications():
 def add_med_to_databse():
     """Add user medication to database and notify user."""
 
+    #grab user from session. 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
     session['user_name'] = user.f_name
     user_id = session['user_id']
 
     #pulling info from confirm_med_api.html
-    api_info = request.form.get('api_results') 
-    indications = request.form.get('indications')
-    dosing_info = request.form.get('dosing_info')
-    info_for_patients = request.form.get('info_for_patients')
-    contraindications = request.form.get('contraindications')
-    brand_name = request.form.get('brand_name')
-    pharm_class = request.form.get('pharm_class')
+    api_info = request.form.get('api_results')  #api_info returns as a string.
+    # indications = request.form.get('indications')
+    # dosing_info = request.form.get('dosing_info')
+    # info_for_patients = request.form.get('info_for_patients')
+    # contraindications = request.form.get('contraindications')
+    # brand_name = request.form.get('brand_name')
+    # pharm_class = request.form.get('pharm_class')
     # print('###########THIS IS API INFO BACK IN /ADD_MED##################')
     # print(api_info)
 
     #pulling info from confirm_med_db.html
     db_med_image = request.form.get('med_image')
     db_med_strength = request.form.get('med_strength')
-    # print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
+    print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
     # print(db_med_image)
-    # print(db_med_strength)
+    print(db_med_strength, type(db_med_strength))
+    #pull info needed from session to call db_helper function. 
+    med_name = session['for_med_name']
+    session_strength = session['strength']
+    qty_per_dose = session['qty_per_dose']
+    times_per_day = session['dosing_schedule']
+    rx_start_date = session['rx_start_date']
+    api_results = api.query_fda_api(med_name)
+    brand_name = api_results["brand_name"]
     
     if api_info == None:  #if med existed in the DB.
         #pull info needed to call db_helper function. 
-        s = db_med_strength.split() #split med strength to ignore the space and miligrams.
-        name_from_strength = s[0]
+        name_from_strength = db_med_strength[0]  #ignore space and other chars. 
         med = Meds.query.filter((Meds.strength.like('%'+name_from_strength+'%')) &
                             (Meds.img_path == db_med_image)).first()
         med_id = med.med_id
-        med_name = session['for_med_name']
-        qty_per_dose = session['qty_per_dose']
-        times_per_day = session['dosing_schedule']
-        rx_start_date = session['rx_start_date']
-        api_results = api.query_fda_api(med_name)
-
         db_helper.add_user_med_to_database(api_results, 
                                            med_id, 
                                            user_id, 
                                            qty_per_dose, 
                                            times_per_day, 
                                            rx_start_date) 
-        #delete items placed in session when user starts to add a new medication.
-        del session['for_med_name']
-        del session['strength']
-        del session['qty_per_dose']
-        del session['dosing_schedule']
-        del session['rx_start_date']
     else:
-        #if medication not in database, need to pull input medication name and 
-        #strength, format it like the database strength, to instantiate. 
-        med_name = session['for_med_name']
-        session_strength = session['strength']
-        strength = (" ".join((med_name.upper())+ " " + session_strength))
-
-        qty_per_dose = session['qty_per_dose']
-        times_per_day = session['dosing_schedule']
-        rx_start_date = session['rx_start_date']
-
-        api_results = api.query_fda_api(med_name) 
-
-        db_helper.instantiate_new_medication(strength, brand_name)
-
+        #need to format strength to fit format in DB prior to instantiating.
+        strength = ((med_name.upper())+ " " + (session_strength.upper()))
+        #create new med instance prior to instantiating user med. 
+        db_helper.instantiate_new_medication(strength, brand_name) 
+        #query for newly instantiated medication to get med_id. 
         new = Meds.query.filter((Meds.strength == strength) & 
                                 (Meds.medicine_name == (brand_name.capitalize()))).first()
-        med_id = new.med_id
-
-        
+        med_id = new.med_id 
         db_helper.add_user_med_to_database(api_results, 
                                            med_id, 
                                            user_id, 
                                            qty_per_dose, 
                                            times_per_day, 
                                            rx_start_date) 
+    #delete items placed in session when user starts to add a new medication.
+    del session['for_med_name']
+    del session['strength']
+    del session['qty_per_dose']
+    del session['dosing_schedule']
+    del session['rx_start_date']
 
-        del session['for_med_name']
-        del session['strength']
-        del session['qty_per_dose']
-        del session['dosing_schedule']
-        del session['rx_start_date']
-
-    medications = user.u_meds #get medications for user in session. 
-
+    medications = user.u_meds  #get medications for user in session. 
     med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
 
     flash("Medication Added!")
-    return render_template('user_page.html', user=user, med_options=med_dictionary)
+    return render_template('user_page.html', 
+                            user=user, 
+                            med_options=med_dictionary)
 
 @app.route("/add_med_unverified")
 def display_add_medication_form():
     """Add med to DB if not in DB and not in API call- rare case."""
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
-    session['user_name'] = user.f_name
     user_id = session['user_id']
-
     med_name = session['for_med_name']
-
     session_strength = session['strength']
-    strength = ((med_name.upper())+ " " + session_strength)
-
+    #need to format strength to fit format in DB prior to instantiating.
+    strength = ((med_name.upper())+ " " + (session_strength.upper()))
     qty_per_dose = session['qty_per_dose']
     times_per_day = session['dosing_schedule']
     rx_start_date = session['rx_start_date']
@@ -332,14 +314,11 @@ def display_add_medication_form():
                                 (Meds.medicine_name == (med_name.capitalize()))).first()
     med_id = new.med_id
 
-    new_user_med = User_meds(user_id=user_id,
-                        med_id=med_id,
-                        text_remind=False,
-                        qty_per_dose=qty_per_dose,
-                        times_per_day=times_per_day,
-                        rx_start_date=rx_start_date)
-    db.session.add(new_user_med)
-    db.session.commit()
+    db_helper.add_unverified_med(user_id, 
+                                 med_id, 
+                                 qty_per_dose, 
+                                 times_per_day, 
+                                 rx_start_date)
 
     del session['for_med_name']
     del session['strength']
@@ -347,13 +326,9 @@ def display_add_medication_form():
     del session['dosing_schedule']
     del session['rx_start_date']
 
-    medications = user.u_meds #get medications for user in session. 
-
-    med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-
     flash("""We added your medication, however, there is no further information 
              regarding your medication at this time.""")
-    return render_template('user_page.html', user=user, med_options=med_dictionary)
+    return redirect('/user-page')
 
 
 @app.route("/show_schedule_form", methods=['POST'])
@@ -361,11 +336,13 @@ def display_schedule_medication_form():
     """Display form to fill in order to schedule patients medication."""
     
     med_strength = request.form.get('med_strength')
-    print("MED STRENGTH IN DISPLAY FORM", med_strength) 
+    # print("MED STRENGTH IN DISPLAY FORM", med_strength) 
     med_id = request.form.get('med_id')   
-    print("MED STRENGTH IN DISPLAY FORM", med_id) 
+    # print("MED STRENGTH IN DISPLAY FORM", med_id) 
 
-    return render_template('schedule_meds_form.html', med_strength=med_strength, med_id=med_id)
+    return render_template('schedule_meds_form.html', 
+                            med_strength=med_strength, 
+                            med_id=med_id)
 
 @app.route("/schedule_med", methods=['POST'])
 def schedule_medication():
