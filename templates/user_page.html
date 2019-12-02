@@ -2,8 +2,6 @@
 {% block title %} User Profile {% endblock %}
 {% block content %}
 
-<p><a href="/">Homepage</a></p>
-<p><a href="/find_meds">Find Another Medication</a></p>
 
   <h2>User Profile</h2>
 
@@ -11,7 +9,7 @@
 
   
   <h2>Add a medication to your med list</h2>
-    <div>
+    <div class="container-fluid">
       <form action="/user-page" id="add_med" method="POST">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
@@ -34,7 +32,7 @@
 
   
     <h2>My Medications</h2>
-    <div>
+    <div class="container-fluid">
       <ul>
       {% for key, value in med_options.items() %}
         <div id="user_meds"> 

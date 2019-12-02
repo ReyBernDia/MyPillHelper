@@ -3,11 +3,7 @@
 {% block title %} Medication Results {% endblock %}
 
 {% block content %}
-<p><a href="/">Homepage</a></p>
-<p><a href="/find_meds">Find Another Medication</a></p>
-{% if session.get('user_name',None) %}
-  <p><a href="/user-page">Your Profile</a></p>
-{% endif %}
+
 
 <h1> Select your medication for more information</h1>
 
@@ -16,7 +12,7 @@
  {% for key, value in med_options.items() %}
 
     
-    <div id="med_results"> 
+    <div class="container-fluid" id="med_results"> 
       <a href="/more_info/{{value[0]}}">
       <p id="med_name"> Medication Name: {{ value[0] }} </p> 
       <p> Strength: {{ key }} </p> 

@@ -7,28 +7,37 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-
-    <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="/static/css/stylesheet.css">
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  
-
 </head>
 
 <body>
-  <ul>
-      {% for message in get_flashed_messages() %}
-      <p>{{ message }}</p>
-      {% endfor %}
-  </ul>
-  {% if session.get('user_name',None) %}
-  <p>Hello, {{ session['user_name'] }} </p>
-  <p><a href="/logout">Log Out</a></p>
-  {% else %}
-  <p><a href="/login">Log In</a></p>
-  <p><a href="/register">Register</a></p>
-  {% endif %}
+  <div id="flash"> 
+    <ul>
+        {% for message in get_flashed_messages() %}
+        <p>{{ message }}</p>
+        {% endfor %}
+    </ul>
+  </div>
+  <header class="masthead mb-auto text-center">
+  <div class="inner">
+    <img src="/static/img/myPillHelper.jpg" alt width="200px" height="95px">
+    <nav class="nav nav-masthead justify-content-center">
+      <a class="nav-link" href="/">Home</a>
+      <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
+      {% if session.get('user_name',None) %}
+      <a class="nav-link" href="/user-page">Your Profile</a>
+      <a class="nav-link" href="/logout">Log Out</a>
+      {% else %}
+      <a class="nav-link" href="/login">Log In</a>
+      <a class="nav-link" href="/register">Register</a>
+      {% endif %}
+    </nav>
+  </div>
+  </header>
+
 
 
   {% block content %} put your content here {% endblock %}

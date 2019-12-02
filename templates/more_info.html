@@ -3,13 +3,9 @@
 {% block title %}More Information{% endblock %}
 
 {% block content %}
-<p><a href="/">Homepage</a></p>
-{% if session.get('user_name',None) %}
-  <p><a href="/user-page">Your Profile</a></p>
-{% endif %}
-<p><a href="/find_meds">Find Another Medication</a></p>
 
-<div>
+
+<div class="container-fluid">
   <h2>More Information on Your Medication</h2> 
   <h3>Common Medication Name:</h3>
   <p>  
@@ -38,7 +34,7 @@
   
 
 </div>
-<div id=footer_more_info> 
+<div class="container-fluid" id=footer_more_info> 
 Occasionally you will find that there is less information 
 than you may have expected. We apologize for the inconvenience. We are currently using 
 a database that is still expanding on a regular basis. Thank you for understanding.

@@ -93,10 +93,11 @@ def process_registration():
     cell = request.form.get('cell')
     password_hash = request.form.get('password')
     cell_number = r.cell_verify(cell)  #verify cell number using Twilio API.
-    if cell_number == False:
+    #if cell verify returns error- then number is invalid. 
+    if cell_number == False:  #exception made for error to return false. 
             flash("That is not a valid phone number, please try again!")
             return redirect('/register')
-    # if user cell already exists, ignore
+    # if user cell already exists, ask user to login. 
     if Users.query.filter(Users.cell_number == cell_number).first():
         flash("That cell number already exists, please login.")
         return redirect('/login')
@@ -126,7 +127,8 @@ def login_user():
 
     #query DB using login information. 
     f_name = request.form.get('first_name') #either lower case or upcase for user input discrepancy. 
-    cell_number= request.form.get('cell')
+    cell= request.form.get('cell')
+    cell_number = r.cell_verify(cell)  #get correctly formated cell number
     password_hash = request.form.get('password')
     user = Users.query.filter((Users.f_name == f_name),
                               (Users.cell_number == cell_number)).first()
