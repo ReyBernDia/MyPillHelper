@@ -11,13 +11,15 @@ from datetime import datetime, timedelta
 
 import db_query_functions as db_helper
 import api
-import reminders_twilio as r
+from reminders_twilio import * 
 
 import os
 from sys import argv
 from pprint import pprint
 import json
 import requests
+import schedule
+import time
 
 
 app = Flask(__name__)
@@ -443,13 +445,17 @@ def schedule_medication():
     name = user_med.user.f_name
     message = (f"""Hello {name}! Thank you for signing up and scheduling your meds!
     You will now recieve text reminders when it is time to take your {med_name}.""")
-    r.send_text_reminders(message, cell)
+    send_text_reminders(message, cell)
     return res 
 
 
 if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
+    # r.send_for_active_users()
+    schedule.every(360).seconds.do(send_for_active_users)
+    print("I am checking for active users.")
+
     app.debug = True
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
@@ -458,6 +464,16 @@ if __name__ == "__main__":
 
     # Use the DebugToolbar
     DebugToolbarExtension(app)
+
+    schedule.run_continuously(1)
+    # while schedule.jobs:
+    #     schedule.run_pending()
+    #     time.sleep(1)
+    # while True:
+    #     schedule.run_pending()
+    #     time.sleep(10)
+    # print("I am scheduling pending")
+    # schedule.run_pending()
 
     app.run(port=5000, host='0.0.0.0')
 

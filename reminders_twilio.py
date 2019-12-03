@@ -4,26 +4,9 @@ import os
 from test_model import connect_to_db, db, Meds, Users, User_meds
 import schedule
 import time
+from datetime import datetime
 import server
 from flask import Flask, render_template, redirect, request, flash, session, g
-
-def send_text_reminders(message, phone):
-
-    print("I AM IN send_text_reminders!!!!!")
-
-    account_sid = os.environ['TWILIO_ACCOUNT_SID']
-    auth_token = os.environ['TWILIO_AUTH_TOKEN']
-    client = Client(account_sid, auth_token)
-
-    message = client.messages \
-                    .create(
-                         body=message,
-                         from_=os.environ['TWILIO_NUMBER'],
-                         to=phone
-                     )
-
-    print(message.sid)
-
 
 ACCOUNT_SID = os.environ['TWILIO_ACCOUNT_SID']
 AUTH_TOKEN = os.environ['TWILIO_AUTH_TOKEN']
@@ -44,6 +27,23 @@ def cell_verify(cell):
             return False
         else:
             raise e
+
+def send_text_reminders(message, phone):
+
+    print("I AM IN send_text_reminders!!!!!")
+
+    account_sid = os.environ['TWILIO_ACCOUNT_SID']
+    auth_token = os.environ['TWILIO_AUTH_TOKEN']
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                         body=message,
+                         from_=os.environ['TWILIO_NUMBER'],
+                         to=phone
+                     )
+
+    print(message.sid)
 
 def send_for_active_users(): 
     """Find users that have scheduled their medications & send texts."""
@@ -171,56 +171,55 @@ def send_for_active_users():
         return None 
 
 
-def run_scheduled_for_texts(message,phone):
+def run_scheduled_for_texts(am,mid,pm,message,phone):
     """Determine schedule for sending out texts."""
     # am,mid,pm,
     print("I AM IN run_scheduled_for_texts")
 
-    schedule.every().day.at("22:25").do(send_text_reminders, message=message, phone=phone)
-    # schedule.every().day.at("22:21").do(send_text_reminders(message, phone))
+    # schedule.every().day.at("16:25").do(send_text_reminders, message=message, phone=phone)
 
-    # if am and mid and pm == None: 
-    #     schedule.every().day.at("09:00").do(send_text_reminders, message=message, phone=phone)
-    # elif (am != None) and ((mid and pm) == None):
-    #     am_time = am[10:-3]
-    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+    if am and mid and pm == None: 
+        schedule.every().day.at("09:00").do(send_text_reminders, message=message, phone=phone)
+    elif (am != None) and ((mid and pm) == None):
+        am_time = am[11:-3]
+        schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
 
-    # elif (pm != None) and ((am and mid) == None):
-    #     pm_time = pm[10:-3]
-    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+    elif (pm != None) and ((am and mid) == None):
+        pm_time = pm[11:-3]
+        schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
 
-    # elif (mid != None) and ((am and pm) == None):
-    #     mid_time = mid[10:-3]
-    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+    elif (mid != None) and ((am and pm) == None):
+        mid_time = mid[11:-3]
+        schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
 
-    # elif ((am and mid) != None) and (pm == None):
-    #     am_time = am[10:-3]
-    #     mid_time = mid[10:-3]
-    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
-    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+    elif ((am and mid) != None) and (pm == None):
+        am_time = am[11:-3]
+        mid_time = mid[11:-3]
+        schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
 
-    # elif ((am and mid and pm) != None):
-    #     am_time = am[10:-3]
-    #     print("AM TIME", am_time)
-    #     mid_time = mid[10:-3]
-    #     print("mid TIME", mid_time)
-    #     pm_time = pm[10:-3]
-    #     print("PM TIME", pm_time)
-    #     schedule.every().day.at(f"{am_time}").do(send_text_reminders, message=message, phone=phone)
-    #     schedule.every().day.at(f"{mid_time}").do(send_text_reminders, message=message, phone=phone)
-    #     schedule.every().day.at(f"{pm_time}").do(send_text_reminders, message=message, phone=phone)
+    elif ((am and mid and pm) != None):
+        am_time = am[11:-3]
+        mid_time = mid[11:-3]
+        pm_time = pm[11:-3]
 
-    # elif ((am and pm) != None) and (mid == None):
-    #     am_time = am[10:-3]
-    #     pm_time = mid[10:-3]
-    #     schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
-    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(f"{am_time}").do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(f"{mid_time}").do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(f"{pm_time}").do(send_text_reminders, message=message, phone=phone)
 
-    # elif ((pm and mid) != None) and (am == None):
-    #     mid_time = am[10:-3]
-    #     pm_time = mid[10:-3]
-    #     schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
-    #     schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+    elif ((am and pm) != None) and (mid == None):
+        am_time = am[11:-3]
+        pm_time = mid[11:-3]
+        schedule.every().day.at(am_time).do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+
+    elif ((pm and mid) != None) and (am == None):
+        mid_time = am[11:-3]
+        pm_time = mid[11:-3]
+        schedule.every().day.at(mid_time).do(send_text_reminders, message=message, phone=phone)
+        schedule.every().day.at(pm_time).do(send_text_reminders, message=message, phone=phone)
+
+    print(schedule.jobs)
 
 
 if __name__ == "__main__":
@@ -229,15 +228,16 @@ if __name__ == "__main__":
 
     from server import app
     connect_to_db(app)
+    schedule.run_pending()
 
-if __name__ == "__server__":
-    while True: 
-        r.schedule.run_pending() 
-        print("running texts")
-        r.time.sleep(1) 
-        r.send_for_active_users()
-        print("running sending users in reminders.py")
-        r.time.sleep(10) 
+# if __name__ == "__server__":
+#     while True: 
+#         r.schedule.run_pending() 
+#         print("running texts")
+#         r.time.sleep(1) 
+#         r.send_for_active_users()
+#         print("running sending users in reminders.py")
+#         r.time.sleep(10) 
 
 
 
