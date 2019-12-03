@@ -98,6 +98,7 @@ def make_dictionary_for_user_meds(query_results):
                                          "med_id": med_id} 
         else:  
             query_dictionary[key]["img_path"].append(img_path)
+            query_dictionary[key]["strength"].append(strength)
 
     return query_dictionary
 

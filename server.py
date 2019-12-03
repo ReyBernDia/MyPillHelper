@@ -3,7 +3,7 @@ from jinja2 import StrictUndefined
 from flask import Flask, render_template, redirect, request, flash, session, g, make_response, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
-from test_model import connect_to_db, db, Meds, Users, User_meds
+from model import connect_to_db, db, Meds, Users, User_meds
 
 from sqlalchemy import asc, update
 
@@ -94,7 +94,7 @@ def process_registration():
     email = request.form.get('email')
     cell = request.form.get('cell')
     password_hash = request.form.get('password')
-    cell_number = r.cell_verify(cell)  #verify cell number using Twilio API.
+    cell_number = cell_verify(cell)  #verify cell number using Twilio API.
     #if cell verify returns error- then number is invalid. 
     if cell_number == False:  #exception made for error to return false. 
             flash("That is not a valid phone number, please try again!")
@@ -130,7 +130,7 @@ def login_user():
     #query DB using login information. 
     f_name = request.form.get('first_name') #either lower case or upcase for user input discrepancy. 
     cell= request.form.get('cell')
-    cell_number = r.cell_verify(cell)  #get correctly formated cell number
+    cell_number = cell_verify(cell)  #get correctly formated cell number
     password_hash = request.form.get('password')
     user = Users.query.filter((Users.f_name == f_name),
                               (Users.cell_number == cell_number)).first()
@@ -166,7 +166,7 @@ def display_user_page():
     # print(medications)
 
     med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-    # print(med_dictionary)
+    print(med_dictionary)
     
 
     return render_template('user_page.html', 
@@ -319,6 +319,7 @@ def add_med_to_databse():
 
     medications = user.u_meds  #get medications for user in session. 
     med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
+    print(med_dictionary)
 
     flash("Medication Added!")
     return render_template('user_page.html', 
@@ -443,8 +444,7 @@ def schedule_medication():
     med_name = user_med.brand_name
     cell = user_med.user.cell_number
     name = user_med.user.f_name
-    message = (f"""Hello {name}! Thank you for signing up and scheduling your meds!
-    You will now recieve text reminders when it is time to take your {med_name}.""")
+    message = (f"Hello {name}! Thank you for signing up and scheduling your meds! You will now recieve text reminders when it is time to take your {med_name}.")
     send_text_reminders(message, cell)
     return res 
 
@@ -453,7 +453,7 @@ if __name__ == "__main__":
     # We have to set debug=True here, since it has to be True at the
     # point that we invoke the DebugToolbarExtension
     # r.send_for_active_users()
-    schedule.every(360).seconds.do(send_for_active_users)
+    schedule.every().day.at("10:00").do(send_for_active_users)
     print("I am checking for active users.")
 
     app.debug = True

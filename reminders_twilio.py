@@ -1,7 +1,7 @@
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 import os
-from test_model import connect_to_db, db, Meds, Users, User_meds
+from model import connect_to_db, db, Meds, Users, User_meds
 import schedule
 import time
 from datetime import datetime
@@ -107,7 +107,7 @@ def send_for_active_users():
                 message = f"""{user.user.f_name}, it is time to take 
                 {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have 
                 less than 3 days worth of medication, so remember to refill! 
-                You have {user.refills} left."""
+                You have {user.refills} refills left."""
 
                 phone = user.user.cell_number
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
@@ -127,7 +127,7 @@ def send_for_active_users():
 
                 message = f"""{user.user.f_name}, assuming you refilled your medication. 
                 It is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. 
-                You have {user.refills} left."""
+                You have {user.refills} refills left."""
                 phone = user.user.cell_number
 
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
@@ -159,9 +159,9 @@ def send_for_active_users():
                 db.session.commit()
 
                 message = f"""{user.user.f_name}, it is time to finish up the rest of your
-                {user.brand_name}. You dont have any more refills and you will be 
+                {user.brand_name}. You don't have any more refills, and you will be 
                 out of medication after this dose. Your text reminders for this 
-                medication will turn off now."""
+                medication will turn off now. Thank you!"""
 
                 phone = user.user.cell_number
 
@@ -226,9 +226,9 @@ if __name__ == "__main__":
     # As a convenience, if we run this module interactively, it will leave
     # you in a state of being able to work with the database directly.
 
-    from server import app
-    connect_to_db(app)
-    schedule.run_pending()
+    # from server import app
+    # connect_to_db(app)
+    schedule.run_continuously(1)
 
 # if __name__ == "__server__":
 #     while True: 

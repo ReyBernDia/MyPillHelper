@@ -2,13 +2,25 @@
 {% block title %} User Profile {% endblock %}
 {% block content %}
 
-
-  <h2>User Profile</h2>
-
-    {{ user.f_name }}, it is a beautiful day to schedule your medications! 
+  <section class="container">
   
-  <h2>Add a medication to your med list</h2>
-    <div class="container-fluid">
+  </section>
+  <section class="h-100 mx-3 full-columns">
+    <div class="row h-100">
+  <aside class="col-4 h-100 bg-light d-flex justify-content-center">
+    <div class="container my-4">
+      <h2>User Profile</h2>
+
+      <br>
+
+      <h3>{{ user.f_name }}, it is a beautiful day to schedule your medications!</h3>
+
+      <br>
+
+      <h2>Add a medication to your med list</h2>
+
+      <br>
+
       <form action="/user-page" id="add_med" method="POST">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
@@ -28,10 +40,11 @@
         <input type="submit" value="Add Medication">
       </form>
     </div>
-
+  </aside>
+  <main class="col h-100 overflow-y">
   
-    <h2>My Medications</h2>
-    <div class="container-fluid">
+    <div class="container py-4 content">
+      <h2>My Medications</h2>
       <ul>
       {% for key, value in med_options.items() %}
         <div id="user_meds"> 
@@ -72,7 +85,9 @@
       {% endfor %}
       </ul>
     </div>
-
+    </main>
+    </div>
+    </section>
     <script>
  
     document.addEventListener('DOMContentLoaded', () => {
