@@ -14,6 +14,7 @@
 </head>
 
 <body>
+  {% block content %} put your content here {% endblock %}
   <div id="flash"> 
     <ul>
         {% for message in get_flashed_messages() %}
@@ -21,42 +22,10 @@
         {% endfor %}
     </ul>
   </div>
-  <nav class="navbar navbar-expand-md nav-transparent w-100">
-  <div class="container-fluid">
-    <img class="navbar-brand" src="/static/img/myPillHelper.jpg" alt width="200px" height="95px">
-    <div id="navbar" class="navbar-collapse collapse navbar-expand-lg justify-content-center align-items-center">
-            <ul class="navbar-nav">
-              <li class="nav-item">
-                <a class="nav-link" href="/">Home</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
-              </li>
-              {% if session.get('user_name',None) %}
-              <li class="nav-item">
-              <a class="nav-link" href="/user-page">Your Profile</a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" href="/logout">Log Out</a>
-              </li>
-              {% else %}
-              <li class="nav-item">
-              <a class="nav-link" href="/login">Log In</a>
-              </li>
-              <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-      
-
-    </div>
-  </div>
-  </nav>
+  
   
 
-  {% block content %} put your content here {% endblock %}
+  
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -71,4 +40,5 @@
     crossorigin="anonymous"></script>
     
 </body>
+
 </html>

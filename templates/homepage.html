@@ -1,10 +1,57 @@
+<div class="homepage">
 {% extends 'base.html' %}
 
 {% block title %} My Pill Helper {% endblock %}
-<div class="homepage">
-{% block content %}
 
-<h1>Welcome to My Pill Helper</h1>
+{% block content %}
+ 
+
+    <nav class="navbar border-bottom shadow-sm">
+        <a class="navbar-brand" href="/">
+        <img src="/static/img/myPillHelper.jpg" width="80" height="60" alt="">
+        </a>
+        <div class="navbar-links">
+            {% if session.get('user_name',None) %}
+              <h2>
+              <a href="/logout">Log Out</a>
+              </h2>
+              {% else %}
+              <h2>
+              <a href="/login">Log In</a>
+              </h2>
+              {% endif %}
+        </div>
+    </nav>
+  
+
+  <div class="card-deck mb-3 text-center">
+
+    <div class="card mb-4 shadow-sm">
+      
+      <div class="card-body">
+        <h2><a href="/find_meds">Identify an Unknown pill</a></h2>
+      </div>
+    </div>
+
+    <div class="card mb-4 shadow-sm">
+      
+      <div class="card-body">
+        <h2>
+
+              {% if session.get('user_name',None) %}
+              <h2>
+              <a href="/user-page">Your Profile</a>
+              </h2>
+              {% else %}
+              <h2>
+              <a href="/register">Register</a>
+              </h2>
+              {% endif %}
+        </h2>
+      </div>
+    </div>
+
+  </div>
 
 
 {% endblock %}
