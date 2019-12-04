@@ -191,7 +191,6 @@ def send_user_data():
 
     print(med_info)
     med_dictionary = db_helper.make_object_dictionary(med_info)
-
     print(med_dictionary, "THIS IS THE MED INFO DICT.")
     # med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
     # # print(med_dictionary)
