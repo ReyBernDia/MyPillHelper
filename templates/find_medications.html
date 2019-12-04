@@ -12,24 +12,24 @@
         <div class="navbar-links my-2 my-md-0 mr-md-3">
             <ul class="navbar-nav">
               <li class="nav-item">
-                <a class="nav-link p-2 text-dark" href="/">Home</a>
+                <a class="nav-link nav-link-text p-2 text-dark" href="/">Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link p-2 text-dark" href="/find_meds">Pill Search</a>
+                <a class="nav-link nav-link-text p-2 text-dark" href="/find_meds">Pill Search</a>
               </li>
               {% if session.get('user_name',None) %}
               <li class="nav-item">
-              <a class="nav-link p-2 text-dark" href="/user-page">Your Profile</a>
+              <a class="nav-link nav-link-text p-2 text-dark" href="/user-page">Your Profile</a>
               </li>
               <li class="nav-item">
-              <a class="nav-link p-2 text-dark" href="/logout">Log Out</a>
+              <a class="nav-link nav-link-text p-2 text-dark" href="/logout">Log Out</a>
               </li>
               {% else %}
               <li class="nav-item">
-              <a class="nav-link p-2 text-dark" href="/login">Log In</a>
+              <a class="nav-link nav-link-text p-2 text-dark" href="/login">Log In</a>
               </li>
               <li class="nav-item">
-              <a class="nav-link p-2 text-dark" href="/register">Register</a>
+              <a class="nav-link nav-link-text p-2 text-dark" href="/register">Register</a>
               </li>
               {% endif %}
             </ul>

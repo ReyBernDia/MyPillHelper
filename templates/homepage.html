@@ -6,11 +6,11 @@
 {% block content %}
  
 
-    <nav class="navbar border-bottom shadow-sm">
+    <nav class="navbar border-bottom shadow-sm opacity">
         <a class="navbar-brand my-0 mr-md-auto" href="/">
         <img src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
         </a>
-        <div class="navbar-links my-2 my-md-0 mr-md-3 p-2">
+        <div class="navbar-links my-2 my-md-0 mr-md-3 p-2 ">
             {% if session.get('user_name',None) %}
               <h2>
               <a href="/logout" class="text-dark">Log Out</a>
@@ -24,19 +24,16 @@
     </nav>
   
 
-  <div class="card-deck mb-3 text-center">
+  <div class="card-deck text-center">
 
-    <div class="card mb-4 shadow-sm">
-      
-      <div class="card-body">
+    <div class="card mb-4 shadow-sm color-clear">
+      <div class="card-body my-5">
         <h2 class="user-margin"><a href="/find_meds" class="text-dark">Pill Search</a></h2>
       </div>
     </div>
 
-    <div class="card mb-4 shadow-sm">
-      
-      <div class="card-body">
-
+    <div class="card mb-4 shadow-sm color-clear">
+      <div class="card-body my-5 ">
               {% if session.get('user_name',None) %}
               <h2 class="user-margin">
               <a href="/user-page" class="text-dark">Your Profile</a>

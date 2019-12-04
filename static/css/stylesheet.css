@@ -73,6 +73,14 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
 }
 
+.nav-link-text {
+    font-size: 1.2em;
+}
+
+.opacity {
+    opacity: 0.9;
+}
+
 .nav-ele-1 {
     width: 100%;
     margin-left: auto;
@@ -87,7 +95,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .card-deck {
-    margin-top: 30%;
+    margin-top: 20%;
     padding: 20px 40px;
 
 }
@@ -165,10 +173,11 @@ h1, h2, h3, h4, h5, h6 {
 
 .footer {
     text-align: center!important;
-    margin-top: auto;
-    margin-bottom: auto;
+    position: absolute;
+    bottom:80;
     margin-left: 10%;
     margin-right: 10%;
+    height: 30px;
     padding: 30px 80px;
 }
 
@@ -177,4 +186,9 @@ img {
     border-radius: 5px;
     border-color: black;
     margin: auto;
+}
+
+.color-clear {
+    background-color: white;
+    opacity: 0.8;
 }
