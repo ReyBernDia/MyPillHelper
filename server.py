@@ -187,7 +187,7 @@ def send_user_data():
 
     medications = user.u_meds #get medications for user in session. 
     # print(medications)
-    med_info = User_meds.query.filter(User_meds.med_id == med_id).one()
+    med_info = User_meds.query.filter(User_meds.med_id == med_id).first()
 
     print(med_info)
     med_dictionary = db_helper.make_object_dictionary(med_info)
