@@ -2,50 +2,91 @@
 {% block title %} User Profile {% endblock %}
 {% block content %}
 
-  <section class="container">
-  
-  </section>
-  <section class="h-100 mx-3 full-columns">
-    <div class="row h-100">
-  <aside class="col-4 h-100 bg-light d-flex justify-content-center">
-    <div class="container my-4">
+
+ 
+  <nav class="navbar navbar-expand-md w-100">
+  <div class="container-fluid">
+    <img class="navbar-brand" src="/static/img/myPillHelper.jpg" alt width="200px" height="95px">
+    <div id="navbar" class="navbar-collapse collapse navbar-expand-lg justify-content-center align-items-center">
+            <ul class="navbar-nav">
+              <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
+              </li>
+              {% if session.get('user_name',None) %}
+              <li class="nav-item">
+              <a class="nav-link" href="/user-page">Your Profile</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link" href="/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item">
+              <a class="nav-link" href="/login">Log In</a>
+              </li>
+              <li class="nav-item">
+              <a class="nav-link" href="/register">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+    </div>
+  </div>
+      <div class="user-margin container h-100">
       <h2>User Profile</h2>
 
       <br>
-
-      <h3>{{ user.f_name }}, it is a beautiful day to schedule your medications!</h3>
-
-      <br>
+     </div>
+     
+    <div class="user-margin my-2 container h-100">
 
       <h2>Add a medication to your med list</h2>
 
       <br>
+    </div>
+    <div class="user-margin container h-100">
 
       <form action="/user-page" id="add_med" method="POST">
+        <div class="container-fluid">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
+        </div>
+        <div class="container-fluid">
         <label for="med_name">Strength of Medication:</label>
         <input type="text" id="med_strength" name="med_strength" required>
+        </div>
+        <div class="container-fluid">
         <label for="qty_per_dose">Quantity Per Dose:</label>  
         <input type="number" id="qty_per_dose" name="qty_per_dose" required>
+        </div>
+        <div class="container-fluid">
         <label for="dosing">Dosing Schedule:</label>
         <select id="dosing" name="dosing" required>
             <option value="1">Once Daily</option>
             <option value="2">Twice Daily</option>
             <option value="3">Three Times Daily</option>
         </select>
+        </div>
+        <div class="container-fluid">
         <label for="start_date">Start Date:</label>
         <input type="date" id="start_date" name="start_date" required>
-
+        </div>
+        <div class="container-fluid">
         <input type="submit" value="Add Medication">
+        </div>
       </form>
     </div>
-  </aside>
-  <main class="col h-100 overflow-y">
+  </nav>
+
+
+
+
   
-    <div class="container py-4 content">
+  
+    <div class="my-meds container-fluid">
       <h2>My Medications</h2>
-      <ul>
+      <div id="border">
       {% for key, value in med_options.items() %}
         <div id="user_meds"> 
         <h3 id="med_name"> Medication Name: {{ key }} </h3> 
@@ -83,11 +124,12 @@
         </div> 
 
       {% endfor %}
-      </ul>
+      </div>
     </div>
-    </main>
-    </div>
-    </section>
+  
+
+
+    
     <script>
  
     document.addEventListener('DOMContentLoaded', () => {
