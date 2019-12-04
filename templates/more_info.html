@@ -4,8 +4,39 @@
 
 {% block content %}
 
+ <nav class="navbar navbar-expand-md w-100">
+  <div class="container-fluid">
+    <a class="navbar-brand my-0 mr-md-auto" href="/">
+        <img src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
+        </a>
+        <div class="navbar-links my-2 my-md-0 mr-md-3">
+            <ul class="navbar-nav">
+              <li class="nav-item p-2">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item p-2">
+                <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
+              </li>
+              {% if session.get('user_name',None) %}
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/user-page">Your Profile</a>
+              </li>
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/login">Log In</a>
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/register">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+    </div>
+  </div>
+  </nav>
 
-<div class="container-fluid">
+<div class="container-fluid pill-id-margin">
   <h2>More Information on Your Medication</h2> 
   <h3>Common Medication Name:</h3>
   <p>  
@@ -34,10 +65,14 @@
   
 
 </div>
-<div class="container-fluid" id=footer_more_info> 
+<footer class="footer">
+<div class="container-fluid"> 
+<h6>
 Occasionally you will find that there is less information 
 than you may have expected. We apologize for the inconvenience. We are currently using 
 a database that is still expanding on a regular basis. Thank you for understanding.
+</h6>
 </div>
+</footer>
 
 {% endblock %}

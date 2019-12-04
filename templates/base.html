@@ -14,17 +14,19 @@
 </head>
 
 <body>
+
   {% block content %} put your content here {% endblock %}
   <div id="flash"> 
     <ul>
         {% for message in get_flashed_messages() %}
-        <p>{{ message }}</p>
+        <div lass="alert alert-secondary" role="alert">
+          <p>{{ message }}</p>
+          
+        </div>
+        
         {% endfor %}
     </ul>
   </div>
-  
-  
-
   
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -38,7 +40,7 @@
     src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"
     integrity="sha256-T0Vest3yCU7pafRw9r+settMBX6JkKN06dqBnpQ8d30="
     crossorigin="anonymous"></script>
-    
+
 </body>
 
 </html>

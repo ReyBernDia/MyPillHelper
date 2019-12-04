@@ -7,10 +7,10 @@
  
 
     <nav class="navbar border-bottom shadow-sm">
-        <a class="navbar-brand" href="/">
-        <img src="/static/img/myPillHelper.jpg" width="80" height="60" alt="">
+        <a class="navbar-brand my-0 mr-md-auto" href="/">
+        <img src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
         </a>
-        <div class="navbar-links">
+        <div class="navbar-links my-2 my-md-0 mr-md-3 p-2">
             {% if session.get('user_name',None) %}
               <h2>
               <a href="/logout">Log Out</a>
@@ -29,7 +29,7 @@
     <div class="card mb-4 shadow-sm">
       
       <div class="card-body">
-        <h2><a href="/find_meds">Identify an Unknown pill</a></h2>
+        <h2 class="user-margin"><a href="/find_meds">Identify an Unknown pill</a></h2>
       </div>
     </div>
 
@@ -39,7 +39,7 @@
         <h2>
 
               {% if session.get('user_name',None) %}
-              <h2>
+              <h2 class="user-margin">
               <a href="/user-page">Your Profile</a>
               </h2>
               {% else %}

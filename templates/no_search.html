@@ -4,12 +4,44 @@
 
 {% block content %}
 
+<nav class="navbar navbar-expand-md w-100">
+  <div class="container-fluid">
+    <a class="navbar-brand my-0 mr-md-auto" href="/">
+        <img src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
+        </a>
+        <div class="navbar-links my-2 my-md-0 mr-md-3">
+            <ul class="navbar-nav">
+              <li class="nav-item p-2">
+                <a class="nav-link" href="/">Home</a>
+              </li>
+              <li class="nav-item p-2">
+                <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
+              </li>
+              {% if session.get('user_name',None) %}
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/user-page">Your Profile</a>
+              </li>
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/logout">Log Out</a>
+              </li>
+              {% else %}
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/login">Log In</a>
+              <li class="nav-item p-2">
+              <a class="nav-link" href="/register">Register</a>
+              </li>
+              {% endif %}
+            </ul>
+    </div>
+  </div>
+  </nav>
+
     <div id="no_search_results"> 
       <h1>There were no results to your search.</h1> <br>
-      <p>
+      <h6>
         Please try again with a different approach. 
         If nothing was entered, please populate at least one item.
-      </p>
+      </h6>
       <p id="link"><a href="/find_meds">Go back to: Identify an Unknown pill</a></p>
     </div> 
     

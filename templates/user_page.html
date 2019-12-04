@@ -6,7 +6,7 @@
  
   <nav class="navbar navbar-expand-md w-100">
   <div class="container-fluid">
-    <img class="navbar-brand" src="/static/img/myPillHelper.jpg" alt width="200px" height="95px">
+    <img class="navbar-brand" src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
     <div id="navbar" class="navbar-collapse collapse navbar-expand-lg justify-content-center align-items-center">
             <ul class="navbar-nav">
               <li class="nav-item">
@@ -16,9 +16,6 @@
                 <a class="nav-link" href="/find_meds">Identify an Unknown pill</a>
               </li>
               {% if session.get('user_name',None) %}
-              <li class="nav-item">
-              <a class="nav-link" href="/user-page">Your Profile</a>
-              </li>
               <li class="nav-item">
               <a class="nav-link" href="/logout">Log Out</a>
               </li>
@@ -86,40 +83,58 @@
   
     <div class="my-meds container-fluid">
       <h2>My Medications</h2>
-      <div id="border">
+      <div class="border">
       {% for key, value in med_options.items() %}
         <div id="user_meds"> 
-        <h3 id="med_name"> Medication Name: {{ key }} </h3> 
-        <div>
-            <form action="/show_schedule_form", method = "POST">
-            <input type="submit" value="Schedule This Med">
-            <input type="hidden" name="med_strength" value="{{key}}">
-            <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
-            </form>
-        </div>
-        <h3>Strength(s)</h3>
-        
-        <p>
-            {% for val in value['strength'] %}
-                <li>{{ val }}</li>
-            {% endfor %}
-        </p>
-        <img src="{{ value['img_path'][0] }}" width =10% height=10%>
-        <br>
-        <button class="userMedInfo" id="med_indication"><h3>Indications</h3></button>
-        <p id="dict_indications"></p>
+          <div class="container-fluid">
+          <h3 id="med_name"> Medication Name: {{ key }} </h3> 
+          <div class="container">
 
-        <button class="userMedInfo" id="med_dosing"><h3>Dosing Information</h3></button>
-        <p id="dict_dosing"></p>
+          <div class="container-fluid">
+              <form action="/show_schedule_form", method = "POST">
+              <input type="submit" value="Schedule Reminders for This Medication">
+              <input type="hidden" name="med_strength" value="{{key}}">
+              <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
+              </form>
+          </div>
 
-        <button class="userMedInfo" id="med_pharm"><h3>Pharmacy Class</h3></button>
-        <p id="dict_pharm"></p>
+          <div class="container-fluid">
+          <h5>Strength</h5>
+          <p>
+              {% for val in value['strength'] %}
+                  <li>{{ val }}</li>
+              {% endfor %}
+          </p>
+          </div>
 
-        <button class="userMedInfo" id="med_contraindications"><h3>Contraindications</h3></button>
-        <p id="dict_contra"></p>
+          <div class="container-fluid">
+          <img src="{{ value['img_path'][0] }}" width =10% height=10%>
+          </div>
 
-        <button class="userMedInfo" id="med_more_info"><h3>More Information for Patients</h3></button>
-        <p id="dict_more"></p>
+          <div class="container-fluid">
+          <button class="userMedInfo" id="med_indication"><h5>Indications</h5></button>
+          <p id="dict_indications"></p>
+          </div>
+
+          <div class="container-fluid">
+          <button class="userMedInfo" id="med_dosing"><h5>Dosing Information</h5></button>
+          <p id="dict_dosing"></p>
+          </div>
+
+          <div class="container-fluid">
+          <button class="userMedInfo" id="med_pharm"><h5>Pharmacy Class</h5></button>
+          <p id="dict_pharm"></p>
+          </div>
+
+          <div class="container-fluid">
+          <button class="userMedInfo" id="med_contraindications"><h5>Contraindications</h5></button>
+          <p id="dict_contra"></p>
+          </div>
+
+          <div class="container-fluid">
+          <button class="userMedInfo" id="med_more_info"><h5>More Information for Patients</h5></button>
+          <p id="dict_more"></p>
+          </div>  
         
         </div> 
 

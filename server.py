@@ -23,7 +23,7 @@ import time
 
 
 app = Flask(__name__)
-app.permanent_session_lifetime = timedelta(days=31)
+app.permanent_session_lifetime = timedelta(days=1)
 # Required to use Flask sessions and the debug toolbar
 app.secret_key = "QWEASDZXC"
 

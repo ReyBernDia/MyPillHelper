@@ -68,6 +68,13 @@ body {
     width: 100%;
 }
 
+.nav-ele-1 {
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding-bottom: 1rem;
+}
+
 
 .blog-header {
     line-height: 1;
@@ -75,7 +82,7 @@ body {
 }
 
 .card-deck {
-    margin-top: 100px;
+    margin-top: 30%;
     padding: 20px 40px;
 
 }
@@ -99,6 +106,10 @@ body {
 .py-1 {
     padding-bottom: .25rem!important;
 }
+ .p-2 {
+    padding: 1rem!important;
+ }
+
 
 .sticky-top {
     position: -webkit-sticky;
@@ -116,8 +127,8 @@ body {
     margin-top: 500px;
 }
 
-#border {
-    border-style: 1px solid;
+.border {
+    border-style: 2px solid;
     border-radius: 2px;
     border-color: grey;
 }
@@ -129,5 +140,19 @@ body {
 
 .text-center {
     text-align: center!important;
+}
+
+.pill-id-margin {
+    margin-top: 200px;
+    padding: 20px 40px;
+}
+
+.footer {
+    text-align: center!important;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 30px 80px;
 }
 
