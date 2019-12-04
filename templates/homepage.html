@@ -13,11 +13,11 @@
         <div class="navbar-links my-2 my-md-0 mr-md-3 p-2">
             {% if session.get('user_name',None) %}
               <h2>
-              <a href="/logout">Log Out</a>
+              <a href="/logout" class="text-dark">Log Out</a>
               </h2>
               {% else %}
               <h2>
-              <a href="/login">Log In</a>
+              <a href="/login" class="text-dark">Log In</a>
               </h2>
               {% endif %}
         </div>
@@ -29,25 +29,23 @@
     <div class="card mb-4 shadow-sm">
       
       <div class="card-body">
-        <h2 class="user-margin"><a href="/find_meds">Identify an Unknown pill</a></h2>
+        <h2 class="user-margin"><a href="/find_meds" class="text-dark">Pill Search</a></h2>
       </div>
     </div>
 
     <div class="card mb-4 shadow-sm">
       
       <div class="card-body">
-        <h2>
 
               {% if session.get('user_name',None) %}
               <h2 class="user-margin">
-              <a href="/user-page">Your Profile</a>
+              <a href="/user-page" class="text-dark">Your Profile</a>
               </h2>
               {% else %}
-              <h2>
-              <a href="/register">Register</a>
+              <h2 class="user-margin">
+              <a href="/register" class="text-dark">Register</a>
               </h2>
               {% endif %}
-        </h2>
       </div>
     </div>
 
