@@ -88,6 +88,12 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 1rem;
 }
 
+.form-ele{
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0.3rem;
+}
 
 .blog-header {
     line-height: 1;
@@ -97,8 +103,13 @@ h1, h2, h3, h4, h5, h6 {
 .card-deck {
     margin-top: 20%;
     padding: 20px 40px;
-
 }
+
+#card-with-img {
+    margin-top: auto;
+    padding: 20px 20px;
+}
+
 .top-margin {
     margin-top: 100px;
 }
@@ -125,7 +136,10 @@ h1, h2, h3, h4, h5, h6 {
 .py-3 {
     padding: 0.5rem!important;
 }
-
+.py-4 {
+    padding-top: 2rem!important;
+    padding-bottom: 2rem!important;
+}
 
 
 .sticky-top {
@@ -186,9 +200,14 @@ img {
     border-radius: 5px;
     border-color: black;
     margin: auto;
+    padding: auto;
 }
 
 .color-clear {
     background-color: white;
     opacity: 0.8;
+}
+
+#justify-left {
+    text-align: left;
 }
