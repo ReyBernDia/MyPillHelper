@@ -76,18 +76,20 @@
       </form>
     </div>
   </nav>
-  
-    <div class="my-meds container-fluid user-margin-2">
-      <h2 class="py-2">My Medications</h2>
-        <div class="border">
-        {% for key, value in med_options.items() %}
-          <div id="user_meds"> 
 
-            <div class="container-fluid py-2">
+  <div class="spacer-1"></div>
+  
+    <div class="container user-margin-2">
+      <h2>My Medications</h2>
+        <div class="row" >
+        {% for key, value in med_options.items() %}
+          <div class="my-meds col-3 py-2" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+
+            <div class="container-fluid py-3">
               <h3 id="med_name"> Medication Name: {{ key }} </h3> 
             </div>
 
-            <div class="container-fluid py-2">
+            <div class="container-fluid py-3">
               <form action="/show_schedule_form", method = "POST">
               <input type="submit" value="Schedule Reminders for This Medication">
               <input type="hidden" name="med_strength" value="{{key}}">
@@ -95,7 +97,7 @@
               </form>
             </div>
 
-            <div class="container-fluid py-2">
+            <div class="container-fluid py-3">
               <h5>Strength</h5>
                 <p>
                 {% for val in value['strength'] %}
@@ -104,8 +106,8 @@
                 </p>
             </div>
 
-            <div class="container-fluid py-2">
-              <img src="{{ value['img_path'][0] }}" width =10% height=10%>
+            <div class="container-fluid py-3">
+              <img src="{{ value['img_path'][0] }}" width =25% height=25%>
             </div>
 
             <div class="container-fluid py-3">
@@ -166,7 +168,7 @@
             });
           });
     </script>
-    
+
     <script>
 
     document.addEventListener('DOMContentLoaded', () => {

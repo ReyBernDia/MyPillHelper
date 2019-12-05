@@ -130,7 +130,7 @@ h1, h2, h3, h4, h5, h6 {
 .py-1 {
     padding-bottom: .25rem!important;
 }
-.p-2 {
+.py-2 {
     padding: 1rem!important;
  }
 .py-3 {
@@ -161,8 +161,10 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .my-meds{
-    margin-top: 200px;
-    margin-left: 1rem;
+    margin: 2rem;
+    padding: 20px 40px;
+    max-width: 50%;
+    max-height: 50%;
 }
 
 .border {
@@ -214,4 +216,7 @@ img {
 
 #add_med_form {
     display:none;
+}
+.spacer-1 {
+    margin-top: 280px;
 }

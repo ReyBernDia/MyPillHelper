@@ -115,7 +115,7 @@ def process_registration():
     session['user_name'] = user.f_name
     session['user_id'] = user.user_id
     flash("Successfully logged in!")
-    return redirect('/')
+    return redirect('/user-page')
 
 @app.route('/login', methods=['GET'])
 def display_login_page():
@@ -200,7 +200,7 @@ def send_user_data():
 
     
 
-@app.route('/user_add_med', methods=['POST'])
+@app.route('/user-page', methods=['POST'])
 def process_adding_user_medications():
     """Add user medications to DB from input on user profile page."""
 
@@ -319,14 +319,10 @@ def add_med_to_databse():
     del session['dosing_schedule']
     del session['rx_start_date']
 
-    medications = user.u_meds  #get medications for user in session. 
-    med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-    print(med_dictionary)
+
 
     flash("Medication Added!")
-    return render_template('user_page.html', 
-                            user=user, 
-                            med_options=med_dictionary)
+    return redirect('/user-page')
 
 @app.route("/add_med_unverified")
 def display_add_medication_form():
@@ -452,31 +448,23 @@ def schedule_medication():
 
 
 if __name__ == "__main__":
-    # We have to set debug=True here, since it has to be True at the
-    # point that we invoke the DebugToolbarExtension
-    # r.send_for_active_users()
+    
+    
     schedule.every().day.at("10:00").do(send_for_active_users)
     print("I am checking for active users.")
 
+    # We have to set debug=True here, since it has to be True at the
     app.debug = True
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
     connect_to_db(app)
-
+    # point that we invoke the DebugToolbarExtension
     # Use the DebugToolbar
     DebugToolbarExtension(app)
 
     schedule.run_continuously(1)
-    # while schedule.jobs:
-    #     schedule.run_pending()
-    #     time.sleep(1)
-    # while True:
-    #     schedule.run_pending()
-    #     time.sleep(10)
-    # print("I am scheduling pending")
-    # schedule.run_pending()
-
+    
     app.run(port=5000, host='0.0.0.0')
 
 
