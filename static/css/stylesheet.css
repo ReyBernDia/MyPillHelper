@@ -211,3 +211,7 @@ img {
 #justify-left {
     text-align: left;
 }
+
+#add_med_form {
+    display:none;
+}

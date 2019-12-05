@@ -38,15 +38,14 @@
       <br>
      </div>
      
-    <div class="user-margin-2 my-2 container h-100">
-
+    <div class="user-margin-2 my-2 container h-100" >
+      <button id="add_med_btn">
       <h2>Add a medication to your med list</h2>
-
-      <br>
+      </button>
     </div>
     <div class="user-margin-2 container h-100">
 
-      <form action="/user-page" id="add_med" method="POST">
+      <form action="/user-page" id="add_med_form" method="POST">
         <div class="container-fluid">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
@@ -77,11 +76,15 @@
       </form>
     </div>
   </nav>
+<script type="text/javascript">
 
+ document.addEventListener('DOMContentLoaded', () => {
 
-
-
-  
+        $("#add_med_btn").on('click', () => {
+          $("#add_med_form").toggle();
+        });
+      });
+</script>
   
     <div class="my-meds container-fluid user-margin-2">
       <h2 class="py-2">My Medications</h2>
@@ -166,9 +169,8 @@
     
     <script>
 
- 
     document.addEventListener('DOMContentLoaded', () => {
-        
+
         $('[name=indication_btn]').on('click',(get_med_info) =>  {
 
             console.log(get_med_info);
