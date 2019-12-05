@@ -9,11 +9,12 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Taviraj', serif;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: bold;
 }
 
 .homepage{
-    background-image: url(/static/img/pic3.jpg);
+    background-image: url(/static/img/pill_9.jpg);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center center;
