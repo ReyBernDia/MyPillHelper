@@ -205,7 +205,11 @@
                   const indication_id = '#dict_indications_' + med_id.value
                   console.log(indication_id);
                   const updateIndications = document.querySelector(indication_id);
-                  updateIndications.innerHTML = (`${valIndications}`);
+                  if (valIndications === ""){
+                    updateIndications.innerHTML = ("Sorry, there are no results for common uses at this time.");
+                  } else {
+                    updateIndications.innerHTML = (`${valIndications}`);
+                  }
                 });
 
               })
@@ -245,7 +249,12 @@
                   const valDosing = (data['dose_admin']);
                   const dosing_id = '#dict_dosing_' + med_id.value
                   const updateDosing = document.querySelector(dosing_id);
-                  updateDosing.innerHTML = (`${valDosing}`);
+                  
+                  if (valDosing === ""){
+                    updateDosing.innerHTML = ("Sorry, there are no results for Dosing Information at this time.");
+                  } else {
+                    updateDosing.innerHTML = (`${valDosing}`);
+                  }
                 });
 
               })
@@ -282,7 +291,12 @@
                   const valPharm = (data['pharm_class']);
                   const pharm_id = '#dict_pharm_' + med_id.value
                   const updatePharm = document.querySelector(pharm_id);
-                  updatePharm.innerHTML = (`${valPharm}`);
+                  
+                  if (valPharm === ""){
+                    updatePharm.innerHTML = ("Sorry, there are no results for the Pharmacy Class at this time.");
+                  } else {
+                    updatePharm.innerHTML = (`${valPharm}`);
+                  }
                 });
 
               })
@@ -318,7 +332,12 @@
                   const valContra = (data['contraindications']);
                   const contra_id = '#dict_contra_' + med_id.value
                   const updateContra = document.querySelector(contra_id);
-                  updateContra.innerHTML = (`${valContra}`);
+                  
+                  if (valContra === ""){
+                    updateContra.innerHTML = ("Sorry, there are no results for the Contraindications at this time.");
+                  } else {
+                    updateContra.innerHTML = (`${valContra}`);
+                  }
                 });
 
               })
@@ -354,7 +373,12 @@
                   const valMoreInfo = (data['more_info']);
                   const more_info_id = '#dict_more_' + med_id.value
                   const updateMoreInfo = document.querySelector(more_info_id);
-                  updateMoreInfo.innerHTML = (`${valMoreInfo}`);
+                  
+                  if (valMoreInfo === ""){
+                    updateMoreInfo.innerHTML = ("Sorry, there are no results for More Information at this time.");
+                  } else {
+                    updateMoreInfo.innerHTML = (`${valMoreInfo}`);
+                  }
                 });
 
               })
