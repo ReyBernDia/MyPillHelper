@@ -115,8 +115,8 @@
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" id="med_indication"><h5>Indications</h5></button>
-              <p id="dict_indications"></p>
+              <button class="userMedInfo" name="med_indication_btn" id="med_indication_{{value['med_id']}}" value="{{ value['med_id'] }}"><h5>Indications</h5></button>
+              <p id="dict_indications_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
@@ -155,12 +155,16 @@
 
     
     <script>
+
  
     document.addEventListener('DOMContentLoaded', () => {
         
-        $('#med_indication').on('click', (get_med_info) =>  {
-            console.log('I am getting med info.');
-            const med_id = document.getElementById("med_id");
+        $('[name=med_indication_btn]').on('click',(get_med_info) =>  {
+
+            console.log(get_med_info);
+
+            // console.log($(this.target).val());
+            const med_id = document.getElementById(get_med_info.currentTarget.id);
 
             const entry = {
                 med_id: med_id.value,
@@ -183,7 +187,9 @@
                 response.json().then(function(data) {
                   console.log(data);
                   const valIndications = (data['indications']);
-                  const updateIndications = document.querySelector('#dict_indications');
+                  const elemVariable = '#dict_indications_' + med_id.value
+                  console.log(elemVariable);
+                  const updateIndications = document.querySelector(elemVariable);
                   updateIndications.innerHTML = (`${valIndications}`);
                 });
 
@@ -192,6 +198,7 @@
                 console.log("Fetch error: " + error);
             });
         });
+
 
         $('#med_dosing').on('click', (get_med_info) =>  {
             console.log('I am getting med info.');
