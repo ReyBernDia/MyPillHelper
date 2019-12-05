@@ -115,28 +115,38 @@
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" name="med_indication_btn" id="med_indication_{{value['med_id']}}" value="{{ value['med_id'] }}"><h5>Indications</h5></button>
+              <button class="userMedInfo" name="indication_btn" id="med_indication_{{value['med_id']}}" value="{{ value['med_id'] }}">
+                <h5>Indications</h5>
+              </button>
               <p id="dict_indications_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" id="med_dosing"><h5>Dosing Information</h5></button>
-              <p id="dict_dosing"></p>
+              <button class="userMedInfo" name="dosing_btn" id="med_dosing_{{value['med_id']}}" value="{{ value['med_id'] }}">
+                <h5>Dosing Information</h5>
+              </button>
+              <p id="dict_dosing_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" id="med_pharm"><h5>Pharmacy Class</h5></button>
-              <p id="dict_pharm"></p>
+              <button class="userMedInfo" name="pharm_btn" id="med_pharm_{{value['med_id']}}" value="{{ value['med_id'] }}">
+                <h5>Pharmacy Class</h5>
+              </button>
+              <p id="dict_pharm_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" id="med_contraindications"><h5>Contraindications</h5></button>
-              <p id="dict_contra"></p>
+              <button class="userMedInfo" name="contra_btn" id="med_contraindications_{{value['med_id']}}" value="{{ value['med_id'] }}">
+                <h5>Contraindications</h5>
+              </button>
+              <p id="dict_contra_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
-              <button class="userMedInfo" id="med_more_info"><h5>More Information for Patients</h5></button>
-              <p id="dict_more"></p>
+              <button class="userMedInfo" name="more_info_btn" id="med_more_info_{{value['med_id']}}" value="{{ value['med_id'] }}">
+                <h5>More Information for Patients</h5>
+              </button>
+              <p id="dict_more_{{value['med_id']}}"></p>
             </div>  
 
           </div> 
@@ -159,7 +169,7 @@
  
     document.addEventListener('DOMContentLoaded', () => {
         
-        $('[name=med_indication_btn]').on('click',(get_med_info) =>  {
+        $('[name=indication_btn]').on('click',(get_med_info) =>  {
 
             console.log(get_med_info);
 
@@ -187,9 +197,9 @@
                 response.json().then(function(data) {
                   console.log(data);
                   const valIndications = (data['indications']);
-                  const elemVariable = '#dict_indications_' + med_id.value
-                  console.log(elemVariable);
-                  const updateIndications = document.querySelector(elemVariable);
+                  const indication_id = '#dict_indications_' + med_id.value
+                  console.log(indication_id);
+                  const updateIndications = document.querySelector(indication_id);
                   updateIndications.innerHTML = (`${valIndications}`);
                 });
 
@@ -200,9 +210,11 @@
         });
 
 
-        $('#med_dosing').on('click', (get_med_info) =>  {
+        $('[name=dosing_btn]').on('click', (get_med_info) =>  {
+
             console.log('I am getting med info.');
-            const med_id = document.getElementById("med_id");
+
+            const med_id = document.getElementById(get_med_info.currentTarget.id);
 
             const entry = {
                 med_id: med_id.value,
@@ -226,7 +238,8 @@
                   console.log(data);
                 
                   const valDosing = (data['dose_admin']);
-                  const updateDosing = document.querySelector('#dict_dosing');
+                  const dosing_id = '#dict_dosing_' + med_id.value
+                  const updateDosing = document.querySelector(dosing_id);
                   updateDosing.innerHTML = (`${valDosing}`);
                 });
 
@@ -235,9 +248,10 @@
                 console.log("Fetch error: " + error);
             });
         });
-        $('#med_pharm').on('click', (get_med_info) =>  {
+
+        $('[name=pharm_btn]').on('click', (get_med_info) =>  {
             console.log('I am getting med info.');
-            const med_id = document.getElementById("med_id");
+            const med_id = document.getElementById(get_med_info.currentTarget.id);
 
             const entry = {
                 med_id: med_id.value,
@@ -261,7 +275,8 @@
                   console.log(data);
                 
                   const valPharm = (data['pharm_class']);
-                  const updatePharm = document.querySelector('#dict_pharm');
+                  const pharm_id = '#dict_pharm_' + med_id.value
+                  const updatePharm = document.querySelector(pharm_id);
                   updatePharm.innerHTML = (`${valPharm}`);
                 });
 
@@ -270,9 +285,9 @@
                 console.log("Fetch error: " + error);
             });
         });
-        $('#med_contraindications').on('click', (get_med_info) =>  {
+        $('[name=contra_btn]').on('click', (get_med_info) =>  {
             console.log('I am getting med info.');
-            const med_id = document.getElementById("med_id");
+            const med_id = document.getElementById(get_med_info.currentTarget.id);
 
             const entry = {
                 med_id: med_id.value,
@@ -296,7 +311,8 @@
                   console.log(data);
                 
                   const valContra = (data['contraindications']);
-                  const updateContra = document.querySelector('#dict_contra');
+                  const contra_id = '#dict_contra_' + med_id.value
+                  const updateContra = document.querySelector(contra_id);
                   updateContra.innerHTML = (`${valContra}`);
                 });
 
@@ -305,9 +321,9 @@
                 console.log("Fetch error: " + error);
             });
         });
-        $('#med_more_info').on('click', (get_med_info) =>  {
+        $('[name=more_info_btn]').on('click', (get_med_info) =>  {
             console.log('I am getting med info.');
-            const med_id = document.getElementById("med_id");
+            const med_id = document.getElementById(get_med_info.currentTarget.id);
 
             const entry = {
                 med_id: med_id.value,
@@ -331,7 +347,8 @@
                   console.log(data);
                 
                   const valMoreInfo = (data['more_info']);
-                  const updateMoreInfo = document.querySelector('#dict_more');
+                  const more_info_id = '#dict_more_' + med_id.value
+                  const updateMoreInfo = document.querySelector(more_info_id);
                   updateMoreInfo.innerHTML = (`${valMoreInfo}`);
                 });
 
