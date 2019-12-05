@@ -44,23 +44,43 @@
   </p>
   <h3>This medication is commonly used for the following purpose:</h3>
   <p> 
-    {{api_results['indications']}}
+    {% if api_results['indications'] == "" %} 
+      Sorry, there are no results for common uses at this time.
+      {% else %}
+      {{api_results['indications']}}
+    {% endif %}
   </p>
   <h3>Dosing Information:</h3>
   <p>
-    {{api_results['dosing_info']}}
+     {% if api_results['dosing_info'] == "" %} 
+        Sorry, there are no results for Dosing Information at this time.
+        {% else %}
+        {{api_results['dosing_info']}}
+      {% endif %}
   </p>
   <h3>More Information for Patients:</h3>
   <p>
-    {{api_results['info_for_patients']}}
+    {% if api_results['info_for_patients'] == "" %} 
+      Sorry, there are no results for More Information at this time.
+      {% else %}
+      {{api_results['info_for_patients']}}
+    {% endif %}
   </p>
   <h3>Consider these Contraindications:</h3>
   <p>
-    {{api_results['contraindications']}}
+    {% if api_results['contraindications'] == "" %} 
+      Sorry, there are no results for the Contraindications at this time.
+      {% else %}
+      {{api_results['contraindications']}}
+    {% endif %}
   </p>
   <h3>This medication is of the following Pharmacy Class:</h3>
-  <p>  
-    {{api_results['pharm_class']}}
+  <p> 
+    {% if api_results['pharm_class'] == "" %} 
+      Sorry, there are no results for the Pharmacy Class at this time.
+      {% else %}
+      {{api_results['pharm_class']}}
+    {% endif %}
   </p>
   
 
