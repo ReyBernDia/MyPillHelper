@@ -160,18 +160,22 @@ def logout_user():
 def display_user_page():
     """Display specific information about user."""
 
-    user = Users.query.filter(Users.user_id == session['user_id']).first()
+    if session.get('user_name',None):
+        user = Users.query.filter(Users.user_id == session['user_id']).first()
 
-    medications = user.u_meds #get medications for user in session. 
-    # print(medications)
+        medications = user.u_meds #get medications for user in session. 
+        # print(medications)
 
-    med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-    print(med_dictionary)
-    
+        med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
+        print(med_dictionary)
+        
 
-    return render_template('user_page.html', 
+        return render_template('user_page.html', 
                             user=user,
-                            med_options=med_dictionary) 
+                            med_options=med_dictionary)
+    else:
+        return redirect('/login')
+         
                             
 @app.route('/user_data', methods=['POST'])
 def send_user_data():
