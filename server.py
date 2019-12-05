@@ -200,7 +200,7 @@ def send_user_data():
 
     
 
-@app.route('/user-page', methods=['POST'])
+@app.route('/user_add_med', methods=['POST'])
 def process_adding_user_medications():
     """Add user medications to DB from input on user profile page."""
 
@@ -218,6 +218,9 @@ def process_adding_user_medications():
     rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
 
     #put medication info into session to grab after user confirmation. 
+    # if (for_med_name and for_med_strength and strength and qty_per_dose and 
+    #     dosing_schedule and start_date and rx_start_date) == None:
+    #     return
     session['for_med_name'] = for_med_name
     session['strength'] = strength
     session['qty_per_dose'] = qty_per_dose
