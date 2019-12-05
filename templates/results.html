@@ -41,12 +41,12 @@
 
 <div class="pill-id-margin text-center"> 
 <div>
+
 <ul>
  {% for key, value in med_options.items() %}
 
     
-    <div class="container" id="med_results"> 
-      <div class="row">
+    
         <div class="my-meds col-3 py-2" id="user_meds" style="border: 1px solid black; border-radius: 5px;">
           <a href="/more_info/{{value[0]}}" class="text-secondary">
           <div class="py-3">
@@ -54,7 +54,8 @@
             <p> Strength: {{ key }} </p> 
           </div>
           <div class="py-3">
-            <img src="{{ value[1][0] }}" width=70% height=70%>
+            <img  id="result-img" src="{{ value[1][0] }}" width =25% height=25% 
+            onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
           </div>
           </a>
         </div>
@@ -78,5 +79,10 @@ than you may have expected. We apologize for the inconvenience. We are currently
 
 </div>
 </footer>
+
+
+
+
+
  
 {% endblock %}
