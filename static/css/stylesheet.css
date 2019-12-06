@@ -219,8 +219,6 @@ h1, h2, h3, h4, h5, h6 {
     text-align: center!important;
     position: absolute;
     bottom:80;
-    margin-left: 10%;
-    margin-right: 10%;
     height: 30px;
     padding: 30px 80px;
 }

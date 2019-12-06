@@ -36,64 +36,71 @@
   </div>
   </nav>
 
-<div class="container-fluid pill-id-margin">
+<div class="spacer-2"></div>
+
+<div class="container-fluid px-5">
+
+  <div class="container-fluid mt-3 mb-5">
   <h2>More Information on Your Medication</h2> 
-  <h3>Common Medication Name:</h3>
-  <p>  
-    {{api_results['brand_name']}}
-  </p>
-  <h3>This medication is commonly used for the following purpose:</h3>
-  <p> 
-    {% if api_results['indications'] == "" %} 
-      Sorry, there are no results for common uses at this time.
-      {% else %}
-      {{api_results['indications']}}
-    {% endif %}
-  </p>
-  <h3>Dosing Information:</h3>
-  <p>
-     {% if api_results['dosing_info'] == "" %} 
-        Sorry, there are no results for Dosing Information at this time.
+  </div>
+
+  <div class="container-fluid my-2 overflow-wrap text-justify">
+    <h3 class="my-3 ">Common Medication Name:</h3>
+    <p class="my-3">  
+      {{api_results['brand_name']}}
+    </p>
+    <h3 class="my-3">This medication is commonly used for the following purpose:</h3>
+    <p class="my-3"> 
+      {% if api_results['indications'] == "" %} 
+        Sorry, there are no results for common uses at this time.
         {% else %}
-        {{api_results['dosing_info']}}
+        {{api_results['indications']}}
       {% endif %}
-  </p>
-  <h3>More Information for Patients:</h3>
-  <p>
-    {% if api_results['info_for_patients'] == "" %} 
-      Sorry, there are no results for More Information at this time.
-      {% else %}
-      {{api_results['info_for_patients']}}
-    {% endif %}
-  </p>
-  <h3>Consider these Contraindications:</h3>
-  <p>
-    {% if api_results['contraindications'] == "" %} 
-      Sorry, there are no results for the Contraindications at this time.
-      {% else %}
-      {{api_results['contraindications']}}
-    {% endif %}
-  </p>
-  <h3>This medication is of the following Pharmacy Class:</h3>
-  <p> 
-    {% if api_results['pharm_class'] == "" %} 
-      Sorry, there are no results for the Pharmacy Class at this time.
-      {% else %}
-      {{api_results['pharm_class']}}
-    {% endif %}
-  </p>
-  
+    </p>
+    <h3 class="my-3">Dosing Information:</h3>
+    <p class="my-3 ">
+       {% if api_results['dosing_info'] == "" %} 
+          Sorry, there are no results for Dosing Information at this time.
+          {% else %}
+          {{api_results['dosing_info']}}
+        {% endif %}
+    </p>
+    <h3 class="my-3">More Information for Patients:</h3>
+    <p class="my-3">
+      {% if api_results['info_for_patients'] == "" %} 
+        Sorry, there are no results for More Information at this time.
+        {% else %}
+        {{api_results['info_for_patients']}}
+      {% endif %}
+    </p>
+    <h3 class="my-3">Consider these Contraindications:</h3>
+    <p class="my-3">
+      {% if api_results['contraindications'] == "" %} 
+        Sorry, there are no results for the Contraindications at this time.
+        {% else %}
+        {{api_results['contraindications']}}
+      {% endif %}
+    </p>
+    <h3 class="my-3">This medication is of the following Pharmacy Class:</h3>
+    <p class="my-3"> 
+      {% if api_results['pharm_class'] == "" %} 
+        Sorry, there are no results for the Pharmacy Class at this time.
+        {% else %}
+        {{api_results['pharm_class']}}
+      {% endif %}
+    </p>
+  </div>
 
 </div>
-<footer class="footer">
-<div class="container-fluid"> 
+
+<footer class="footer mt-4">
+<div class="container-fluid mt-5"> 
 <h5>
 Occasionally you will find that there is less information 
 than you may have expected. We apologize for the inconvenience. We are currently using a database that is still expanding on a regular basis. Thank you for understanding.
 </h5>
 <h4> Disclaimer </h4>
   <p>Do not rely on My Pill Helper to make decisions regarding medical care. Always speak to your health provider about the risks and benefits of FDA-regulated products. All information used in My Pill Helper is from the NIH-Pillbox and the Open FDA database.</p>
-
 </div>
 </footer>
 
