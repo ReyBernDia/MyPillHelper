@@ -14,7 +14,7 @@
     <div id="med_results"> 
       <p id="med_name"> Medication Name: {{ value[0] }} </p> 
       <p> Strength: {{ key }} </p> 
-      <img src="{{ value[1][0] }}" width=40% height=40%>
+      <img src="{{ value[1][0] }}" width=40% height=40% onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
       </a>
     </div> 
     <h1>Is this your correct medication?</h1>
