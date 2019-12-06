@@ -5,33 +5,46 @@
 
 {% block content %}
 
-<div id="med_info">
-<p>
- <ul>
-  {% for key, value in database_med.items() %}
 
-    
-    <div id="med_results"> 
-      <p id="med_name"> Medication Name: {{ value[0] }} </p> 
-      <p> Strength: {{ key }} </p> 
-      <img src="{{ value[1][0] }}" width=40% height=40% onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
-      </a>
-    </div> 
-    <h1>Is this your correct medication?</h1>
-    <form action="/add_med" id="yes_add_med" method="POST">
-    <input class="btn btn-dark" type="submit" value="Yes">
-    <input type="hidden" name="med_image" value="{{value[1][0]}}">
-    <input type="hidden" name="med_strength" value="{{key}}">
-    </form>
+<div class="container my-5"> 
+  <div class="row justify-content-center" >
 
-    <form action="/add_med_unverified" id="no_add_input" >
-    <input class="btn btn-dark" type="submit" value="No">
-    </form>
-    
-  {% endfor %}
-</ul>
-</p>
+    {% for key, value in database_med.items() %}
+      
+      <div class="col-sm-3 my-1 mx-1 overflow-auto text-center" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+        <div class="my-4 mx-4">
+          <h6>Medication Name</h6>
+          <p id="med_name">{{ value[0] }} </p> 
+          <h6>Strength</h6>
+          <p> {{ key }} </p> 
+          <img src="{{ value[1][0] }}" width=40% height=40% onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
+          
+            <div class="container">
+              <h5>Is this your correct medication?</h5>
+              <div class="row">
 
+                <div class="col">
+                  <form action="/add_med" id="yes_add_med" method="POST" >
+                  <input class="btn btn-dark" type="submit" value="Yes">
+                  <input type="hidden" name="med_image" value="{{value[1][0]}}">
+                  <input type="hidden" name="med_strength" value="{{key}}">
+                  </form>
+                </div>
+
+                <div class="col">
+                  <form action="/add_med_unverified" id="no_add_input" >
+                  <input class="btn btn-dark" type="submit" value="No">
+                  </form>
+                </div>
+
+              </div>
+            </div>
+        </div>
+      </div>
+
+    {% endfor %}
+
+  </div>
 </div>
 
 
