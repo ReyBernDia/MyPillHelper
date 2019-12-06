@@ -256,3 +256,6 @@ img {
 .font_increase {
     font-size: 1.4em;
 }
+#font_larger {
+    font-size: xx-large;
+}

@@ -27,7 +27,7 @@
   <div class="card-deck text-center">
 
     <div class="card mb-4 shadow-sm color-clear">
-      <div class="card-body my-5">
+      <div class="card-body my-5 font_larger">
         <h2 class="user-margin"><a href="/find_meds" class="text-dark">Pill Search</a></h2>
       </div>
     </div>
@@ -35,7 +35,7 @@
     <div class="card mb-4 shadow-sm color-clear">
       <div class="card-body my-5 ">
               {% if session.get('user_name',None) %}
-              <h2 class="user-margin">
+              <h2 class="user-margin font_larger">
               <a href="/user-page" class="text-dark">Your Profile</a>
               </h2>
               {% else %}
