@@ -183,8 +183,8 @@ h1, h2, h3, h4, h5, h6 {
 .my-meds{
     margin: 2rem;
     padding: 20px 40px;
-    max-width: 50%;
-    max-height: 50%;
+    max-width: 500px;
+    max-height: 600px;
 }
 
 .border {
@@ -247,6 +247,9 @@ img {
 }
 .spacer-1 {
     margin-top: 280px;
+}
+.spacer-2 {
+    margin-top: 200px;
 }
 
 .color-solid {

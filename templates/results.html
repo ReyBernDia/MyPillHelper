@@ -5,79 +5,75 @@
 {% block content %}
 
  <nav class="navbar navbar-expand-md w-100">
-  <div class="container-fluid">
-    <a class="navbar-brand my-0 mr-md-auto" href="/">
-        <img src="/static/img/PillHelperLogo.jpg" alt width="250px" height="125px">
-        </a>
-        <div class="navbar-links my-2 my-md-0 mr-md-3">
-            <ul class="navbar-nav">
-              <li class="nav-item p-2">
-                <a class="nav-link nav-link-text text-dark" href="/">Home</a>
-              </li>
-              <li class="nav-item p-2">
-                <a class="nav-link nav-link-text text-dark" href="/find_meds">Pill Search</a>
-              </li>
-              {% if session.get('user_name',None) %}
-              <li class="nav-item p-2">
-              <a class="nav-link nav-link-text text-dark" href="/user-page">Your Profile</a>
-              </li>
-              <li class="nav-item p-2">
-              <a class="nav-link nav-link-text text-dark" href="/logout">Log Out</a>
-              </li>
-              {% else %}
-              <li class="nav-item p-2">
-              <a class="nav-link nav-link-text text-dark" href="/login">Log In</a>
-              <li class="nav-item p-2">
-              <a class="nav-link nav-link-text text-dark" href="/register">Register</a>
-              </li>
-              {% endif %}
-            </ul>
-    </div>
-  </div>
-  <div class="nav-ele-1 text-center">
-  <h1> Click on your medication for more information</h1>
-  </div>
-  </nav>
-
-<div class="pill-id-margin text-center"> 
-<div>
-
-<ul>
- {% for key, value in med_options.items() %}
-
-    
-    
-        <div class="my-meds col-3 py-2" id="user_meds" style="border: 1px solid black; border-radius: 5px;">
-          <a href="/more_info/{{value[0]}}" class="text-secondary">
-          <div class="py-3">
-            <p id="med_name"> Medication Name: {{ value[0] }} </p> 
-            <p> Strength: {{ key }} </p> 
+    <div class="container-fluid">
+      <a class="navbar-brand my-0 mr-md-auto" href="/">
+          <img src="/static/img/PillHelperLogo.jpg" alt width="250px" height="125px">
+          </a>
+          <div class="navbar-links my-2 my-md-0 mr-md-3">
+              <ul class="navbar-nav">
+                <li class="nav-item p-2">
+                  <a class="nav-link nav-link-text text-dark" href="/">Home</a>
+                </li>
+                <li class="nav-item p-2">
+                  <a class="nav-link nav-link-text text-dark" href="/find_meds">Pill Search</a>
+                </li>
+                {% if session.get('user_name',None) %}
+                <li class="nav-item p-2">
+                <a class="nav-link nav-link-text text-dark" href="/user-page">Your Profile</a>
+                </li>
+                <li class="nav-item p-2">
+                <a class="nav-link nav-link-text text-dark" href="/logout">Log Out</a>
+                </li>
+                {% else %}
+                <li class="nav-item p-2">
+                <a class="nav-link nav-link-text text-dark" href="/login">Log In</a>
+                <li class="nav-item p-2">
+                <a class="nav-link nav-link-text text-dark" href="/register">Register</a>
+                </li>
+                {% endif %}
+              </ul>
           </div>
-          <div class="py-3">
-            <img  id="result-img" src="{{ value[1][0] }}" width =25% height=25% 
+    </div>
+    <div class="nav-ele-1 text-center">
+      <h2> Click On Your Medication For More Information</h2>
+    </div>
+  </nav>
+<div class="spacer-2"></div>
+
+<div class=" container"> 
+  <div class="row justify-content-center" >
+
+ {% for key, value in med_options.items() %}
+    
+        <div class="col-sm-3 my-1 mx-1 text-center" id="user_meds" style="border: 1px solid black; border-radius: 5px;">
+          <a href="/more_info/{{value[0]}}" class="text-dark">
+          <div class="my-4 mx-4">
+            
+            <h6>Medication Name</h6>
+            <p id="med_name"> {{ value[0] }} </p> 
+
+            <h6>Strength</h6>
+            <p > {{ key }} </p> 
+            
+            <img  id="result-img" src="{{ value[1][0] }}" width =80% height=80% 
             onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
           </div>
           </a>
-        </div>
-      </div>
-    </div> 
+        </div> 
     
   {% endfor %}
-
-</ul>
-</div>
+  </div>
 </div>
 
 <footer class="footer">
-<div class="container-fluid"> 
-<h5>
-Occasionally you will find that there is less information 
-than you may have expected. We apologize for the inconvenience. We are currently using a database that is still expanding on a regular basis. Thank you for understanding.
-</h5>
-<h4> Disclaimer </h4>
-  <p>Do not rely on My Pill Helper to make decisions regarding medical care. Always speak to your health provider about the risks and benefits of FDA-regulated products. All information used in My Pill Helper is from the NIH-Pillbox and the Open FDA database.</p>
+  <div class="container-fluid"> 
+    <h5>
+    Occasionally you will find that there are less photos than expected. We apologize for the inconvenience. We are currently using a database that is still expanding on a regular basis. Thank you for understanding.
+    </h5>
+  <h4> Disclaimer </h4>
+    <p>Do not rely on My Pill Helper to make decisions regarding medical care. Always speak to your health provider about the risks and benefits of FDA-regulated products. All information used in My Pill Helper is from the NIH-Pillbox and the Open FDA database.</p>
 
-</div>
+  </div>
 </footer>
 
 

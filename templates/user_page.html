@@ -82,7 +82,7 @@
       <h2>My Medications</h2>
         <div class="row" >
         {% for key, value in med_options.items() %}
-          <div class="my-meds col-3 py-2" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+          <div class="my-meds col-3 py-2 overflow-auto" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
 
             <div class="container-fluid py-3">
               <h3 id="med_name"> Medication Name: {{ key }} </h3> 
