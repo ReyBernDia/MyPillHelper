@@ -43,6 +43,16 @@ h1, h2, h3, h4, h5, h6 {
     margin-bottom: 100px;
 
 }
+.form-schedule {
+    width: 100%;
+    max-width: 900px;
+    padding: 10px;
+    margin-top: 10px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-bottom: 10px;
+
+}
 
 .col-4 {
     -webkit-box-flex: 0;
@@ -254,6 +264,9 @@ img {
 }
 .spacer-4 {
     margin-top: 150px;
+}
+.spacer-5 {
+    margin-top: 120px;
 }
 
 .color-solid {
