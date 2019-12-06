@@ -5,11 +5,11 @@ body {
     color: #000;
     line-height: 1.3;
     -webkit-font-smoothing: antialiased;
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: bold;
 }
 
@@ -82,10 +82,12 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0rem 0rem;
     background-color: white;
     width: 100%;
+    overflow: hidden;
+    z-index:300;
 }
 
 .nav-link-text {
-    font-size: 1.2em;
+    font-size: 1.4em;
 }
 
 .opacity {
@@ -117,10 +119,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #card-with-img {
-    margin-top: auto;
-    padding: 20px 20px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding: 5px 5px;
 }
-
+#card-size-1 {
+    margin: 1%;
+    padding-right: 10px;
+    padding-left: 10px;
+}
 .top-margin {
     margin-top: 100px;
 }
@@ -180,7 +189,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .border {
     border-style: 2px solid;
-    border-radius: 2px;
+    border-radius: 3px;
     border-color: grey;
 }
 .center {
@@ -191,10 +200,18 @@ h1, h2, h3, h4, h5, h6 {
 
 .text-center {
     text-align: center!important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: center center;
 }
 
+.mar-50 {
+    margin-top: 30%;
+    margin-bottom: 50%;
+}
 .pill-id-margin {
-    margin-top: 200px;
+    margin-top: 120px;
     padding: 20px 40px;
 }
 
@@ -210,7 +227,7 @@ h1, h2, h3, h4, h5, h6 {
 
 img {
     border-style: 5px solid;
-    border-radius: 5px;
+    border-radius: 3px;
     border-color: black;
     margin: auto;
     padding: auto;
@@ -234,4 +251,8 @@ img {
 
 .color-solid {
     background-color: white;
+}
+
+.font_increase {
+    font-size: 1.4em;
 }

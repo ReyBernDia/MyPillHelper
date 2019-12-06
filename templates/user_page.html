@@ -38,9 +38,9 @@
       <br>
      </div>
      
-    <div class="user-margin-2 my-2 container h-100" >
-      <button id="add_med_btn">
-      <h2>Add a medication to your med list</h2>
+    <div class="user-margin-2 my-2 container h-100 " >
+      <button id="add_med_btn" class="border">
+      <h2>Add a Medication</h2>
       </button>
     </div>
     <div class="user-margin-2 container h-100 " id="add_med_form">
@@ -177,6 +177,7 @@
 
             console.log(get_med_info);
 
+
             // console.log($(this.target).val());
             const med_id = document.getElementById(get_med_info.currentTarget.id);
 
@@ -204,11 +205,15 @@
                   const indication_id = '#dict_indications_' + med_id.value
                   console.log(indication_id);
                   const updateIndications = document.querySelector(indication_id);
+                  console.log(document.querySelector(indication_id), "HELLO");
                   if (valIndications === ""){
                     updateIndications.innerHTML = ("Sorry, there are no results for common uses at this time.");
+                  } else if (valIndications !== "") {
+                    updateIndications.innerHTML = ("");
                   } else {
                     updateIndications.innerHTML = (`${valIndications}`);
                   }
+
                 });
 
               })

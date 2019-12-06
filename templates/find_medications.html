@@ -38,30 +38,30 @@
   </nav>
 
 <div class="pill-id-margin">
-<h1 class="mx-8">Pill Search</h1>
+<h1 class="mx-4 my-5">Pill Search</h1>
 <div class="card-deck text-center" id="card-with-img">
 
-    <div class="card shadow-sm color-clear">
-      <div class="card-body my-5">
-        <span>
-          <h2>How to identify a pill using the Pill Identifier?</h2>
-          <div id="justify-left">
-          <p>1. Enter an imprint code that appears on the pill e.g. APO </p>
-          <p>2. Select the score. The score is a groove to both indicate that 
+    <div class="card shadow-sm color-clear py-3" id="card-size-1">
+      <div class="card-body my-1 text-center">
+        <span id="justify-left">
+          <h3>How to identify a pill using the Pill Identifier?</h3>
+          <div >
+          <p class ="font_increase">1. Enter an imprint code that appears on the pill e.g. APO </p>
+          <p class ="font_increase">2. Select the score. The score is a groove to both indicate that 
           a pill may be split and to aid the practice of splitting pills. If the pill 
           does not appear to have a groove, select 1.</p>
-          <p>3. Select the shape (optional)</p>
-          <p>4. Select the the pill color (optional) </p>
+          <p class ="font_increase">3. Select the shape (optional)</p>
+          <p class ="font_increase">4. Select the the pill color (optional) </p>
           </div>
-          <h3>Please populate as many fields as you are able to.</h3>
+          <h4>Please populate as many fields as you are able to.</h4>
         </span>
       </div>
     </div>
 
-    <div class="card shadow-sm color-clear">
-      <div class="card-body my-5 ">
+    <div class="card shadow-sm color-clear py-3" id="card-size-1">
+      <div class="card-body my-1 text-center">
           <span>
-          <img src="\static\img\Imprint.jpg" width=95% height=70%>
+          <img src="\static\img\Imprint.jpg" width=70% height=50%>
           </span>   
       </div>
     </div>
@@ -71,28 +71,30 @@
 
 </div>
 
-<div class="py-4">
+<div class="mx-4 my-5">
     <form action="/results" id="find_meds">
+       <div class="form-row">
+    <div class="col">
+      <label for="imprint"></label>
+      <input type="text" class="form-control" id="pill_imprint"  placeholder ="Imprint" name="pill_imprint">
+    </div>
 
-    <span class="form-ele">
-      <label for="imprint"> Imprint </label>
-      <input type="text" id="pill_imprint" name="pill_imprint">
-    </span>
-
-    <span class="form-ele">
-      <label for="score"> Score </label>
-      <select type="number" id="pill_score" name="pill_score">
+    <div class="col">
+      <label for="score"> </label>
+      <select type="number" class="form-control" id="pill_score" name="pill_score">
+          <option value="unknown">Score</option>
           <option value="unknown">Unknown</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
           <option value="4">4</option>
       </select>
-    </span>
+    </div>
 
-    <span class="form-ele">
-    <label for="shape"> Shape </label>
-    <select id="pill_shape" name="pill_shape">
+    <div class="col">
+    <label for="shape"> </label>
+    <select id="pill_shape" class="form-control" name="pill_shape">
+        <option value="unknown">Shape</option>
         <option value="unknown">Unknown</option>
         <option value="bullet">Bullet</option>
         <option value="capsule">Capsule</option>
@@ -114,11 +116,12 @@
         <option value="trapezoid">Trapezoid</option>
         <option value="triangle">Triangle</option>
     </select>
-  </span>
+  </div>
 
-    <span class="form-ele">
-    <label for="color"> Color </label>
-    <select id="pill_color" name="pill_color">
+    <div class="col">
+    <label for="color"></label>
+    <select id="pill_color" class="form-control" name="pill_color">
+        <option value="unknown">Color</option>
         <option value="Unknown">Unknown</option>
         <option value="red">Red</option>
         <option value="orange">Orange</option>
@@ -133,14 +136,15 @@
         <option value="white">White</option>
         <option value="brown">Brown</option>
     </select>
-  </span>
-    <span class="form-ele">
-    <label for="name_of_med"> Medication Name </label>
-    <input type="text" id="name_of_med" name="name_of_med">
-  </span>
-    <span class="form-ele">
-    <input type="submit" value="Find">
-    </span>
+  </div>
+
+    <div class="col">
+      <label for="name_of_med"> </label>
+      <input type="text" class="form-control" id="name_of_med" placeholder="Medication Name" name="name_of_med">
+    </div>
+    <div class="col-auto.my-1">
+       <input class="btn btn-dark text-center mar-50" type="submit" value="Find">
+    </div>
     </form>
 </div>
 
