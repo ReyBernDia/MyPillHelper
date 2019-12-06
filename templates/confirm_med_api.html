@@ -5,34 +5,42 @@
 
 {% block content %}
 
-<div class=" container"> 
-  <div class="row justify-content-center" >
-    <div id="med_info col-sm-3 my-1 mx-1 text-center">
-    <p>
-        Brand Name/s: 
-        {{api_results['brand_name']}}
-    </p>
-    <p>
-        Indications: 
-        {{api_results['indications']}}
-    </p>
-    </div>
-    <h1>Is this your correct medication?</h1>
-    <form action="/add_med" id="yes_add_med" method="POST">
-    <input class="btn btn-dark" type="submit" value="Yes">
-    <input type="hidden" name="api_results" value="{{api_results}}">
-    <input type="hidden" name="indications" value="{{api_results['indications']}}">
-    <input type="hidden" name="dosing_info" value="{{api_results['dosing_info']}}">
-    <input type="hidden" name="info_for_patients" value="{{api_results['info_for_patients']}}">
-    <input type="hidden" name="contraindications" value="{{api_results['contraindications']}}">
-    <input type="hidden" name="brand_name" value="{{api_results['brand_name']}}">
-    <input type="hidden" name="pharm_class" value="{{api_results['pharm_class']}}">
-    </form>
+<div class=" container my-5 mx-5"> 
+        <h6>Brand Name/s:</h6>
+        <p> 
+            {{api_results['brand_name']}}
+        </p>
+        <h6>Indications:</h6>
+        <p> 
+            {{api_results['indications']}}
+        </p>
+   
+    <div class="container">
+      <h5>Is this your correct medication?</h5>
+      <div class="row">
 
-    <form action="/add_med_unverified" id="no_add_input" >
-    <input class="btn btn-dark" type="submit" value="No">
-    </form>
-  </div>
+        <div class="col">
+            <form action="/add_med" id="yes_add_med" method="POST">
+            <input class="btn btn-dark" type="submit" value="Yes">
+            <input type="hidden" name="api_results" value="{{api_results}}">
+            <input type="hidden" name="indications" value="{{api_results['indications']}}">
+            <input type="hidden" name="dosing_info" value="{{api_results['dosing_info']}}">
+            <input type="hidden" name="info_for_patients" value="{{api_results['info_for_patients']}}">
+            <input type="hidden" name="contraindications" value="{{api_results['contraindications']}}">
+            <input type="hidden" name="brand_name" value="{{api_results['brand_name']}}">
+            <input type="hidden" name="pharm_class" value="{{api_results['pharm_class']}}">
+            </form>
+        </div>
+
+        <div class="col">
+            <form action="/add_med_unverified" id="no_add_input" >
+            <input class="btn btn-dark" type="submit" value="No">
+            </form>
+        </div>
+
+      </div>
+    </div>
+  
 </div>
 
 {% endblock %}
