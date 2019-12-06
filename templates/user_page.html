@@ -7,7 +7,7 @@
   <nav class="navbar navbar-expand-md w-100">
   <div class="container-fluid">
     <a class="navbar-brand my-0 mr-md-auto" href="/">
-        <img src="/static/img/myPillHelper.jpg" alt width="250px" height="125px">
+        <img src="/static/img/PillHelperLogo.jpg" alt width="250px" height="125px">
         </a>
         <div class="navbar-links my-2 my-md-0 mr-md-3">
             <ul class="navbar-nav">
@@ -43,9 +43,8 @@
       <h2>Add a medication to your med list</h2>
       </button>
     </div>
-    <div class="user-margin-2 container h-100">
-
-      <form action="/user-page" id="add_med_form" method="POST">
+    <div class="user-margin-2 container h-100 " id="add_med_form">
+      <form action="/user-page"  method="POST">
         <div class="container-fluid">
         <label for="med_name">Medication Name:</label>
         <input type="text" id="med_name" name="med_name" required>
