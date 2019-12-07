@@ -32,13 +32,11 @@
             </ul>
     </div>
   </div>
-      <div class="user-margin-2 container h-100">
-      <h2>User Profile</h2>
-
-      <br>
+      <div class=" container h-100 justify-content-center">
+      <h2>My Medications</h2>
      </div>
      
-    <div class="user-margin-2 my-2 container h-100 " >
+    <div class=" my-2 container h-100 justify-content-center" >
       <button id="add_med_btn" class=" btn btn-dark">
       <h4 class="text-center">Add a Medication</h4>
       </button>
@@ -78,26 +76,28 @@
 
   <div class="spacer-1"></div>
   
-    <div class="container user-margin-2">
-      <h2>My Medications</h2>
-        <div class="row" >
+    
+      
+        <div class=" container-flex"> 
+           <div class="row justify-content-center" >
         {% for key, value in med_options.items() %}
-          <div class="my-meds col-3 py-2 overflow-auto" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+          <div class="my-meds-2 col-4 py-2 overflow-auto" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
 
             <div class="container-fluid py-3">
-              <h3 id="med_name"> Medication Name: {{ key }} </h3> 
+              <h4>Medication Name</h4>
+              <h6 id="med_name"> {{ key }} </h6> 
             </div>
 
             <div class="container-fluid py-3">
               <form action="/show_schedule_form", method = "POST">
-              <input class="btn btn-dark" type="submit" value="Schedule Reminders for This Medication">
+              <input class="btn btn-dark" type="submit" value="Schedule Reminders">
               <input type="hidden" name="med_strength" value="{{key}}">
               <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
               </form>
             </div>
 
             <div class="container-fluid py-3">
-              <h5>Strength</h5>
+              <h6>Strength</h6>
                 <p>
                 {% for val in value['strength'] %}
                   <li>{{ val }}</li>
@@ -148,7 +148,8 @@
           </div> 
         {% endfor %}
         </div>
-    </div>
+      </div>
+    
   
       <footer class="footer">
       <div class="container-fluid"> 

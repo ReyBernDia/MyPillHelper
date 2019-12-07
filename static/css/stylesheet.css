@@ -196,6 +196,12 @@ h1, h2, h3, h4, h5, h6 {
     max-width: 500px;
     max-height: 600px;
 }
+.my-meds-2{
+    margin: 2rem;
+    padding: 20px 40px;
+    max-width: 450px;
+    max-height: 600px;
+}
 
 .border {
     border-style: 2px solid;
