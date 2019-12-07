@@ -36,28 +36,29 @@
       <h2>My Medications</h2>
      </div>
      
-    <div class=" my-2 container h-100 justify-content-center" >
+    <div class=" my-2 container h-100 justify-content-center my-3" >
       <button id="add_med_btn" class=" btn btn-dark">
-      <h4 class="text-center">Add a Medication</h4>
+      <h4 class="text-center my-0">Add a Medication</h4>
       </button>
     </div>
-    <div class="user-margin-2 container h-100 " id="add_med_form">
-      <form action="/user-page"  method="POST">
+    <div class="container" id="add_med_form">
+      <div class="text-center">
+      <form class="form-add" action="/user-page"  method="POST">
         <div class="container-fluid">
         <label for="med_name">Medication Name:</label>
-        <input type="text" id="med_name" name="med_name" required>
+        <input class="form-control" type="text" id="med_name" name="med_name" required>
         </div>
         <div class="container-fluid">
         <label for="med_name">Strength of Medication:</label>
-        <input type="text" id="med_strength" name="med_strength" required>
+        <input class="form-control" type="text" id="med_strength" name="med_strength" required>
         </div>
         <div class="container-fluid">
         <label for="qty_per_dose">Quantity Per Dose:</label>  
-        <input type="number" id="qty_per_dose" name="qty_per_dose" required>
+        <input class="form-control" type="number" id="qty_per_dose" name="qty_per_dose" required>
         </div>
         <div class="container-fluid">
         <label for="dosing">Dosing Schedule:</label>
-        <select id="dosing" name="dosing" required>
+        <select class="form-control" id="dosing" name="dosing" required>
             <option value="1">Once Daily</option>
             <option value="2">Twice Daily</option>
             <option value="3">Three Times Daily</option>
@@ -65,12 +66,13 @@
         </div>
         <div class="container-fluid">
         <label for="start_date">Start Date:</label>
-        <input type="date" id="start_date" name="start_date" required>
+        <input class="form-control" type="date" id="start_date" name="start_date" required>
         </div>
-        <div class="container-fluid">
+        <div class="container-fluid my-3">
         <input class="btn btn-dark" type="submit" value="Add Medication">
         </div>
       </form>
+      </div>
     </div>
   </nav>
 
@@ -90,7 +92,7 @@
 
             <div class="container-fluid py-3">
               <form action="/show_schedule_form", method = "POST">
-              <input class="btn btn-dark" type="submit" value="Schedule Reminders">
+              <input class="btn btn-dark font-weight-bold my-0" type="submit" value="Schedule Reminders">
               <input type="hidden" name="med_strength" value="{{key}}">
               <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
               </form>
@@ -112,35 +114,35 @@
 
             <div class="container-fluid py-3">
               <button class="userMedInfo btn btn-dark" name="indication_btn" id="med_indication_{{value['med_id']}}" value="{{ value['med_id'] }}" >
-                <h5>Indications</h5>
+                <h6 class="text-center align-middle my-0">Indications</h6>
               </button>
               <p id="dict_indications_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
               <button class="userMedInfo btn btn-dark" name="dosing_btn" id="med_dosing_{{value['med_id']}}" value="{{ value['med_id'] }}">
-                <h5>Dosing Information</h5>
+                <h6 class="text-center align-middle my-0">Dosing Information</h6>
               </button>
               <p id="dict_dosing_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
               <button class="userMedInfo btn btn-dark" name="pharm_btn" id="med_pharm_{{value['med_id']}}" value="{{ value['med_id'] }}">
-                <h5>Pharmacy Class</h5>
+                <h6 class="text-center align-middle my-0">Pharmacy Class</h6>
               </button>
               <p id="dict_pharm_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
               <button class="userMedInfo btn btn-dark" name="contra_btn" id="med_contraindications_{{value['med_id']}}" value="{{ value['med_id'] }}">
-                <h5>Contraindications</h5>
+                <h6 class="text-center align-middle my-0">Contraindications</h6>
               </button>
               <p id="dict_contra_{{value['med_id']}}"></p>
             </div>
 
             <div class="container-fluid py-3">
               <button class="userMedInfo btn btn-dark" name="more_info_btn" id="med_more_info_{{value['med_id']}}" value="{{ value['med_id'] }}">
-                <h5>More Information for Patients</h5>
+                <h6 class="text-center align-middle my-0">More Information for Patients</h6>
               </button>
               <p id="dict_more_{{value['med_id']}}"></p>
             </div>  
