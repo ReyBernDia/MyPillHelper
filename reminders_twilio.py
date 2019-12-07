@@ -87,8 +87,7 @@ def send_for_active_users():
                 db.session.commit()
 
 
-                message = f"""{user.user.f_name}, it is time to take 
-                {user.qty_per_dose} tablets/capsules of {user.brand_name}."""
+                message = f"{user.user.f_name}, it is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}."
 
                 phone = user.user.cell_number
 
@@ -104,10 +103,7 @@ def send_for_active_users():
                 db.session.commit()
 
 
-                message = f"""{user.user.f_name}, it is time to take 
-                {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have 
-                less than 3 days worth of medication, so remember to refill! 
-                You have {user.refills} refills left."""
+                message = f"{user.user.f_name}, it is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have less than 3 days worth of medication, so remember to refill! You have {user.refills} refills left."
 
                 phone = user.user.cell_number
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
@@ -125,9 +121,7 @@ def send_for_active_users():
                 db.session.add(user)
                 db.session.commit()
 
-                message = f"""{user.user.f_name}, assuming you refilled your medication. 
-                It is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. 
-                You have {user.refills} refills left."""
+                message = f"{user.user.f_name}, assuming you refilled your medication. It is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have {user.refills} refills left."
                 phone = user.user.cell_number
 
                 run_scheduled_for_texts(am,mid_day,pm,message,phone)
@@ -141,10 +135,7 @@ def send_for_active_users():
                 db.session.commit()
 
 
-                message = f"""{user.user.f_name}, it is time to take 
-                {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have 
-                less than 5 days worth of medication. You do not have any refills left. 
-                Remember to ask your doctor for refills if you need to!"""
+                message = f"{user.user.f_name}, it is time to take {user.qty_per_dose} tablets/capsules of {user.brand_name}. You have less than 5 days worth of medication. You do not have any refills left. Remember to ask your doctor for refills if you need to!"
 
                 phone = user.user.cell_number
 
@@ -158,10 +149,7 @@ def send_for_active_users():
                 db.session.add(user)
                 db.session.commit()
 
-                message = f"""{user.user.f_name}, it is time to finish up the rest of your
-                {user.brand_name}. You don't have any more refills, and you will be 
-                out of medication after this dose. Your text reminders for this 
-                medication will turn off now. Thank you!"""
+                message = f"{user.user.f_name}, it is time to finish up the rest of your {user.brand_name}. You don't have any more refills, and you will be out of medication after this dose. Your text reminders for this medication will turn off now. Thank you!"
 
                 phone = user.user.cell_number
 
