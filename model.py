@@ -38,11 +38,6 @@ class Meds(db.Model):
     def __repr__(self):
         return f"<Medication: {self.medicine_name} RXCUI: {self.rxcui}>"
 
-    # @classmethod
-    # def retreive_medications(self, input_one, input_two ): 
-    #     """Perform search queries based on input from find-meds form."""
-    #     search = Meds.query.filter((Meds.imprint.like('%'+search_by_+'%'))).all()
-    #     return search
 
 class Users(db.Model):
     """Registered users."""
@@ -101,11 +96,6 @@ class User_meds(db.Model):
     #Define relationship to users. 
     user = db.relationship("Users", 
                            backref=db.backref("u_meds"))
-
-    # def get_notification_time(self):
-        # appointment_time = arrow.get(self.am_time)
-        # reminder_time = appointment_time.replace(minutes=-self.delta)
-        # return reminder_time
 
     def __repr__(self):
         return f"<Med ID: {self.user_med_id} Med Name: {self.brand_name}>"

@@ -1,18 +1,14 @@
 from jinja2 import StrictUndefined
-
+from sqlalchemy import asc, update
 from flask import Flask, render_template, redirect, request, flash, session, g, make_response, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
 
 from model import connect_to_db, db, Meds, Users, User_meds
-
-from sqlalchemy import asc, update
-
-from datetime import datetime, timedelta
-
 import db_query_functions as db_helper
 import api
 from reminders_twilio import * 
 
+from datetime import datetime, timedelta
 import os
 from sys import argv
 from pprint import pprint
@@ -28,8 +24,7 @@ app.permanent_session_lifetime = timedelta(days=1)
 app.secret_key = "QWEASDZXC"
 
 # Normally, if you use an undefined variable in Jinja2, it fails
-# silently. This is horrible. Fix this so that, instead, it raises an
-# error.
+# silently. This is horrible. Fix this so that, instead, it raises an error.
 app.jinja_env.undefined = StrictUndefined
 
 @app.route("/")
@@ -52,10 +47,9 @@ def display_medication_search_results():
     score = request.args.get('pill_score')
     shape = (request.args.get('pill_shape')).upper() #in DB as all caps.
     color = (request.args.get('pill_color')).upper() #in DB as all caps.
-    name = (request.args.get('name_of_med')).capitalize() #names in snakecase. 
+    name = (request.args.get('name_of_med')).capitalize()  
 
     query_results = db_helper.query_with_find_meds_values(form_imprint, score, shape, color, name)
-
     med_dictionary = db_helper.make_dictionary_from_query(query_results)
 
     if len(med_dictionary) == 0:  #check if med_dictionary is empty. 
@@ -69,13 +63,6 @@ def display_more_info(value):
     """Given selected value, query FDA API to display more information on med."""
 
     api_results = api.query_fda_api(value)
-
-    # print("########API RESULTS#########")
-    # print(value)
-    # print(api_results)
-    # #Can return a dictionary -- then pass entire dictionary to jinja. 
-    # print("####################")
-
     return render_template("more_info.html", api_results=api_results)
 
 @app.route('/register', methods=['GET'])
@@ -83,7 +70,6 @@ def register_new_user():
     """Display user registration form."""
 
     return render_template("registration.html")
-
 
 @app.route('/register', methods=['POST'])
 def process_registration():
@@ -111,10 +97,10 @@ def process_registration():
         user.set_password(password_hash)
         db.session.add(user)
         db.session.commit()
-
+    #place user in session.
     session['user_name'] = user.f_name
     session['user_id'] = user.user_id
-    flash("Successfully logged in!")
+    # flash("Successfully logged in!"). #need to fix formating for flash messages
     return redirect('/user-page')
 
 @app.route('/login', methods=['GET'])
@@ -122,13 +108,12 @@ def display_login_page():
 
     return render_template("login.html")
 
-
 @app.route('/login', methods=['POST'])
 def login_user():
     """Login user and add them to the session."""
 
     #query DB using login information. 
-    f_name = request.form.get('first_name') #either lower case or upcase for user input discrepancy. 
+    f_name = request.form.get('first_name')  #either lower case or upcase for user input discrepancy. 
     cell= request.form.get('cell')
     cell_number = cell_verify(cell)  #get correctly formated cell number
     password_hash = request.form.get('password')
@@ -139,12 +124,11 @@ def login_user():
     if user and user.check_password(password_hash):
         session['user_name'] = user.f_name
         session['user_id'] = user.user_id
-        flash("Successfully logged in!")
+        # flash("Successfully logged in!")
         return redirect('/user-page')  #redirect to users page.
     else: 
         flash("That is not a valid email & password.")
         return redirect('/login')   
-
 
 @app.route('/logout')
 def logout_user():
@@ -152,7 +136,7 @@ def logout_user():
 
     del session['user_name']
     del session['user_id']
-    flash("Successfully logged out!")
+    # flash("Successfully logged out!") #need to fix formating for flash messages
 
     return redirect('/')
 
@@ -162,56 +146,31 @@ def display_user_page():
 
     if session.get('user_name',None):
         user = Users.query.filter(Users.user_id == session['user_id']).first()
-
         medications = user.u_meds #get medications for user in session. 
-        # print(medications)
-
         med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-        print(med_dictionary)
-        
-
         return render_template('user_page.html', 
                             user=user,
                             med_options=med_dictionary)
     else:
         return redirect('/login')
-         
                             
 @app.route('/user_data', methods=['POST'])
 def send_user_data():
     """Display specific information about user."""
 
-    req = request.get_json()
-
-    print(req, "THIS IS IN USER DATA")
-    med_id = req['med_id']
-    print(med_id, type(med_id))
-
+    req = request.get_json()  #get JSON from front-end
+    med_id = req['med_id']  #pull med_id from JSON
     user = Users.query.filter(Users.user_id == session['user_id']).first()
-
     medications = user.u_meds #get medications for user in session. 
-    # print(medications)
     med_info = User_meds.query.filter(User_meds.med_id == med_id).first()
-
-    print(med_info)
     med_dictionary = db_helper.make_object_dictionary(med_info)
-    print(med_dictionary, "THIS IS THE MED INFO DICT.")
-    # med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-    # # print(med_dictionary)
+    #make response to pass back to front-end
     res = make_response(jsonify(med_dictionary), 200)
-
     return res
-
-    
 
 @app.route('/user-page', methods=['POST'])
 def process_adding_user_medications():
     """Add user medications to DB from input on user profile page."""
-
-    #get user to keep them in the session. 
-    # user = Users.query.filter(Users.user_id == session['user_id']).first()
-    # session['user_name'] = user.f_name
-    # user_id = session['user_id']
 
     for_med_name = (request.form.get('med_name')).capitalize() #changed seed.py to have medicine name as caplitalize for display
     for_med_strength = (request.form.get('med_name')).upper() #strength in DB is upcase. 
@@ -220,22 +179,12 @@ def process_adding_user_medications():
     dosing_schedule = int(request.form.get('dosing'))
     start_date = request.form.get('start_date')
     rx_start_date = datetime.strptime(start_date,'%Y-%m-%d')
-
-    #put medication info into session to grab after user confirmation. 
-    # if (for_med_name and for_med_strength and strength and qty_per_dose and 
-    #     dosing_schedule and start_date and rx_start_date) == None:
-    #     return
+    #place info in session
     session['for_med_name'] = for_med_name
     session['strength'] = strength
     session['qty_per_dose'] = qty_per_dose
     session['dosing_schedule'] = dosing_schedule
     session['rx_start_date'] = rx_start_date
-
-    # print(med_name, type(med_name))
-    # print(strength, type(strength))
-    # print(qty_per_dose, type(qty_per_dose))
-    # print(dosing_schedule, type(dosing_schedule))
-    # print(rx_start_date, type(rx_start_date))
 
     search_db = (Meds.query.filter((Meds.strength.like('%'+for_med_strength+'%'))| 
                             (Meds.medicine_name.like('%'+for_med_name+'%')))
@@ -244,15 +193,12 @@ def process_adding_user_medications():
 
     database_med = db_helper.make_dictionary_from_query(search_db)
 
-    # print("THIS IS THE DB", database_med, len(database_med))
-
     if len(database_med) == 0: 
         #then med is not in db and need to query the API. 
         search_api = api.query_fda_api(for_med_name) 
         return render_template('confirm_med_api.html', api_results=search_api)
     else: 
         return render_template('confirm_med_db.html', database_med=database_med)
-
 
 @app.route("/add_med", methods=['POST'])
 def add_med_to_databse():
@@ -262,24 +208,11 @@ def add_med_to_databse():
     user = Users.query.filter(Users.user_id == session['user_id']).first()
     session['user_name'] = user.f_name
     user_id = session['user_id']
-
     #pulling info from confirm_med_api.html
     api_info = request.form.get('api_results')  #api_info returns as a string.
-    # indications = request.form.get('indications')
-    # dosing_info = request.form.get('dosing_info')
-    # info_for_patients = request.form.get('info_for_patients')
-    # contraindications = request.form.get('contraindications')
-    # brand_name = request.form.get('brand_name')
-    # pharm_class = request.form.get('pharm_class')
-    # print('###########THIS IS API INFO BACK IN /ADD_MED##################')
-    # print(api_info)
-
     #pulling info from confirm_med_db.html
     db_med_image = request.form.get('med_image')
     db_med_strength = request.form.get('med_strength')
-    print('###########THIS IS DB INFO BACK IN /ADD_MED##################')
-    # print(db_med_image)
-    print(db_med_strength, type(db_med_strength))
     #pull info needed from session to call db_helper function. 
     med_name = session['for_med_name']
     session_strength = session['strength']
@@ -323,9 +256,7 @@ def add_med_to_databse():
     del session['dosing_schedule']
     del session['rx_start_date']
 
-
-
-    flash("Medication Added!")
+    # flash("Medication Added!") #need to fix flash message format on page
     return redirect('/user-page')
 
 @app.route("/add_med_unverified")
@@ -343,17 +274,14 @@ def display_add_medication_form():
     rx_start_date = session['rx_start_date']
 
     db_helper.instantiate_new_medication(strength, med_name)
-
     new = Meds.query.filter((Meds.strength == strength) & 
                                 (Meds.medicine_name == (med_name.capitalize()))).first()
     med_id = new.med_id
-
     db_helper.add_unverified_med(user_id, 
                                  med_id, 
                                  qty_per_dose, 
                                  times_per_day, 
                                  rx_start_date)
-
     del session['for_med_name']
     del session['strength']
     del session['qty_per_dose']
@@ -370,10 +298,7 @@ def display_schedule_medication_form():
     """Display form to fill in order to schedule patients medication."""
     
     med_strength = request.form.get('med_strength')
-    # print("MED STRENGTH IN DISPLAY FORM", med_strength) 
     med_id = request.form.get('med_id')   
-    # print("MED STRENGTH IN DISPLAY FORM", med_id) 
-
     return render_template('schedule_meds_form.html', 
                             med_strength=med_strength, 
                             med_id=med_id)
@@ -383,15 +308,10 @@ def schedule_medication():
     """Update u_med in DB and schedule text notifications for medication."""
 
     user = Users.query.filter(Users.user_id == session['user_id']).first()
-
     medications = user.u_meds #get medications for user in session. 
-    print(medications)
-
     med_dictionary = db_helper.make_dictionary_for_user_meds(medications)
-    print(med_dictionary) 
-
     req = request.get_json()
-
+    #pull info from session
     am = req['am_time']
     mid = req['mid_time']
     pm = req['pm_time']
@@ -400,7 +320,6 @@ def schedule_medication():
     refills = req['refills']
     med_strength = req['med_strength']
     med_id = req['med_id']
-
     
     if am != "":
         am_time = datetime.strptime(am,'%H:%M')
@@ -415,19 +334,7 @@ def schedule_medication():
     else: 
         pm_time = None 
 
-    print(req, type(req))
-    print(am_time, type(am_time))
-    print(mid_day_time, type(mid_day_time))
-    print(pm_time, type(pm_time))
-    print(rx_duration, type(rx_duration))
-    print(qty, type(qty))
-    print(refills, type(refills))
-    print(med_strength, type(med_strength))
-    print(med_id, type(med_id))
-    
-
     user_med = User_meds.query.filter((User_meds.med_id == med_id)).first()
-    print(user_med)
 
     user_med.am_time = am_time
     user_med.mid_day_time = mid_day_time
@@ -438,21 +345,20 @@ def schedule_medication():
     user_med.refills = refills
     user_med.text_remind = True 
 
-
-    db.session.add(user_med)
+    db.session.add(user_med)  #update user medication in DB
     db.session.commit()
-
-    res = make_response(jsonify(req), 200)
+                                              
+    res = make_response(jsonify(req), 200)  #make response to pass to front-end
+    #get user info to send confirmation text
     med_name = user_med.brand_name
     cell = user_med.user.cell_number
     name = user_med.user.f_name
     message = (f"Hello {name}! Thank you for signing up and scheduling your meds! You will now recieve text reminders when it is time to take your {med_name}.")
+
     send_text_reminders(message, cell)
     return res 
 
-
 if __name__ == "__main__":
-    
     
     schedule.every().day.at("10:00").do(send_for_active_users)
     print("I am checking for active users.")

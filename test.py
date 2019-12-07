@@ -15,13 +15,13 @@ class TestMyPillHelper(unittest.TestCase):
         """Can we reach the homepage?"""
 
         result = self.client.get("/")
-        self.assertIn(b"Pill Helper", result.data)
+        self.assertIn(b"Pill Search", result.data)
 
     def test_find_meds_rendering(self):
         """Are you able to enter in items to search for a pill."""
 
         result = self.client.get("/find_meds")
-        self.assertIn(b"Identify a Pill", result.data)
+        self.assertIn(b"How to identify", result.data)
 
     def test_search_results_rendering(self):
         """Do search results render after entering find-med info."""
@@ -35,8 +35,7 @@ class TestMyPillHelper(unittest.TestCase):
         """Can you see more information about selected medication."""
 
         result = self.client.get("/more_info/Risperidone")
-        self.assertIn(b"More Information on Your Medication", result.data)
-
+        self.assertIn(b"More Information on Your", result.data)
 
     def test_register_page(self):
         """Can you see the registration page."""
