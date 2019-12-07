@@ -360,11 +360,10 @@ def schedule_medication():
 
 if __name__ == "__main__":
     
-    schedule.every().day.at("10:00").do(send_for_active_users)
+    schedule.every().day.at("15:00").do(send_for_active_users)
     print("I am checking for active users.")
 
-    # We have to set debug=True here, since it has to be True at the
-    app.debug = True
+    app.debug = False
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 

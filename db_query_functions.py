@@ -5,12 +5,6 @@ def query_with_find_meds_values(form_imprint, score, shape, color, name):
         """Get each value from the form in find_medications.html and query the DB."""
 
         imprint = (form_imprint.split(" "))[0] #incase user populates scentence. 
-      
-        # print('IMPRINT:' ,imprint, type(imprint), len(imprint))
-        # print('SCORE:' ,score, score.upper())
-        # print('SHAPE:' ,shape, shape.upper())
-        # print('COLOR:' ,color, color.upper())
-
         #set conditionals for various search query options based on input. 
         #imprint and color contain ; separated values in db. 
         query = Meds.query
@@ -68,11 +62,10 @@ def make_dictionary_from_query(query_results):
                 #then append
                 #create a value for the inner list. 
                 query_dictionary[key].append(img_path)
-        print("###############")
-        print(query_dictionary)
         return query_dictionary
 
 def make_dictionary_for_user_meds(query_results):
+    """Make a dictionary for user medications."""
 
     query_dictionary = {}
     for med in query_results:

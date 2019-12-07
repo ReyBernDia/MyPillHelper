@@ -17,7 +17,6 @@ def query_fda_api(med_name):
          +"+AND+(route:ORAL+openfda.route:ORAL)"
          )
 
-  # print(url)
   r = requests.get(url)
   med_info = r.json()
 
@@ -61,7 +60,6 @@ def query_fda_api(med_name):
   api_info["contraindications"] = contraindications
   api_info["brand_name"] = brand_name
   api_info["pharm_class"] = pharm_class
-
 
   return api_info
 
