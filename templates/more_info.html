@@ -46,11 +46,11 @@
 
   <div class="container-fluid my-2 overflow-wrap text-justify">
     <h3 class="my-3 ">Common Medication Name:</h3>
-    <p class="my-3">  
+    <p class="my-3 font_increase">  
       {{api_results['brand_name']}}
     </p>
     <h3 class="my-3">This medication is commonly used for the following purpose:</h3>
-    <p class="my-3"> 
+    <p class="my-3 font_increase"> 
       {% if api_results['indications'] == "" %} 
         Sorry, there are no results for common uses at this time.
         {% else %}
@@ -58,7 +58,7 @@
       {% endif %}
     </p>
     <h3 class="my-3">Dosing Information:</h3>
-    <p class="my-3 ">
+    <p class="my-3 font_increase">
        {% if api_results['dosing_info'] == "" %} 
           Sorry, there are no results for Dosing Information at this time.
           {% else %}
@@ -66,7 +66,7 @@
         {% endif %}
     </p>
     <h3 class="my-3">More Information for Patients:</h3>
-    <p class="my-3">
+    <p class="my-3 font_increase">
       {% if api_results['info_for_patients'] == "" %} 
         Sorry, there are no results for More Information at this time.
         {% else %}
@@ -74,7 +74,7 @@
       {% endif %}
     </p>
     <h3 class="my-3">Consider these Contraindications:</h3>
-    <p class="my-3">
+    <p class="my-3 font_increase">
       {% if api_results['contraindications'] == "" %} 
         Sorry, there are no results for the Contraindications at this time.
         {% else %}
@@ -82,7 +82,7 @@
       {% endif %}
     </p>
     <h3 class="my-3">This medication is of the following Pharmacy Class:</h3>
-    <p class="my-3"> 
+    <p class="my-3 font_increase"> 
       {% if api_results['pharm_class'] == "" %} 
         Sorry, there are no results for the Pharmacy Class at this time.
         {% else %}
