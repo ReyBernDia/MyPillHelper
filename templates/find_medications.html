@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <nav class="navbar navbar-expand-md w-100">
+  <nav class="navbar navbar-expand-md shadow-sm w-100">
   <div class="container-fluid">
     <a class="navbar-brand my-0 mr-md-auto" href="/">
         <img src="/static/img/PillHelperLogo.jpg" alt width="250px" height="125px">
@@ -76,12 +76,12 @@
        <div class="form-row">
     <div class="col">
       <label for="imprint"></label>
-      <input type="text" class="form-control" id="pill_imprint"  placeholder ="Imprint" name="pill_imprint">
+      <input type="text" class="form-control shadow-sm" id="pill_imprint"  placeholder ="Imprint" name="pill_imprint">
     </div>
 
     <div class="col">
       <label for="score"> </label>
-      <select type="number" class="form-control" id="pill_score" name="pill_score">
+      <select type="number" class="form-control shadow-sm" id="pill_score" name="pill_score">
           <option value="unknown">Score</option>
           <option value="unknown">Unknown</option>
           <option value="1">1</option>
@@ -93,7 +93,7 @@
 
     <div class="col">
     <label for="shape"> </label>
-    <select id="pill_shape" class="form-control" name="pill_shape">
+    <select id="pill_shape" class="form-control shadow-sm" name="pill_shape">
         <option value="unknown">Shape</option>
         <option value="unknown">Unknown</option>
         <option value="bullet">Bullet</option>
@@ -120,7 +120,7 @@
 
     <div class="col">
     <label for="color"></label>
-    <select id="pill_color" class="form-control" name="pill_color">
+    <select id="pill_color" class="form-control shadow-sm" name="pill_color">
         <option value="unknown">Color</option>
         <option value="Unknown">Unknown</option>
         <option value="red">Red</option>
@@ -140,10 +140,10 @@
 
     <div class="col">
       <label for="name_of_med"> </label>
-      <input type="text" class="form-control" id="name_of_med" placeholder="Medication Name" name="name_of_med">
+      <input type="text" class="form-control shadow-sm" id="name_of_med" placeholder="Medication Name" name="name_of_med">
     </div>
     <div class="col-auto.my-1">
-       <input class="btn btn-dark text-center mar-50" type="submit" value="Find">
+       <input class="btn btn-dark text-center mar-50 shadow-sm" type="submit" value="Find">
     </div>
     </form>
 </div>

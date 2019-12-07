@@ -13,7 +13,7 @@
 
     {% for key, value in database_med.items() %}
       
-      <div class="col-sm-3 my-1 mx-1 overflow-auto text-center" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+      <div class="col-sm-3 my-1 mx-1 overflow-auto text-center shadow p-3 mb-5 bg-white rounded" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
         <div class="my-4 mx-4">
           <h6>Medication Name:</h6>
           <p id="med_name">{{ value[0] }} </p> 
@@ -22,8 +22,8 @@
           <img src="{{ value[1][0] }}" width=40% height=40% onerror="this.onerror=null;this.src='/static/img/No_Image_Avail.jpg';"/>
           
             <div class="container">
-              <h5>Is this your correct medication?</h5>
-              <div class="row">
+          
+              <div class="row mt-3">
 
                 <div class="col">
                   <form action="/add_med" id="yes_add_med" method="POST" >

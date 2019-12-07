@@ -4,7 +4,7 @@
 
 {% block content %}
 
- <nav class="navbar navbar-expand-md w-100">
+ <nav class="navbar navbar-expand-md shadow-sm w-100">
   <div class="container-fluid">
     <a class="navbar-brand my-0 mr-md-auto" href="/">
         <img src="/static/img/PillHelperLogo.jpg" alt width="250px" height="125px">
@@ -65,30 +65,32 @@
           {{api_results['dosing_info']}}
         {% endif %}
     </p>
-    <h3 class="my-3">More Information for Patients:</h3>
-    <p class="my-3 font_increase">
+
       {% if api_results['info_for_patients'] == "" %} 
-        Sorry, there are no results for More Information at this time.
+        <p class="my-3 font_increase"></p>
         {% else %}
-        {{api_results['info_for_patients']}}
+        <h3 class="my-3">More Information for Patients:</h3>
+        <p class="my-3 font_increase">{{api_results['info_for_patients']}}</p>
       {% endif %}
-    </p>
-    <h3 class="my-3">Consider these Contraindications:</h3>
-    <p class="my-3 font_increase">
-      {% if api_results['contraindications'] == "" %} 
-        Sorry, there are no results for the Contraindications at this time.
+
+     {% if api_results['contraindications'] == "" %} 
+        <p></p>
         {% else %}
+        <h3 class="my-3">Consider these Contraindications:</h3>
+        <p class="my-3 font_increase">
         {{api_results['contraindications']}}
+        </p>
       {% endif %}
-    </p>
-    <h3 class="my-3">This medication is of the following Pharmacy Class:</h3>
-    <p class="my-3 font_increase"> 
-      {% if api_results['pharm_class'] == "" %} 
-        Sorry, there are no results for the Pharmacy Class at this time.
+    
+      {% if api_results['pharm_class'] == "" %}
+        <p></p>
         {% else %}
+        <h3 class="my-3">This medication is of the following Pharmacy Class:</h3>
+        <p class="my-3 font_increase"> 
         {{api_results['pharm_class']}}
+        </p>
       {% endif %}
-    </p>
+    
   </div>
 
 </div>

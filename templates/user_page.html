@@ -41,7 +41,7 @@
       <h4 class="text-center my-0">Add a Medication</h4>
       </button>
     </div>
-    <div class="container" id="add_med_form">
+    <div class="container shadow " id="add_med_form" style="border: 1px solid black; border-radius: 5px;">
       <div class="text-center">
       <form class="form-add" action="/user-page"  method="POST">
         <div class="container-fluid">
@@ -83,7 +83,7 @@
         <div class=" container-flex"> 
            <div class="row justify-content-center" >
         {% for key, value in med_options.items() %}
-          <div class="my-meds-2 col-4 py-2 overflow-auto" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
+          <div class="my-meds-2 col-4 py-2 overflow-auto shadow p-3 mb-5 bg-white rounded" id="user_meds" style="border: 1px solid black; border-radius: 5px;"> 
 
             <div class="container-fluid py-3">
               <h4>Medication Name</h4>
