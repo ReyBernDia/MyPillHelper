@@ -1,4 +1,4 @@
-from test_model import connect_to_db, db, Meds, Users, User_meds
+from model import connect_to_db, db, Meds, Users, User_meds
 import api
 
 def query_with_find_meds_values(form_imprint, score, shape, color, name):

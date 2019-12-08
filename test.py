@@ -1,6 +1,6 @@
 import unittest
 from server import app
-from model import db, connect_to_db #ALSO LIST NAME OF FUNCTIONS TO TEST
+from test_model import db, connect_to_db #ALSO LIST NAME OF FUNCTIONS TO TEST
 import server 
 
 class TestMyPillHelper(unittest.TestCase):
