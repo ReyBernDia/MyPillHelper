@@ -81,10 +81,9 @@ Create database 'meds_prod'.
 ```
 $ createdb meds_prod
 ```
-Create your database tables and seed production data.
+Once you have created an empty database, read the meds_production.sql into like so:
 ```
-$ python3 model.py
-$ python3 seed.py
+$ psql meds_prod < meds_production.sql
 ```
 Run the app from the command line.
 ```
