@@ -28,7 +28,7 @@ Need a reminder to take your medications? Schedule text reminders!
 
 Text reminders will notify you at your desired time and also give you a heads up when it is time to refill your medication. 
 
-![Text Reminder](static/img/_readme-img/TxtReminder.PNG=350x250)
+![Text Reminder](static/img/_readme-img/TxtReminder.PNG | width=100)
 
 
 
