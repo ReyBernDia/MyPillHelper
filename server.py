@@ -360,7 +360,7 @@ def schedule_medication():
 
 if __name__ == "__main__":
     
-    schedule.every().day.at("23:00").do(send_for_active_users)
+    schedule.every().day.at("22:00").do(send_for_active_users)
     print("I am checking for active users.")
 
     app.debug = False
