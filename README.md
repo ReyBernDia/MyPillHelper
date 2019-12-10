@@ -7,9 +7,13 @@ This is an application designed to help users log and keep track of medications.
 My Pill Helper was created by Reyna Diaz. She has a background in Human Biology, and this was her first project. Learn more about the developer on [LinkedIn](https://www.linkedin.com/in/reyna-diaz-4589a266/).
 
 ## Tech Stack
+
 **Backend:** Python, Flask, PostgreSQL, SQLAlchemy 
+
 **Frontend:** HTML5, CSS, Javascript, AJAX, jQuery, Bootstrap, Jinja2 
+
 **APIs:** Open FDA, Twilio 
+
 **Datasets:** National Institutes of Health (Pillbox)
 
 ## Features 
