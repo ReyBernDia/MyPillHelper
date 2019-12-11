@@ -7,9 +7,13 @@ This is an application designed to help users log and keep track of medications.
 My Pill Helper was created by Reyna Diaz. She has a background in Human Biology, and this was her first project. Learn more about the developer on [LinkedIn](https://www.linkedin.com/in/reyna-diaz-4589a266/).
 
 ## Tech Stack
+
 **Backend:** Python, Flask, PostgreSQL, SQLAlchemy 
+
 **Frontend:** HTML5, CSS, Javascript, AJAX, jQuery, Bootstrap, Jinja2 
+
 **APIs:** Open FDA, Twilio 
+
 **Datasets:** National Institutes of Health (Pillbox)
 
 ## Features 
@@ -28,7 +32,7 @@ Need a reminder to take your medications? Schedule text reminders!
 
 Text reminders will notify you at your desired time and also give you a heads up when it is time to refill your medication. 
 
-![Text Reminder](static/img/_readme-img/TxtReminder.PNG=350x250)
+![Text Reminder](static/img/_readme-img/TxtReminder.PNG)
 
 
 
@@ -81,10 +85,9 @@ Create database 'meds_prod'.
 ```
 $ createdb meds_prod
 ```
-Create your database tables and seed production data.
+Once you have created an empty database, read the meds_production.sql into like so:
 ```
-$ python3 model.py
-$ python3 seed.py
+$ psql meds_prod < meds_production.sql
 ```
 Run the app from the command line.
 ```
