@@ -97,6 +97,13 @@
               <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
               </form>
             </div>
+            <div class="container-fluid py-3">
+              <form action="/delete_med", method = "POST">
+              <input class="btn btn-dark btn-sm font-weight-bold my-0" type="submit" value="Delete">
+              <input type="hidden" name="med_strength" value="{{key}}">
+              <input type="hidden" id="med_id" name="med_id" value="{{value['med_id']}}">
+              </form>
+            </div>
 
             <div class="container-fluid py-3">
               <h6>Strength</h6>

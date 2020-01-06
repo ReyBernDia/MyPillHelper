@@ -358,12 +358,26 @@ def schedule_medication():
     send_text_reminders(message, cell)
     return res 
 
+@app.route("/delete_med", methods=['POST'])
+def delete_medication():
+    """Delete user medications from their list."""
+
+    med_strength = request.form.get('med_strength')
+    med_id = request.form.get('med_id')  
+    med = User_meds.query.filter((User_meds.user_id == session['user_id']) & 
+                                  (User_meds.med_id == med_id)).delete()
+    db.session.commit()
+
+    flash("Medication deleted!")
+    return redirect('/user-page')
+
+
 if __name__ == "__main__":
     
     schedule.every().day.at("22:00").do(send_for_active_users)
     print("I am checking for active users.")
 
-    app.debug = False
+    app.debug = True
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
