@@ -377,7 +377,7 @@ if __name__ == "__main__":
     schedule.every().day.at("22:00").do(send_for_active_users)
     print("I am checking for active users.")
 
-    app.debug = True
+    app.debug = False
     # make sure templates, etc. are not cached in debug mode
     app.jinja_env.auto_reload = app.debug
 
