@@ -1,6 +1,6 @@
 ![Logo](static/img/PillHelperLogo.jpg)
 
-This is an application designed to help users log and keep track of medications. In addition to logging medications, user profiles also display more information about each medicine they are on. My Pill Helper also offers users the option to schedule text reminders. Once users opt-in for scheduling, they will also get updates when it is time to refill their medication. Those who do not wish to create a user profile can use My Pill Helper as a pill identifier or as a tool to remind them of dosing instructions or common indications for a specific drug. You can check it out at [mypillhelper.com](http://www.mypillhelper.com/).
+This is an application designed to help users log and keep track of medications. In addition to logging medications, user profiles also display more information about each medicine they are on. My Pill Helper also offers users the option to schedule text reminders. Once users opt-in for scheduling, they will also get updates when it is time to refill their medication. Those who do not wish to create a user profile can use My Pill Helper as a pill identifier or as a tool to remind them of dosing instructions or common indications for a specific drug.
 
 ## About the Developer
 
